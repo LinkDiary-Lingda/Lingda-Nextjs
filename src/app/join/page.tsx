@@ -1,43 +1,62 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputGroup from './InputGroup';
+import { checkDuplicateUser, joinMember } from '@/service/member';
 
 export default function Join() {
   type LoginInputs = {
-    id: string;
-    pw: string;
+    username: string;
+    password: string;
   };
+  const [dupChecked, setDupChecked] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm<LoginInputs>();
-  const onSumbit: SubmitHandler<LoginInputs> = (data) => console.log(data);
+  const onSumbit: SubmitHandler<LoginInputs> = async (data) => {
+    if (!dupChecked) return;
+    await joinMember(data);
+  };
 
+  const handleUsernameCheck = async () => {
+    const username = getValues().username;
+    if (!dupChecked && username) {
+      const duplicated = await checkDuplicateUser(username);
+      if (!duplicated) setDupChecked(true);
+    }
+  };
   return (
     <div className="flex flex-col gap-2">
       <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSumbit)}>
         <InputGroup
           type="text"
-          name="id"
+          name="username"
           placeholder="아이디"
           label="아이디"
-          error={errors.id}
+          error={errors.username}
           register={() =>
-            register('id', {
+            register('username', {
               required: { value: true, message: '아이디를 입력해주세요' },
             })
           }
         />
+        <button
+          className="bg-blue-600 text-white p-2 rounded-md"
+          onClick={handleUsernameCheck}
+        >
+          중복체크
+        </button>
         <InputGroup
           type="password"
-          name="pw"
+          name="password"
           placeholder="비밀번호"
           label="비밀번호"
-          error={errors.pw}
+          error={errors.password}
           register={() =>
-            register('pw', {
+            register('password', {
               required: { value: true, message: '비밀번호를 입력해주세요' },
             })
           }

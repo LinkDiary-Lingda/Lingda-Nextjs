@@ -8,11 +8,12 @@ export async function joinMember({
   password: string;
 }) {
   try {
-    const accessToken = await request('members', 'POST', {
+    const { accessToken } = await request('members', 'POST', {
       username,
       password,
     });
     localStorage.setItem('accessToken', accessToken);
+    return accessToken;
   } catch (error) {
     console.log(error);
     throw error;
@@ -41,7 +42,7 @@ export async function login({
 export async function checkDuplicateUser(username: string) {
   try {
     const duplicated = await request(
-      `/members/check-username-duplicate?username=${username}`,
+      `members/check-username-duplicate?username=${username}`,
       'GET'
     );
     return duplicated;

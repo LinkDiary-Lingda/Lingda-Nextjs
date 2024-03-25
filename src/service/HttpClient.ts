@@ -6,10 +6,17 @@ export const request = (
   params?: any
 ) => {
   const accessToken = localStorage.getItem('accessToken');
-  return fetch(`${process.env.BASE_URL}/${path}`, {
+  return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${path}`, {
     method,
-    headers: { Authorization: accessToken ? `Bearer ${accessToken}` : '' },
+    headers: {
+      Authorization: accessToken ? `Bearer ${accessToken}` : '',
+      'Content-Type': 'application/json; charset=utf-8',
+    },
     next: { revalidate },
-    body,
-  }).then((res) => res.json());
+    body: JSON.stringify(body),
+  })
+    .then((res) => res.json())
+    .catch((error) => {
+      console.log(error);
+    });
 };
