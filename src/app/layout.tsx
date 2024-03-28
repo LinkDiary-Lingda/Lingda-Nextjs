@@ -2,13 +2,21 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 
-const pretendardFont = localFont({
-  src: './font/Pretendard-Regular.woff',
-  variable: '--font-pretendard',
+const pretendardBoldFont = localFont({
+  src: './font/Pretendard-Bold.woff',
+  variable: '--font-pretendard-bold',
 });
-const gmarketFont = localFont({
+const pretendardRegularFont = localFont({
+  src: './font/Pretendard-Regular.woff',
+  variable: '--font-pretendard-regular',
+});
+const gmarketBoldFont = localFont({
   src: './font/GmarketSansTTFBold.ttf',
-  variable: '--font-gmarket',
+  variable: '--font-gmarket-bold',
+});
+const gmarketMediumFont = localFont({
+  src: './font/GmarketSansTTFMedium.ttf',
+  variable: '--font-gmarket-medium',
 });
 
 export const metadata: Metadata = {
@@ -28,10 +36,10 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${pretendardFont.variable} ${gmarketFont.variable}`}
+      className={`${pretendardBoldFont.variable} ${pretendardRegularFont.variable} ${gmarketBoldFont.variable} ${gmarketMediumFont.variable}`}
     >
       <body>
-        <main className="font-pretendard">{children}</main>
+        <main className="font-pretendardRegular">{children}</main>
       </body>
     </html>
   );

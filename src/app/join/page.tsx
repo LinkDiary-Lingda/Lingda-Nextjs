@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import InputGroup from './InputGroup';
+import InputGroup from '../components/InputGroup';
 import { checkDuplicateUser, joinMember } from '@/service/member';
 
 export default function Join() {

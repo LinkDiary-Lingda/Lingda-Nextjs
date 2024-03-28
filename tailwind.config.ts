@@ -50,8 +50,10 @@ const config: Config = {
         'Detail-1': '18px',
       },
       fontFamily: {
-        pretendard: ['var(--font-pretendard)'],
-        gmarket: ['var(--font-gmarket)'],
+        pretendardBold: ['var(--font-pretendard-bold)'],
+        pretendardRegular: ['var(--font-pretendard-regular)'],
+        gmarketBold: ['var(--font-gmarket-bold)'],
+        gmarketMedium: ['var(--font-gmarket-medium)'],
       },
     },
   },
