@@ -1,5 +1,10 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import './globals.css';
+
+const pretendardFont = localFont({
+  src: './font/Pretendard-Regular.woff',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -16,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={pretendardFont.className}>
       <body>
         <main>{children}</main>
       </body>
