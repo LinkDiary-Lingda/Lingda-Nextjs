@@ -5,6 +5,9 @@ import React from 'react';
 export default async function Login() {
   return (
     <div className="flex flex-col gap-2">
+      <div className="mt-20">
+        <h1 className="text-Primary-03 text-Heading-2 font-gmarket">Lingda</h1>
+      </div>
       <form className="flex flex-col gap-2">
         <div className="flex flex-col gap-1">
           <label htmlFor="id">아이디</label>

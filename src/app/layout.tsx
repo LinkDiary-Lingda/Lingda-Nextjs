@@ -4,6 +4,11 @@ import './globals.css';
 
 const pretendardFont = localFont({
   src: './font/Pretendard-Regular.woff',
+  variable: '--font-pretendard',
+});
+const gmarketFont = localFont({
+  src: './font/GmarketSansTTFBold.ttf',
+  variable: '--font-gmarket',
 });
 
 export const metadata: Metadata = {
@@ -21,9 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={pretendardFont.className}>
+    <html
+      lang="ko"
+      className={`${pretendardFont.variable} ${gmarketFont.variable}`}
+    >
       <body>
-        <main>{children}</main>
+        <main className="font-pretendard">{children}</main>
       </body>
     </html>
   );

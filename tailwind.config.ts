@@ -50,9 +50,8 @@ const config: Config = {
         'Detail-1': '18px',
       },
       fontFamily: {
-        'pretendard-regular': ['Pretendard-Regular'],
-        'pretendard-semibold': ['Pretendard-SemiBold'],
-        'pretendard-bold': ['Pretendard-Bold'],
+        pretendard: ['var(--font-pretendard)'],
+        gmarket: ['var(--font-gmarket)'],
       },
     },
   },
