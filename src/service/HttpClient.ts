@@ -1,3 +1,5 @@
+import { error } from 'console';
+
 export const request = (
   path: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -15,8 +17,13 @@ export const request = (
     next: { revalidate },
     body: JSON.stringify(body),
   })
-    .then((res) => res.json())
+    .then(async (res) => {
+      const result = await res.json();
+      if (!res.ok) throw Error(res.status.toString());
+      return result;
+    })
     .catch((error) => {
       console.log(error);
+      throw error.message;
     });
 };

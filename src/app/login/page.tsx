@@ -1,12 +1,14 @@
 'use client';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LoginInputs } from '../../types/member';
 import InputGroup from '../../components/InputGroup';
 import NextButton from '@/components/NextButton';
+import { login } from '@/service/member';
 
 export default function Login() {
+  const [error, setError] = useState('');
   const {
     register,
     handleSubmit,
@@ -15,7 +17,14 @@ export default function Login() {
     setValue,
   } = useForm<LoginInputs>();
 
-  const handleLoginBtn = () => {};
+  const handleLoginBtn = async (data: LoginInputs) => {
+    try {
+      const result = await login(data);
+    } catch (error) {
+      if (error === '401')
+        setError('아이디 또는 비밀번호가 일치하지 않습니다.');
+    }
+  };
 
   return (
     <div className="h-full flex flex-col justify-between">
@@ -54,6 +63,7 @@ export default function Login() {
             }
             onDelete={() => setValue('password', '')}
           />
+          {error && <small className="text-red-500 -mt-4">{error}</small>}
           <NextButton text="로그인하기" errors={errors} />
         </form>
         <div className="flex justify-center mt-2">
