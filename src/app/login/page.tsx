@@ -2,8 +2,9 @@
 import Link from 'next/link';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { LoginInputs } from '../types/member';
-import InputGroup from '../components/InputGroup';
+import { LoginInputs } from '../../types/member';
+import InputGroup from '../../components/InputGroup';
+import NextButton from '@/components/NextButton';
 
 export default function Login() {
   const {
@@ -52,9 +53,7 @@ export default function Login() {
           }
           onDelete={() => setValue('password', '')}
         />
-        <button type="submit" className="bg-blue-300 p-2 rounded-lg">
-          로그인하기
-        </button>
+        <NextButton text="로그인하기" errors={errors} />
       </form>
       <Link
         href="join"
