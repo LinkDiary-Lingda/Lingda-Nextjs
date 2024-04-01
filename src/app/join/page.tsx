@@ -33,7 +33,6 @@ export default function Join() {
       <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSumbit)}>
         <InputGroup
           type="text"
-          name="username"
           placeholder="아이디"
           label="아이디"
           error={errors.username}
@@ -51,7 +50,6 @@ export default function Join() {
         </button>
         <InputGroup
           type="password"
-          name="password"
           placeholder="비밀번호"
           label="비밀번호"
           error={errors.password}

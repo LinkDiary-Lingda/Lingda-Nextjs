@@ -34,7 +34,6 @@ export async function login({
     });
     localStorage.setItem('accessToken', accessToken);
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
