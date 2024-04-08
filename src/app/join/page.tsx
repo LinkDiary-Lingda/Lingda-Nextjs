@@ -14,6 +14,7 @@ export default function Join() {
     passwordConfirm: string;
   };
   const [dupChecked, setDupChecked] = useState(false);
+  const [dupCheckedMsg, setDupCheckedMsg] = useState('');
   const {
     register,
     handleSubmit,
@@ -39,8 +40,10 @@ export default function Join() {
       const duplicated = await checkDuplicateUser(username);
       if (duplicated === false) {
         setDupChecked(true);
-        clearErrors('username');
+        setDupCheckedMsg('사용가능한 아이디예요.');
+        return clearErrors('username');
       }
+      setDupCheckedMsg('이미 존재하는 아이디예요. 다시 입력해주세요.');
     }
   };
   return (
@@ -70,7 +73,7 @@ export default function Join() {
           btnTitle="중복확인"
           btnOnClick={handleUsernameCheck}
           btnHandled={dupChecked}
-          btnHandledMsg="사용가능한 아이디예요."
+          btnHandledMsg={dupCheckedMsg}
           setBtnState={setDupChecked}
         />
         <InputGroup

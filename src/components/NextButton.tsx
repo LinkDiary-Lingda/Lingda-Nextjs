@@ -1,5 +1,5 @@
 import React from 'react';
-import { FieldError, FieldErrors } from 'react-hook-form';
+import { FieldErrors } from 'react-hook-form';
 import cls from 'classnames';
 
 type NextButtonPros = {
