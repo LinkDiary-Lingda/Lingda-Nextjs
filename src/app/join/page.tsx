@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputGroup from '../../components/InputGroup';
 import { checkDuplicateUser, joinMember } from '@/service/member';
+import BackHeader from '@/components/BackHeader';
 
 export default function Join() {
   type LoginInputs = {
@@ -30,11 +31,11 @@ export default function Join() {
   };
   return (
     <div className="flex flex-col gap-2">
+      <BackHeader title="가입하기" />
       <form className="flex flex-col gap-2" onSubmit={handleSubmit(onSumbit)}>
         <InputGroup
           type="text"
           placeholder="아이디"
-          label="아이디"
           error={errors.username}
           register={() =>
             register('username', {
@@ -51,7 +52,6 @@ export default function Join() {
         <InputGroup
           type="password"
           placeholder="비밀번호"
-          label="비밀번호"
           error={errors.password}
           register={() =>
             register('password', {

@@ -1,8 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { FieldError, UseFormSetValue } from 'react-hook-form';
-import { MdCancel } from 'react-icons/md';
-import { IoIosAlert } from 'react-icons/io';
+import { FieldError } from 'react-hook-form';
 import cls from 'classnames';
 
 type InputProps = {
@@ -10,7 +8,6 @@ type InputProps = {
   placeholder: string;
   type: string;
   register: () => any;
-  onDelete?: () => void;
   error?: FieldError;
 };
 
@@ -19,7 +16,6 @@ export default function InputGroup({
   placeholder,
   type,
   register,
-  onDelete,
   error,
 }: InputProps) {
   const [value, setValue] = useState('');
@@ -46,21 +42,6 @@ export default function InputGroup({
           type={type}
           className="outline-none placeholder:text-Gray-06 text-semibold h-[54px] w-[280px]"
         />
-        <div className="flex flex-row gap-2">
-          {onDelete && (
-            <button
-              type="button"
-              className=" outline-none"
-              onClick={() => {
-                setValue('');
-                onDelete();
-              }}
-            >
-              <MdCancel color="#9E9E9E" />
-            </button>
-          )}
-          {error && <IoIosAlert color="#F04242" />}
-        </div>
       </div>
       {error && <small className="text-red-500">{error.message}</small>}
     </div>

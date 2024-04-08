@@ -13,8 +13,6 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
-    setValue,
   } = useForm<LoginInputs>();
 
   const handleLoginBtn = async (data: LoginInputs) => {
@@ -51,7 +49,6 @@ export default function Login() {
                 required: { value: true, message: '아이디를 입력해주세요' },
               })
             }
-            onDelete={() => setValue('username', '')}
           />
           <InputGroup
             type="password"
@@ -62,7 +59,6 @@ export default function Login() {
                 required: { value: true, message: '비밀번호를 입력해주세요' },
               })
             }
-            onDelete={() => setValue('password', '')}
           />
           {error && <small className="text-red-500 -mt-4">{error}</small>}
           <NextButton text="로그인하기" errors={errors} />

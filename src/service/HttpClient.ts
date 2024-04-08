@@ -14,6 +14,7 @@ export const request = (
       Authorization: accessToken ? `Bearer ${accessToken}` : '',
       'Content-Type': 'application/json; charset=utf-8',
     },
+    credentials: 'include',
     next: { revalidate },
     body: JSON.stringify(body),
   })
