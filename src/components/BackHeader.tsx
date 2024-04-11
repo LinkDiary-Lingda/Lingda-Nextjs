@@ -1,3 +1,4 @@
+'use client';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { IoMdArrowBack } from 'react-icons/io';
@@ -6,7 +7,7 @@ export default function BackHeader({ title }: { title: string }) {
   const router = useRouter();
   return (
     <nav>
-      <ul className="flex flex-row justify-between items-center h-[48px]">
+      <ul className="flex flex-row justify-between items-center h-[48px] w-full">
         <li
           className="text-Heading-3 cursor-pointer"
           onClick={router.back}
@@ -19,7 +20,7 @@ export default function BackHeader({ title }: { title: string }) {
             {title}
           </p>
         </li>
-        <li></li>
+        <li>{''}</li>
       </ul>
     </nav>
   );

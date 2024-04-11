@@ -66,13 +66,13 @@ export default function Login() {
         <div className="flex justify-center mt-2">
           <ul className="w-[200px] flex flex-row items-center justify-between text-Gray-06 text-Body-2 leading-Body-2">
             <li>
-              <Link href="/id">아이디 찾기</Link>
+              <Link href="/account">아이디 찾기</Link>
             </li>
             <li>
               <span>|</span>
             </li>
             <li>
-              <Link href="/password">비밀번호 찾기</Link>
+              <Link href="/account">비밀번호 찾기</Link>
             </li>
           </ul>
         </div>
