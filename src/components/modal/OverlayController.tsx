@@ -1,3 +1,4 @@
+'use client';
 import React, {
   Ref,
   forwardRef,
@@ -7,7 +8,7 @@ import React, {
   useState,
 } from 'react';
 
-type CreateOverlayElement = (props: {
+export type CreateOverlayElement = (props: {
   isOpen: boolean;
   close: () => void;
   exit: () => void;
