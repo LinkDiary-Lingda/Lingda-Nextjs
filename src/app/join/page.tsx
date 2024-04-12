@@ -51,12 +51,12 @@ export default function Join() {
     <div className="flex flex-col gap-2">
       <BackHeader title="가입하기" />
       <Alert
-        msgRow1="이미 가입한 계정이 있습니다."
-        msgRow2="아래의 계정으로 로그인 해주세요."
-        target="Lingda123"
-        cancelMsg="다른 정보 입력하기"
-        actionBtnMsg="계정 로그인하기"
-        action={() => {}}
+        title="이미 가입한 계정이 있습니다."
+        subTitle="아래의 계정으로 로그인 해주세요."
+        informativeText="Lingda123"
+        secondaryBtn="다른 정보 입력하기"
+        primaryBtn="계정 로그인하기"
+        primaryAction={() => {}}
       />
       <div className="py-4 text-Heading-3 font-pretendardBold">
         <h1>아래 정보로</h1>
