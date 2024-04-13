@@ -71,7 +71,7 @@ export default function InputGroupWithBtn({
           {error.message}
         </small>
       )}
-      {btnHandled && (
+      {btnHandledMsg && (
         <small role="inform" className="text-Blue-02">
           {btnHandledMsg}
         </small>

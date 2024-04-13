@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputGroup from '../../components/InputGroup';
 import { checkDuplicateUser, joinMember } from '@/service/member';
-import BackHeader from '@/components/BackHeader';
+import BackHeader from '@/components/header/BackHeader';
 import InputGroupWithBtn from '@/components/InputGroupWithBtn';
 import NextButton from '@/components/NextButton';
-import Alert from '@/components/Alert';
+import { useRouter } from 'next/navigation';
 
 export default function Join() {
   type LoginInputs = {
@@ -25,6 +25,8 @@ export default function Join() {
     clearErrors,
   } = useForm<LoginInputs>();
 
+  const router = useRouter();
+
   const onSumbit: SubmitHandler<LoginInputs> = async ({
     username,
     password,
@@ -33,6 +35,7 @@ export default function Join() {
       return setError('username', { message: '아이디 중복 확인이 필요해요.' });
     }
     await joinMember({ username, password });
+    router.push('/my');
   };
 
   const handleUsernameCheck = async () => {
@@ -44,20 +47,16 @@ export default function Join() {
         setDupCheckedMsg('사용가능한 아이디예요.');
         return clearErrors('username');
       }
-      setDupCheckedMsg('이미 존재하는 아이디예요. 다시 입력해주세요.');
+      setError('username', {
+        message: '이미 존재하는 아이디예요. 다시 입력해주세요.',
+      });
+      setDupCheckedMsg('');
     }
   };
+
   return (
     <div className="flex flex-col gap-2">
       <BackHeader title="가입하기" />
-      <Alert
-        title="이미 가입한 계정이 있습니다."
-        subTitle="아래의 계정으로 로그인 해주세요."
-        informativeText="Lingda123"
-        secondaryBtn="다른 정보 입력하기"
-        primaryBtn="계정 로그인하기"
-        primaryAction={() => {}}
-      />
       <div className="py-4 text-Heading-3 font-pretendardBold">
         <h1>아래 정보로</h1>
         <h1>가입을 진행합니다.</h1>

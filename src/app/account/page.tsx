@@ -1,5 +1,5 @@
 'use client';
-import BackHeader from '@/components/BackHeader';
+import BackHeader from '@/components/header/BackHeader';
 import InputGroup from '@/components/InputGroup';
 import InputGroupWithBtn from '@/components/InputGroupWithBtn';
 import NextButton from '@/components/NextButton';
