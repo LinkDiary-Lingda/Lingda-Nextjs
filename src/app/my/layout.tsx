@@ -1,3 +1,4 @@
+import MainHeader from '@/components/header/MainHeader';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -9,5 +10,10 @@ export default function MyPageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div>{children}</div>;
+  return (
+    <>
+      <MainHeader />
+      {children}
+    </>
+  );
 }

@@ -26,7 +26,7 @@ export default function Login() {
   };
 
   return (
-    <div className="h-full flex flex-col justify-between">
+    <div className="h-full flex flex-col justify-between items-center">
       <section>
         <div className="mt-20">
           <h1 className="text-Primary-03 text-Heading-2 font-gmarketBold">
@@ -61,9 +61,11 @@ export default function Login() {
             }
           />
           {error && <small className="text-red-500 -mt-4">{error}</small>}
-          <NextButton text="로그인하기" errors={errors} />
+          <div className="mt-12">
+            <NextButton text="로그인하기" errors={errors} />
+          </div>
         </form>
-        <div className="flex justify-center mt-2">
+        <div className="flex justify-center mt-4">
           <ul className="w-[200px] flex flex-row items-center justify-between text-Gray-06 text-Body-2 leading-Body-2">
             <li>
               <Link href="/account">아이디 찾기</Link>
@@ -77,7 +79,7 @@ export default function Login() {
           </ul>
         </div>
       </section>
-      <section className="flex flex-row mb-6 justify-center gap-2 text-Body-2">
+      <section className="flex flex-row mb-12 justify-center gap-2 text-Body-2">
         <span className="text-Gray-06">아이디가 없나요?</span>
         <Link href="/join" className="text-Primary-04 underline">
           가입하기

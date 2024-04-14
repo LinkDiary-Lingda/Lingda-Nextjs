@@ -55,65 +55,67 @@ export default function Join() {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <BackHeader title="가입하기" />
-      <div className="py-4 text-Heading-3 font-pretendardBold">
-        <h1>아래 정보로</h1>
-        <h1>가입을 진행합니다.</h1>
-      </div>
-      <form
-        className="py-4 flex flex-col gap-3"
-        onSubmit={handleSubmit(onSumbit)}
-      >
-        <InputGroupWithBtn
-          type="text"
-          placeholder="아이디 입력"
-          error={errors.username}
-          register={() =>
-            register('username', {
-              required: { value: true, message: '아이디를 입력해주세요' },
-              pattern: {
-                value: /^[a-z0-9_-]{3,15}$/g,
-                message: '3~15자 사이의 영문, 숫자만 가능해요.',
-              },
-            })
-          }
-          btnTitle="중복확인"
-          btnOnClick={handleUsernameCheck}
-          btnHandled={dupChecked}
-          btnHandledMsg={dupCheckedMsg}
-          setBtnState={setDupChecked}
-        />
-        <InputGroup
-          type="password"
-          placeholder="비밀번호 입력"
-          error={errors.password}
-          register={() =>
-            register('password', {
-              required: { value: true, message: '비밀번호를 입력해주세요' },
-            })
-          }
-        />
-        <InputGroup
-          type="password"
-          placeholder="비밀번호 재입력"
-          error={errors.passwordConfirm}
-          register={() =>
-            register('passwordConfirm', {
-              required: {
-                value: true,
-                message: '비밀번호를 입력해주세요.',
-              },
-              validate: (value) =>
-                value === getValues().password ||
-                '비밀번호가 일치하지 않습니다.',
-            })
-          }
-        />
-        <div className="absolute bottom-8">
-          <NextButton text="가입하기" errors={errors} />
+    <section className="flex flex-col items-center">
+      <div>
+        <BackHeader title="가입하기" />
+        <div className="pt-6 pb-12 text-Heading-3 leading-Heading-3 font-pretendardBold">
+          <h1>아래 정보로</h1>
+          <h1>가입을 진행합니다.</h1>
         </div>
-      </form>
-    </div>
+        <form
+          className="py-4 flex flex-col gap-3"
+          onSubmit={handleSubmit(onSumbit)}
+        >
+          <InputGroupWithBtn
+            type="text"
+            placeholder="아이디 입력"
+            error={errors.username}
+            register={() =>
+              register('username', {
+                required: { value: true, message: '아이디를 입력해주세요' },
+                pattern: {
+                  value: /^[a-z0-9_-]{3,15}$/g,
+                  message: '3~15자 사이의 영문, 숫자만 가능해요.',
+                },
+              })
+            }
+            btnTitle="중복확인"
+            btnOnClick={handleUsernameCheck}
+            btnHandled={dupChecked}
+            btnHandledMsg={dupCheckedMsg}
+            setBtnState={setDupChecked}
+          />
+          <InputGroup
+            type="password"
+            placeholder="비밀번호 입력"
+            error={errors.password}
+            register={() =>
+              register('password', {
+                required: { value: true, message: '비밀번호를 입력해주세요' },
+              })
+            }
+          />
+          <InputGroup
+            type="password"
+            placeholder="비밀번호 재입력"
+            error={errors.passwordConfirm}
+            register={() =>
+              register('passwordConfirm', {
+                required: {
+                  value: true,
+                  message: '비밀번호를 입력해주세요.',
+                },
+                validate: (value) =>
+                  value === getValues().password ||
+                  '비밀번호가 일치하지 않습니다.',
+              })
+            }
+          />
+          <div className="absolute bottom-8">
+            <NextButton text="가입하기" errors={errors} />
+          </div>
+        </form>
+      </div>
+    </section>
   );
 }
