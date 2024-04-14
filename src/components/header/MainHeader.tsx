@@ -5,7 +5,7 @@ import { BsStack } from 'react-icons/bs';
 export default function MainHeader() {
   return (
     <nav>
-      <ul>
+      <ul className="flex flex-row justify-between bg-red-400">
         <li>
           <BsStack />
         </li>
