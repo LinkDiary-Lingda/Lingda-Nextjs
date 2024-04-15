@@ -1,13 +1,16 @@
-import Categories from './categories';
-import Topic from './topic';
+import Content from './content';
+import Filters from './filters';
+import Nothing from './nothing';
 
 export default function My() {
   return (
     <>
-      <Categories />
+      <Filters />
       <section className="mt-1 flex flex-col">
-        <Topic />
-        <Topic />
+        <Nothing />
+        <Content />
+        <Content />
+        <Content />
       </section>
     </>
   );

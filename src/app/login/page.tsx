@@ -79,7 +79,7 @@ export default function Login() {
           </ul>
         </div>
       </section>
-      <section className="flex flex-row mb-12 justify-center gap-2 text-Body-2">
+      <section className="flex flex-row justify-center gap-2 text-Body-2 absolute bottom-8">
         <span className="text-Gray-06">아이디가 없나요?</span>
         <Link href="/join" className="text-Primary-04 underline">
           가입하기

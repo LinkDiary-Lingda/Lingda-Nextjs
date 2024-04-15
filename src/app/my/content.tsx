@@ -3,15 +3,19 @@ import { CiShare1 } from 'react-icons/ci';
 import { FaCircle, FaRegStar, FaStar } from 'react-icons/fa';
 import { IoIosLink } from 'react-icons/io';
 
-export default function Topic() {
+export default function Content() {
   return (
     <div className="px-4 py-8 border-b-2 border-Gray-02 flex flex-col gap-4">
       <div>
         <div className="flex justify-between items-center">
           <h2 className="text-Heading-4 font-bold">내 손안의 링크 다이어리</h2>
           <div className="flex gap-3">
-            <FaStar color="#57E5C3" size={16} />
-            <CiShare1 color="#9E9E9E" size={16} />
+            <button type="button" aria-label="star-button">
+              <FaStar color="#57E5C3" size={16} />
+            </button>
+            <button type="button" aria-label="share-button">
+              <CiShare1 color="#9E9E9E" size={16} />
+            </button>
           </div>
         </div>
         <div className="flex items-center gap-1 mt-1">
@@ -29,12 +33,12 @@ export default function Topic() {
         </button>
       </div>
       <div>
-        <article className="w-full text-Gray-09">
+        <article className="w-full text-Gray-08 text-Body-2 leading-Body-2">
           안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕
           안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕
         </article>
       </div>
-      <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+      <div className="flex gap-3 overflow-x-auto scrollbar-hide">
         <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
         <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
         <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
