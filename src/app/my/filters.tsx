@@ -20,7 +20,7 @@ export default function Filters() {
     });
   };
   return (
-    <div className="mt-6">
+    <div className="my-6">
       <ul className="flex flex-row gap-2 overflow-auto scrollbar-hide ml-4">
         {Object.keys(selectedFilters).map((filter) => {
           let txt = '';
