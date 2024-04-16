@@ -6,6 +6,7 @@ import { LoginInputs } from '../../types/member';
 import InputGroup from '../../components/InputGroup';
 import NextButton from '@/components/NextButton';
 import { login } from '@/service/member';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Login() {
   const [error, setError] = useState('');
@@ -15,9 +16,14 @@ export default function Login() {
     formState: { errors },
   } = useForm<LoginInputs>();
 
-  const handleLoginBtn = async (data: LoginInputs) => {
+  const handleLoginBtn = async ({ username, password }: LoginInputs) => {
     try {
-      const result = await login(data);
+      const result = await signIn('credentials', {
+        username,
+        password,
+        redirect: true,
+        callbackUrl: '/my',
+      });
     } catch (error) {
       if (error === '401')
         setError('아이디 또는 비밀번호가 일치하지 않습니다.');

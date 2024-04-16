@@ -7,11 +7,9 @@ export const request = (
   revalidate: number = 0,
   params?: any
 ) => {
-  const accessToken = localStorage.getItem('accessToken');
   return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${path}`, {
     method,
     headers: {
-      Authorization: accessToken ? `Bearer ${accessToken}` : '',
       'Content-Type': 'application/json; charset=utf-8',
     },
     credentials: 'include',

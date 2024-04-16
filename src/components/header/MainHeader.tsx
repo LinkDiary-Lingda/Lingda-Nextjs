@@ -3,11 +3,14 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
+import SideNav from './SideNav';
 
 export default function MainHeader() {
   const [searchOn, setSearchOn] = useState(false);
+  const [menuOn, setMenuOn] = useState(false);
   return (
     <>
+      <div className="relative">{menuOn && <SideNav />}</div>
       <nav>
         <ul className="flex flex-row justify-between items-center h-[48px]">
           <li>
@@ -15,6 +18,7 @@ export default function MainHeader() {
               type="button"
               aria-label="menu-button"
               className="h-[48px] w-[48px] flex justify-center items-center"
+              onClick={() => setMenuOn(!menuOn)}
             >
               <AiOutlineMenu size={24} />
             </button>
