@@ -2,61 +2,8 @@ import React, { DragEvent } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaChevronDown, FaCircle } from 'react-icons/fa';
 import { GoPlus } from 'react-icons/go';
-import { IoIosArrowDown } from 'react-icons/io';
-
-const DeviderItem = ({
-  title,
-  dataId,
-  dragOverHandler,
-  dropHandler,
-}: {
-  title: string;
-  dataId: string;
-  dragOverHandler: (e: DragEvent<HTMLElement>) => void;
-  dropHandler: (e: DragEvent<HTMLElement>) => void;
-}) => (
-  <div
-    className="h-14 flex items-center justify-between"
-    onDragOver={dragOverHandler}
-    onDrop={dropHandler}
-    data-id={dataId}
-  >
-    <div className="flex items-center gap-2">
-      <IoIosArrowDown size={20} color="#9E9E9E" />
-      <p>{title}</p>
-    </div>
-    <button type="button" aria-label="edit-button">
-      <BsThreeDotsVertical color="#9E9E9E" />
-    </button>
-  </div>
-);
-
-const RootListItem = ({ color, title }: { color: string; title: string }) => (
-  <li
-    className="h-14 flex items-center justify-between border-b-[1px] border-Gray-02"
-    draggable
-  >
-    <div className="flex items-center gap-2">
-      <FaCircle size={20} color={color} />
-      <p>{title}</p>
-    </div>
-    <button type="button" aria-label="edit-button">
-      <BsThreeDotsVertical color="#9E9E9E" />
-    </button>
-  </li>
-);
-
-const NestedListItem = ({ color, title }: { color: string; title: string }) => (
-  <li className="h-14 ml-6 flex items-center justify-between" draggable>
-    <div className="flex items-center gap-2">
-      <FaCircle size={20} color={color} />
-      <p>{title}</p>
-    </div>
-    <button type="button" aria-label="edit-button">
-      <BsThreeDotsVertical color="#9E9E9E" />
-    </button>
-  </li>
-);
+import DividerItem from './categories/DividerItem';
+import Categories from './categories/Categories';
 
 export default function SideNav() {
   const dragOverHandler = (e) => {
@@ -85,32 +32,7 @@ export default function SideNav() {
             <GoPlus size={18} />
           </button>
         </div>
-        <div className="mt-4 w-64 text-Body-1">
-          <div
-            className="h-14 flex items-center border-b-[1px]"
-            onDragOver={dragOverHandler}
-            onDrop={dropHandler}
-            data-id="1"
-          >
-            전체보기
-          </div>
-          <ul>
-            <RootListItem title="햄스터 키우기" color="red" />
-            <li className="flex flex-col justify-between border-b-[1px] border-Gray-02">
-              <DeviderItem
-                title="디자인 블로그"
-                dataId="2"
-                dragOverHandler={dragOverHandler}
-                dropHandler={dropHandler}
-              />
-              <ul>
-                <NestedListItem color="green" title="색상" />
-                <NestedListItem color="gray" title="폰트" />
-              </ul>
-            </li>
-            <RootListItem title="햄스터 키우기" color="orange" />
-          </ul>
-        </div>
+        <Categories />
         <div className="mt-6">
           <ul>
             <li className="h-9 flex items-center text-Body-2">
