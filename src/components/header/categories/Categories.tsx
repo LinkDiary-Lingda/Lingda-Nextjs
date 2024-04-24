@@ -3,39 +3,27 @@ import React, { DragEvent, useState } from 'react';
 import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
 import NestedCategoryItem from './NestedCategoryItem';
+import { Category, Divider } from '@/types/category';
 
-type Category = {
-  id: number;
-  color: string;
-  type: 'category';
-  name: string;
-  parentId: number;
-  prevId: number | null;
-};
-type Divider = {
-  id: number;
-  type: 'divider';
-  name: string;
-  parentId: number;
-  prevId: number;
-  children: Array<Category | Divider>;
-};
 export default function Categories() {
-  const [draggedOverId, setDraggedOverId] = useState(null);
-  const items: Array<Category | Divider> = [
+  const [draggedOverId, setDraggedOverId] = useState<{
+    targetId: string;
+    targetParentId: string | null;
+  } | null>(null);
+  const [items, setItems] = useState<Array<Category | Divider>>([
     {
       id: 0,
       type: 'category',
       color: 'red',
       name: '햄스터 키우기',
-      parentId: 0,
+      parentId: null,
       prevId: null,
     },
     {
       id: 1,
       type: 'divider',
       name: '디자인 블로그',
-      parentId: 0,
+      parentId: null,
       prevId: 0,
       children: [
         {
@@ -61,14 +49,40 @@ export default function Categories() {
       type: 'category',
       color: 'orange',
       name: '강아지 키우기',
-      parentId: 0,
+      parentId: null,
       prevId: 1,
     },
-  ];
+  ]);
+
+  const sortItemsByPrevId = (items: Array<Category | Divider>) => {
+    const firstItem = items.find((item) => item.prevId === null);
+    const sortedItems = [];
+    let currentItem = firstItem;
+    let iterations = 0;
+    while (currentItem && iterations < items.length) {
+      if (currentItem.type === 'divider' && currentItem.children.length > 0) {
+        currentItem.children = sortItemsByPrevId(currentItem.children);
+      }
+      sortedItems.push(currentItem);
+      currentItem = items.find((item) => item.prevId === currentItem?.prevId);
+      iterations++;
+    }
+    return sortedItems;
+  };
+  const handleDragStart = (e: DragEvent<HTMLElement>) => {
+    const dragData = {
+      itemId: e.currentTarget.id,
+      parentId: e.currentTarget.getAttribute('data-id'),
+    };
+    e.dataTransfer.setData('application/json', JSON.stringify(dragData));
+  };
 
   const handleDragOver = (e: DragEvent<HTMLElement>) => {
-    e.preventDefault(); // 드래그 이벤트의 기본 동작을 방지합니다.
-    setDraggedOverId(e.target.getAttribute('data-id'));
+    e.preventDefault();
+    setDraggedOverId({
+      targetId: e.currentTarget.id,
+      targetParentId: e.currentTarget.getAttribute('data-id'),
+    });
   };
 
   const handleDragLeave = (e: DragEvent<HTMLElement>) => {
@@ -78,28 +92,57 @@ export default function Categories() {
 
   const handleDrop = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
+    if (draggedOverId === null) return;
+
+    const { itemId, parentId } = JSON.parse(
+      e.dataTransfer.getData('application/json')
+    );
+
+    const updatedItems = items.map((item) => {
+      const id = item.id.toString();
+      if (id !== itemId) return item;
+
+      const { targetId, targetParentId } = draggedOverId;
+      // dragOver한 아이템밑으로 itemId 설정
+      if (targetParentId === id && item.type === 'divider') {
+        const newChildren = item.children.filter(
+          (child) => child.id !== itemId
+        );
+        return { ...item, children: newChildren };
+      }
+      return {
+        ...item,
+        prevId: parseInt(targetId),
+        parentId:
+          targetParentId !== null ? parseInt(targetParentId) : targetParentId,
+      };
+    });
+    console.log(updatedItems);
+
+    setItems(sortItemsByPrevId(updatedItems));
     setDraggedOverId(null);
   };
 
   return (
     <div className="mt-4 w-64 text-Body-1">
-      <div
-        className="h-14 flex items-center border-b-[1px]"
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-        data-id={1}
-      >
-        전체보기
-      </div>
+      <div className="h-14 flex items-center border-b-[1px]">전체보기</div>
       <ul>
         {items.map((item) => {
           if (item.type === 'category') {
             return (
-              <RootCategoryItem
+              <li
                 key={item.id}
-                title={item.name}
-                color={item.color}
-              />
+                className="h-14 flex items-center justify-between border-b-[1px] border-Gray-02"
+                draggable
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onDragLeave={handleDragLeave}
+                id={item.id + ''}
+                data-id={item.parentId}
+              >
+                <RootCategoryItem title={item.name} color={item.color} />
+              </li>
             );
           }
           if (item.type === 'divider') {
@@ -112,20 +155,30 @@ export default function Categories() {
                 onDragLeave={handleDragLeave}
               >
                 <DividerItem
-                  key={item.id}
                   title={item.name}
-                  dataId={item.id + ''}
-                  isDraggedOver={draggedOverId === item.id + ''}
+                  id={item.id + ''}
+                  isDraggedOver={draggedOverId?.targetId === item.id + ''}
                 />
                 <ul>
                   {item.children.map((child) => {
                     if (child.type === 'category') {
                       return (
-                        <NestedCategoryItem
+                        <li
                           key={child.id}
-                          color={child.color}
-                          title={child.name}
-                        />
+                          className="h-14 ml-6 flex items-center justify-between"
+                          draggable
+                          onDragStart={handleDragStart}
+                          onDragOver={handleDragOver}
+                          onDrop={handleDrop}
+                          onDragLeave={handleDragLeave}
+                          id={child.id + ''}
+                          data-id={child.parentId}
+                        >
+                          <NestedCategoryItem
+                            color={child.color}
+                            title={child.name}
+                          />
+                        </li>
                       );
                     }
                   })}

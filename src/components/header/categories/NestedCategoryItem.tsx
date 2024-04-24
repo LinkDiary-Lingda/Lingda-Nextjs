@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { DragEvent } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaCircle } from 'react-icons/fa';
 
@@ -9,7 +9,7 @@ type Props = {
 
 export default function NestedCategoryItem({ color, title }: Props) {
   return (
-    <li className="h-14 ml-6 flex items-center justify-between" draggable>
+    <>
       <div className="flex items-center gap-2">
         <FaCircle size={20} color={color} />
         <p>{title}</p>
@@ -17,6 +17,6 @@ export default function NestedCategoryItem({ color, title }: Props) {
       <button type="button" aria-label="edit-button">
         <BsThreeDotsVertical color="#9E9E9E" />
       </button>
-    </li>
+    </>
   );
 }
