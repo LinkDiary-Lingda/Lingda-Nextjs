@@ -8,9 +8,14 @@ import SideNav from './SideNav';
 export default function MainHeader() {
   const [searchOn, setSearchOn] = useState(false);
   const [menuOn, setMenuOn] = useState(false);
+  const handleBgClick = () => {
+    setMenuOn(false);
+  };
   return (
     <>
-      <div className="relative">{menuOn && <SideNav />}</div>
+      <div className="relative">
+        {menuOn && <SideNav handleBgClick={handleBgClick} />}
+      </div>
       <nav>
         <ul className="flex flex-row justify-between items-center h-[48px]">
           <li>

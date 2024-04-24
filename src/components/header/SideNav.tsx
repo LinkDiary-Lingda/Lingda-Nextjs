@@ -1,24 +1,18 @@
-import React, { DragEvent } from 'react';
-import { BsThreeDotsVertical } from 'react-icons/bs';
-import { FaChevronDown, FaCircle } from 'react-icons/fa';
+import React from 'react';
+import { FaChevronDown } from 'react-icons/fa';
 import { GoPlus } from 'react-icons/go';
-import DividerItem from './categories/DividerItem';
 import Categories from './categories/Categories';
 
-export default function SideNav() {
-  const dragOverHandler = (e) => {
-    e.preventDefault();
-    console.log('hihih');
-  };
-
-  const dropHandler = (e: DragEvent<HTMLElement>) => {
-    e.preventDefault();
-    console.log('dropped!!!');
-    console.log(e.target.dataset.id);
-  };
+type Props = {
+  handleBgClick: () => void;
+};
+export default function SideNav({ handleBgClick }: Props) {
   return (
-    <section className="w-full absolute px-2 z-20">
-      <div className="absolute w-full h-[100vh] bg-black opacity-30"></div>
+    <section className="w-full absolute z-20">
+      <div
+        className="absolute left-2 w-full h-[100vh] bg-black opacity-30"
+        onClick={handleBgClick}
+      ></div>
       <div className="absolute w-[302px] h-[100vh] bg-white z-20 pl-6 pr-1">
         <div className="h-[48px] flex flex-row items-center justify-between">
           <button
