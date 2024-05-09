@@ -1,13 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { withAuth } from 'next-auth/middleware';
+import { signIn } from 'next-auth/react';
+import { NextResponse } from 'next/server';
 
-export default function Middleware(request: NextRequest) {
-  const currentUser = request.cookies.get('token')?.value;
-
-  if (!currentUser) {
-    return NextResponse.redirect(new URL('/login', request.url));
+export default withAuth(
+  function middleware(req: any) {
+    // const currentUser = req.nextauth.token.accessToken;
+    // if (currentUser && req.url.includes('/login')) {
+    //   return NextResponse.redirect(new URL('/my', req.url));
+    // }
+  },
+  {
+    callbacks: {
+      authorized: ({ token }: any) => !!token.accessToken,
+    },
   }
-}
+);
 
-export const config = {
-  matcher: ['/my/:path*'],
-};
+export const config = { matcher: ['/my'] };

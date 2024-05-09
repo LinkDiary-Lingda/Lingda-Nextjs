@@ -81,9 +81,6 @@ const handler = NextAuth({
       return refreshAccessToken(token);
     },
     async session({ session, token }: any) {
-      console.log(session, '세션');
-      console.log(token, '세션 토큰');
-
       if (token) {
         session.user.name = token.name;
         session.accessToken = token.accessToken;

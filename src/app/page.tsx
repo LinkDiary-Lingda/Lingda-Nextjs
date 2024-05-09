@@ -1,11 +1,11 @@
-import Link from 'next/link';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return (
-    <main className="flex flex-col items-center">
-      <Link href="/login" className="border px-4 py-2">
-        로그인하기
-      </Link>
-    </main>
-  );
+export default async function Home() {
+  const session = await getServerSession();
+  if (session) {
+    return redirect('/my');
+  } else {
+    return redirect('/login');
+  }
 }
