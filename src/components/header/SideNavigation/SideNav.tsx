@@ -1,7 +1,7 @@
 import React from 'react';
-import { FaChevronDown } from 'react-icons/fa';
-import { GoPlus } from 'react-icons/go';
-import Categories from './categories/Categories';
+
+import Categories from '../categories/Categories';
+import UserStatus from './UserStatus';
 
 type Props = {
   handleBgClick: () => void;
@@ -14,18 +14,7 @@ export default function SideNav({ handleBgClick }: Props) {
         onClick={handleBgClick}
       ></div>
       <div className="absolute w-[302px] h-[100vh] bg-white z-20 pl-6 pr-1">
-        <div className="h-[48px] flex flex-row items-center justify-between">
-          <button
-            className="flex flex-row gap-1 items-center text-Gray-06 text-Body-1"
-            aria-label="myInfo-button"
-          >
-            <span>Hamster1004</span>
-            <FaChevronDown size={12} />
-          </button>
-          <button className="w-9 h-9 flex items-center justify-center">
-            <GoPlus size={18} />
-          </button>
-        </div>
+        <UserStatus />
         <Categories />
         <div className="mt-6">
           <ul>

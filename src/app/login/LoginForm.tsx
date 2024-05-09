@@ -4,8 +4,7 @@ import { useForm } from 'react-hook-form';
 import { LoginInputs } from '../../types/member';
 import InputGroup from '../../components/InputGroup';
 import NextButton from '@/components/NextButton';
-import { login } from '@/service/member';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 export default function LoginForm() {
   const [error, setError] = useState('');

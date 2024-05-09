@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { BiSearch } from 'react-icons/bi';
-import SideNav from './SideNav';
+import SideNav from './SideNavigation/SideNav';
 
 export default function MainHeader() {
   const [searchOn, setSearchOn] = useState(false);

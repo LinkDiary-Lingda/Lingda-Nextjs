@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import OverlayProvider from '@/components/modal/OverlayProvider';
-import AuthContext from '@/context/AuthContext';
+import { NextAuthProvider } from '@/context/NextAuthProvider';
 
 const pretendardBoldFont = localFont({
   src: './font/Pretendard-Bold.woff',
@@ -41,11 +41,11 @@ export default function RootLayout({
       className={`${pretendardBoldFont.variable} ${pretendardRegularFont.variable} ${gmarketBoldFont.variable} ${gmarketMediumFont.variable}`}
     >
       <body>
-        <AuthContext>
-          <OverlayProvider>
+        <OverlayProvider>
+          <NextAuthProvider>
             <main className="font-pretendardRegular">{children}</main>
-          </OverlayProvider>
-        </AuthContext>
+          </NextAuthProvider>
+        </OverlayProvider>
       </body>
     </html>
   );
