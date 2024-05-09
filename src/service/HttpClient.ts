@@ -1,5 +1,3 @@
-import { error } from 'console';
-
 export const request = (
   path: string,
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -23,6 +21,6 @@ export const request = (
     })
     .catch((error) => {
       console.log(error);
-      throw error.message;
+      return error;
     });
 };
