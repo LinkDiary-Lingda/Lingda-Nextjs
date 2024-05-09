@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Categories from '../categories/Categories';
 import UserStatus from './UserStatus';
 
