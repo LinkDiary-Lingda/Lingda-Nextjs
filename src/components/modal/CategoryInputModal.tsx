@@ -45,14 +45,15 @@ export default function InputModal({ isCategory, modalOn, setModalOn }: Props) {
             }}
           >
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex flex-col items-center text-Body-1 gap-2 pt-9 py-4 leading-Body-1">
-                <p>카테고리 이름과 색상을 설정해주세요.</p>
+              <div className="flex flex-col items-center text-Body-1 gap-2 pt-8 pb-6 leading-Body-1">
+                {isCategory ? (
+                  <p>카테고리 이름과 색상을 설정해주세요.</p>
+                ) : (
+                  <p>디바이더 이름을 설정해주세요.</p>
+                )}
                 <input
                   type="text"
-                  className={cls(
-                    'border rounded-lg h-[56px] w-[264px] outline-none px-4',
-                    { 'border-Red-02': errors.name }
-                  )}
+                  className="border rounded-lg h-[56px] w-[264px] outline-none px-4"
                   {...register('name', {
                     required: { value: true, message: '이름을 입력해주세요.' },
                     maxLength: {
@@ -61,22 +62,25 @@ export default function InputModal({ isCategory, modalOn, setModalOn }: Props) {
                     },
                   })}
                 />
-                <ColorPalete />
-                {errors.name && (
-                  <small className="text-Red-02">{errors.name?.message}</small>
-                )}
+                {isCategory && <ColorPalete />}
               </div>
-              <div className="flex justify-between items-center border-t border-Primary-02 font-semibold text-Body-2">
+              <div className="flex justify-between items-center font-semibold text-Body-2">
                 <button
                   type="button"
-                  className="h-[44px] flex-1 text-Primary-04"
+                  className="h-[44px] flex-1 text-Primary-04 border-t border-Primary-02"
                   onClick={() => setModalOn(false)}
                 >
                   취소
                 </button>
                 <button
                   type="submit"
-                  className="h-[44px] flex-1 bg-Primary-02 text-white rounded-br-xl"
+                  className={cls(
+                    'h-[44px] flex-1 bg-Primary-01 text-white rounded-br-xl',
+                    {
+                      'bg-Primary-01 border-t border-Primary-01': errors.name,
+                      'bg-Primary-02  border-t border-Primary-02': !errors.name,
+                    }
+                  )}
                 >
                   생성하기
                 </button>

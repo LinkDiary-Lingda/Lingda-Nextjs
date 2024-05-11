@@ -6,12 +6,9 @@ import NestedCategoryItem from './NestedCategoryItem';
 import { Category, CategoryItem, Divider, categories } from '@/types/category';
 import { GoPlus } from 'react-icons/go';
 import MenuBox from '@/components/menu/MenuBox';
-import { useSession } from 'next-auth/react';
-import { createCategoryItem } from '@/service/category';
 import InputModal from '@/components/modal/CategoryInputModal';
 
 export default function Categories() {
-  const { data }: any = useSession();
   const [draggedOverId, setDraggedOverId] = useState<{
     targetId: string;
     targetParentId: string | null;
