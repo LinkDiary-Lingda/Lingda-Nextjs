@@ -4,6 +4,8 @@ import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
 import NestedCategoryItem from './NestedCategoryItem';
 import { Category, Divider } from '@/types/category';
+import { GoPlus } from 'react-icons/go';
+import MenuBox from '@/components/menu/MenuBox';
 
 export default function Categories() {
   const [draggedOverId, setDraggedOverId] = useState<{
@@ -53,6 +55,17 @@ export default function Categories() {
       prevId: 1,
     },
   ]);
+
+  const menus = [
+    {
+      title: '디바이더 추가하기',
+      handleClick: () => {},
+    },
+    {
+      title: '주제 추가하기',
+      handleClick: () => {},
+    },
+  ];
 
   const sortItemsByPrevId = (items: Array<Category | Divider>) => {
     const firstItem = items.find((item) => item.prevId === null);
@@ -125,7 +138,13 @@ export default function Categories() {
 
   return (
     <div className="mt-4 w-64 text-Body-1">
-      <div className="h-14 flex items-center border-b-[1px]">전체보기</div>
+      <div className="h-14 flex items-center border-b-[1px] justify-between relative">
+        <p>전체보기</p>
+        <button className="w-9 h-9 flex items-center justify-center">
+          <GoPlus size={24} />
+        </button>
+        <MenuBox menus={menus} position="right-0" />
+      </div>
       <ul>
         {items.map((item) => {
           if (item.type === 'category') {
