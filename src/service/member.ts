@@ -69,9 +69,7 @@ export async function refreshAccessToken(token: {
     return tokens;
   } catch (error) {
     console.log(error);
-
     return {
-      ...token,
       error: '[Network Error] RefreshToken 재발급 통신 에러',
     };
   }

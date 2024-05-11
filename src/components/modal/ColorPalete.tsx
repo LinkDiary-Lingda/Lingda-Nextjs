@@ -1,13 +1,17 @@
 'use client';
-import { CategoryColor } from '@/types/category';
-import React, { MouseEvent, useState } from 'react';
+import { CategoryColor, CategoryItem } from '@/types/category';
+import React, { useState } from 'react';
 import cls from 'classnames';
-
-export default function ColorPalete() {
+import { FaCircle } from 'react-icons/fa';
+import { UseFormSetValue } from 'react-hook-form';
+type Props = {
+  setValue: UseFormSetValue<CategoryItem>;
+};
+export default function ColorPalete({ setValue }: Props) {
   const [selected, setSelected] = useState<CategoryColor>('#F04242');
 
   return (
-    <div className="flex gap-2 mt-2">
+    <div className="flex gap-1 mt-2">
       {[
         '#F04242',
         '#F08A42',
@@ -21,17 +25,21 @@ export default function ColorPalete() {
           type="button"
           key={color}
           className={cls(
-            `w-5 h-5 m-1 rounded-full cursor-pointer bg-[${color}]`,
+            `w-6 h-6 m-1 rounded-full cursor-pointer flex justify-center items-center`,
             {
-              'border-black border-4': selected === color,
-              '': selected !== color,
+              'bg-black': selected === color,
+              'bg-white': selected !== color,
             }
           )}
-          data-id={color}
+          id={color}
           onClick={(e) => {
-            setSelected(e.target.dataset.id);
+            const color = e.currentTarget.id;
+            setSelected(color);
+            setValue('color', color);
           }}
-        ></button>
+        >
+          <FaCircle size={18} color={color} />
+        </button>
       ))}
     </div>
   );

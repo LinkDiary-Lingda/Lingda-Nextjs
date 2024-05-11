@@ -24,6 +24,8 @@ const handler = NextAuth({
             accessToken,
             refreshToken,
             name: credentials?.username,
+            // 추후 타입 변경
+            email: accessToken,
           };
         }
         return null;
@@ -43,9 +45,11 @@ const handler = NextAuth({
         return token;
       }
 
-      const { accessToken, refreshToken } = await refreshAccessToken(token);
+      const { accessToken, refreshToken, error } = await refreshAccessToken(
+        token
+      );
 
-      if (!accessToken || !refreshToken) {
+      if (error) {
         return signOut();
       }
 
@@ -62,6 +66,7 @@ const handler = NextAuth({
         session.refreshToken = token.refreshToken;
         session.error = token.error;
       }
+
       return session;
     },
   },

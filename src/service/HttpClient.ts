@@ -14,9 +14,13 @@ export const GET = async ({
     credentials: 'include',
   })
     .then(async (res) => {
-      const result = await res.json();
       if (!res.ok) throw Error(res.status.toString());
-      return result;
+      const text = await res.text();
+      if (text) {
+        const result = await JSON.parse(text);
+        return result;
+      }
+      return [];
     })
     .catch((error) => {
       console.log(error);

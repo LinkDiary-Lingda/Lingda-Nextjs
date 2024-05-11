@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import Categories from '../categories/Categories';
 import UserStatus from './UserStatus';
 
 type Props = {
   handleBgClick: () => void;
+  setMenuOn: Dispatch<SetStateAction<boolean>>;
 };
-export default function SideNav({ handleBgClick }: Props) {
+export default function SideNav({ handleBgClick, setMenuOn }: Props) {
   return (
     <section className="w-full absolute z-10">
       <div
@@ -14,7 +15,7 @@ export default function SideNav({ handleBgClick }: Props) {
       ></div>
       <div className="absolute w-[302px] h-[100vh] bg-white z-20 pl-6 pr-1">
         <UserStatus />
-        <Categories />
+        <Categories setMenuOn={setMenuOn} />
         <div className="mt-6">
           <ul>
             <li className="h-9 flex items-center text-Body-2">

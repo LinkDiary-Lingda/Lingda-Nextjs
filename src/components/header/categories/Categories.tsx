@@ -1,5 +1,11 @@
 'use client';
-import React, { DragEvent, useEffect, useState } from 'react';
+import React, {
+  Dispatch,
+  DragEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
 import NestedCategoryItem from './NestedCategoryItem';
@@ -9,9 +15,15 @@ import MenuBox from '@/components/menu/MenuBox';
 import InputModal from '@/components/modal/CategoryInputModal';
 import { getCategoryItems } from '@/service/category';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
-export default function Categories() {
+type Props = {
+  setMenuOn: Dispatch<SetStateAction<boolean>>;
+};
+
+export default function Categories({ setMenuOn }: Props) {
   const { data }: any = useSession();
+  const router = useRouter();
   const [draggedOverId, setDraggedOverId] = useState<{
     targetId: string;
     targetParentId: string | null;
@@ -131,7 +143,8 @@ export default function Categories() {
       setItems(categories);
     };
     getCategories();
-  }, [items, data.accessToken]);
+  }, [data.accessToken]);
+  console.log(items);
 
   return (
     <div className="mt-4 w-64 text-Body-1">
@@ -151,6 +164,7 @@ export default function Categories() {
           isCategory={isCategory}
           modalOn={modalOn}
           setModalOn={setModalOn}
+          setItems={setItems}
         />
       )}
       <ul>
@@ -168,7 +182,8 @@ export default function Categories() {
                 id={item.id + ''}
                 data-id={item.dividerId}
                 onClick={() => {
-                  setModalOn(false);
+                  setMenuOn(false);
+                  router.push(`/my/${item.id}`);
                 }}
               >
                 <RootCategoryItem title={item.name} color={item.color!} />

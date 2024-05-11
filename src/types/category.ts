@@ -1,20 +1,3 @@
-// export type Category = {
-//   id: number;
-//   color: string;
-//   type: 'category';
-//   name: string;
-//   parentId: number | null;
-//   prevId: number | null;
-// };
-// export type Divider = {
-//   id: number;
-//   type: 'divider';
-//   name: string;
-//   parentId: number | null;
-//   prevId: number;
-//   children: Array<Category | Divider>;
-// };
-
 export interface CategoryDividerItem {
   id: number;
   name: string;
@@ -33,7 +16,8 @@ export type CategoryColor =
   | '#A35CD6'
   | '#EC93C7'
   | '#E0E0E0'
-  | null;
+  | null
+  | string;
 
 export type CategoryItem = {
   name: string;

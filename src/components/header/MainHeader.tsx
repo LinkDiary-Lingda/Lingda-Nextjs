@@ -14,7 +14,9 @@ export default function MainHeader() {
   return (
     <>
       <div className="relative">
-        {menuOn && <SideNav handleBgClick={handleBgClick} />}
+        {menuOn && (
+          <SideNav handleBgClick={handleBgClick} setMenuOn={setMenuOn} />
+        )}
       </div>
       <nav>
         <ul className="flex flex-row justify-between items-center h-[48px]">

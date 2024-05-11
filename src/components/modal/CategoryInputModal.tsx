@@ -11,13 +11,20 @@ type Props = {
   isCategory: boolean;
   modalOn: boolean;
   setModalOn: Dispatch<SetStateAction<boolean>>;
+  setItems: Dispatch<SetStateAction<any>>;
 };
-export default function InputModal({ isCategory, modalOn, setModalOn }: Props) {
+export default function InputModal({
+  isCategory,
+  modalOn,
+  setModalOn,
+  setItems,
+}: Props) {
   const { data }: any = useSession();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm({
     defaultValues: {
       name: '',
@@ -31,6 +38,9 @@ export default function InputModal({ isCategory, modalOn, setModalOn }: Props) {
     try {
       await createCategoryItem(item, data.accessToken);
       setModalOn(false);
+      console.log(item);
+
+      setItems((prev) => [...prev, { ...item, type: item.categoryType }]);
     } catch (error) {
       console.log(error);
     }
@@ -67,7 +77,7 @@ export default function InputModal({ isCategory, modalOn, setModalOn }: Props) {
                     },
                   })}
                 />
-                {isCategory && <ColorPalete />}
+                {isCategory && <ColorPalete setValue={setValue} />}
               </div>
               <div className="flex justify-between items-center font-semibold text-Body-2">
                 <button
