@@ -3,67 +3,41 @@ import React, { DragEvent, useState } from 'react';
 import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
 import NestedCategoryItem from './NestedCategoryItem';
-import { Category, Divider } from '@/types/category';
+import { Category, CategoryItem, Divider, categories } from '@/types/category';
 import { GoPlus } from 'react-icons/go';
 import MenuBox from '@/components/menu/MenuBox';
+import { useSession } from 'next-auth/react';
+import { createCategoryItem } from '@/service/category';
+import InputModal from '@/components/modal/CategoryInputModal';
 
 export default function Categories() {
+  const { data }: any = useSession();
   const [draggedOverId, setDraggedOverId] = useState<{
     targetId: string;
     targetParentId: string | null;
   } | null>(null);
-  const [items, setItems] = useState<Array<Category | Divider>>([
-    {
-      id: 0,
-      type: 'category',
-      color: 'red',
-      name: '햄스터 키우기',
-      parentId: null,
-      prevId: null,
-    },
-    {
-      id: 1,
-      type: 'divider',
-      name: '디자인 블로그',
-      parentId: null,
-      prevId: 0,
-      children: [
-        {
-          id: 5,
-          type: 'category',
-          color: 'green',
-          name: '폰트',
-          parentId: 1,
-          prevId: null,
-        },
-        {
-          id: 6,
-          type: 'category',
-          color: 'blue',
-          name: '색상',
-          parentId: 1,
-          prevId: 5,
-        },
-      ],
-    },
-    {
-      id: 2,
-      type: 'category',
-      color: 'orange',
-      name: '강아지 키우기',
-      parentId: null,
-      prevId: 1,
-    },
-  ]);
+  const [createMenuOn, setCreateMenuOn] = useState(false);
+  const handleCreateBtn = async (item: CategoryItem) => {
+    await createCategoryItem(item, data.accessToken);
+  };
+  const [items, setItems] = useState<Array<Category | Divider>>(categories);
+  const [modalOn, setModalOn] = useState(false);
+  const [item, setItem] = useState<CategoryItem>({
+    name: '',
+    categoryType: 'CATEGORY',
+    color: null,
+    prevId: 0,
+    dividerId: 0,
+  });
 
   const menus = [
     {
       title: '디바이더 추가하기',
-      handleClick: () => {},
+      handleClick: () => handleCreateBtn(item),
     },
     {
       title: '주제 추가하기',
-      handleClick: () => {},
+      handleClick: () => handleCreateBtn(item),
     },
   ];
 
@@ -140,11 +114,17 @@ export default function Categories() {
     <div className="mt-4 w-64 text-Body-1">
       <div className="h-14 flex items-center border-b-[1px] justify-between relative">
         <p>전체보기</p>
-        <button className="w-9 h-9 flex items-center justify-center">
+        <button
+          className="w-9 h-9 flex items-center justify-center"
+          aria-label="create-category-btn"
+          onClick={() => setCreateMenuOn(!createMenuOn)}
+        >
           <GoPlus size={24} />
         </button>
-        <MenuBox menus={menus} position="right-0" />
+        {createMenuOn && <MenuBox menus={menus} position="right-0" />}
       </div>
+      {modalOn && <InputModal isCategory />}
+      <InputModal />
       <ul>
         {items.map((item) => {
           if (item.type === 'category') {
