@@ -1,4 +1,4 @@
-import { request } from '@/service/HttpClient';
+import { POST } from '@/service/HttpClient';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
@@ -48,11 +48,10 @@ const handler = NextAuth({
         password: { label: 'password', type: 'password' },
       },
       async authorize(credentials, req) {
-        const { accessToken, refreshToken } = await request(
-          'members/login',
-          'POST',
-          credentials
-        );
+        const { accessToken, refreshToken } = await POST({
+          path: 'members/login',
+          body: credentials,
+        });
 
         if (accessToken) {
           return {
@@ -90,7 +89,7 @@ const handler = NextAuth({
       return session;
     },
   },
-  pages: { signIn: '/login' },
+  pages: { signIn: '/login', signOut: '/my' },
 });
 
 export { handler as GET, handler as POST };

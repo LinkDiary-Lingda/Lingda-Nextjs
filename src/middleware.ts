@@ -3,7 +3,7 @@ import { signIn } from 'next-auth/react';
 import { NextResponse } from 'next/server';
 
 export default withAuth(
-  function middleware(req: any) {
+  function middleware(req) {
     // const currentUser = req.nextauth.token.accessToken;
     // if (currentUser && req.url.includes('/login')) {
     //   return NextResponse.redirect(new URL('/my', req.url));
@@ -11,7 +11,7 @@ export default withAuth(
   },
   {
     callbacks: {
-      authorized: ({ token }: any) => !!token.accessToken,
+      authorized: ({ token }: any) => !!token?.accessToken,
     },
   }
 );

@@ -1,4 +1,4 @@
-import { request } from './HttpClient';
+import { GET, POST } from './HttpClient';
 
 export async function joinMember({
   username,
@@ -8,11 +8,13 @@ export async function joinMember({
   password: string;
 }) {
   try {
-    const { accessToken } = await request('members', 'POST', {
-      username,
-      password,
+    const { accessToken } = await POST({
+      path: 'members',
+      body: {
+        username,
+        password,
+      },
     });
-    localStorage.setItem('accessToken', accessToken);
     return accessToken;
   } catch (error) {
     console.log(error);
@@ -28,11 +30,14 @@ export async function login({
   password: string;
 }) {
   try {
-    const accessToken = await request('members/login', 'POST', {
-      username,
-      password,
+    const accessToken = await POST({
+      path: 'members/login',
+      body: {
+        username,
+        password,
+      },
     });
-    localStorage.setItem('accessToken', accessToken);
+    return accessToken;
   } catch (error) {
     throw error;
   }
@@ -40,11 +45,20 @@ export async function login({
 
 export async function checkDuplicateUser(username: string) {
   try {
-    const duplicated = await request(
-      `members/check-username-duplicate?username=${username}`,
-      'GET'
-    );
+    const duplicated = await GET({
+      path: `members/check-username-duplicate?username=${username}`,
+    });
     return duplicated;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function logout(token: string) {
+  try {
+    const loggedOut = await POST({ path: `members/logout`, token });
+    return loggedOut;
   } catch (error) {
     console.log(error);
     throw error;

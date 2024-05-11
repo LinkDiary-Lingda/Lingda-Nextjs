@@ -1,16 +1,22 @@
 'use client';
-import MenuBox from '@/components/menu/menuBox';
-import { useSession } from 'next-auth/react';
+import MenuBox from '@/components/menu/MenuBox';
+import { logout } from '@/service/member';
+import { signOut, useSession } from 'next-auth/react';
 import React from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { GoPlus } from 'react-icons/go';
 export default function UserStatus() {
-  const { data } = useSession();
+  const { data }: any = useSession();
+  const handleLoginBtn = async () => {
+    const token = data?.accessToken;
+    await logout(token);
+    await signOut();
+  };
   const menus = [
     {
       title: '로그아웃하기',
       warning: true,
-      handleClick: () => {},
+      handleClick: handleLoginBtn,
     },
   ];
 
