@@ -48,7 +48,9 @@ export const POST = async ({
   })
     .then(async (res) => {
       const result = await res.json();
+
       if (!res.ok) throw Error(res.status.toString());
+
       return result;
     })
     .catch((error) => {

@@ -38,8 +38,6 @@ export default function InputModal({
     try {
       await createCategoryItem(item, data.accessToken);
       setModalOn(false);
-      console.log(item);
-
       setItems((prev) => [...prev, { ...item, type: item.categoryType }]);
     } catch (error) {
       console.log(error);

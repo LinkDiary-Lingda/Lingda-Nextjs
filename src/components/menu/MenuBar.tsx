@@ -2,7 +2,7 @@ import React from 'react';
 export type MenuProps = {
   title: string;
   warning?: boolean;
-  handleClick: () => any;
+  handleClick: (e?: any) => any;
 };
 export default function MenuBar({ title, warning, handleClick }: MenuProps) {
   return (

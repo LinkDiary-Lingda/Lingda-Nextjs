@@ -22,7 +22,7 @@ export default function Alert({
   return (
     <>
       {isOpen && (
-        <section className="absolute flex justify-center items-center top-0 left-0 h-full w-full bg-opacity-50 bg-black z-30">
+        <section className="absolute flex justify-center items-center top-0 -left-2 h-full w-[360px] bg-opacity-50 bg-black z-30">
           <div className="bg-white w-[312px] rounded-xl flex flex-col justify-between">
             <div className="flex flex-col items-center text-Body-1 gap-2 py-9 leading-Body-1">
               <div className="text-center">

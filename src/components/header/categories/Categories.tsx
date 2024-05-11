@@ -42,13 +42,6 @@ export default function Categories({ setMenuOn }: Props) {
   ]);
   const [modalOn, setModalOn] = useState(false);
   const [isCategory, setIsCategory] = useState(true);
-  // const [item, setItem] = useState<CategoryItem>({
-  //   name: '',
-  //   categoryType: 'CATEGORY',
-  //   color: null,
-  //   prevId: 0,
-  //   dividerId: 0,
-  // });
 
   const menus = [
     {
@@ -144,7 +137,6 @@ export default function Categories({ setMenuOn }: Props) {
     };
     getCategories();
   }, [data.accessToken]);
-  console.log(items);
 
   return (
     <div className="mt-4 w-64 text-Body-1">
@@ -186,7 +178,12 @@ export default function Categories({ setMenuOn }: Props) {
                   router.push(`/my/${item.id}`);
                 }}
               >
-                <RootCategoryItem title={item.name} color={item.color!} />
+                <RootCategoryItem
+                  categoryId={item.id}
+                  title={item.name}
+                  color={item.color!}
+                  token={data.accessToken}
+                />
               </li>
             );
           }
