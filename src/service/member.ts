@@ -8,14 +8,14 @@ export async function joinMember({
   password: string;
 }) {
   try {
-    const { accessToken } = await POST({
+    const token = await POST({
       path: 'members',
       body: {
         username,
         password,
       },
     });
-    return accessToken;
+    return token;
   } catch (error) {
     console.log(error);
     throw error;
@@ -30,16 +30,50 @@ export async function login({
   password: string;
 }) {
   try {
-    const accessToken = await POST({
+    const token = await POST({
       path: 'members/login',
       body: {
         username,
         password,
       },
     });
-    return accessToken;
+    return token;
   } catch (error) {
     throw error;
+  }
+}
+
+export async function refreshAccessToken(token: {
+  refreshToken: string;
+  accessToken: string;
+}) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/members/issue-access-token`,
+      {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          Authorization: `Bearer ${token.accessToken}`,
+          refreshToken: token.refreshToken,
+        },
+        method: 'POST',
+      }
+    );
+
+    if (!response.ok) {
+      throw Error('[Network Error] RefreshToken 재발급 통신 에러');
+    }
+
+    const tokens = await response.json();
+
+    return tokens;
+  } catch (error) {
+    console.log(error);
+
+    return {
+      ...token,
+      error: '[Network Error] RefreshToken 재발급 통신 에러',
+    };
   }
 }
 

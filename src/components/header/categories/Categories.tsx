@@ -1,29 +1,42 @@
 'use client';
-import React, { DragEvent, useState } from 'react';
+import React, { DragEvent, useEffect, useState } from 'react';
 import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
 import NestedCategoryItem from './NestedCategoryItem';
-import { Category, CategoryItem, Divider, categories } from '@/types/category';
+import { CategoryDividerItem } from '@/types/category';
 import { GoPlus } from 'react-icons/go';
 import MenuBox from '@/components/menu/MenuBox';
 import InputModal from '@/components/modal/CategoryInputModal';
+import { getCategoryItems } from '@/service/category';
+import { useSession } from 'next-auth/react';
 
 export default function Categories() {
+  const { data }: any = useSession();
   const [draggedOverId, setDraggedOverId] = useState<{
     targetId: string;
     targetParentId: string | null;
   } | null>(null);
   const [createMenuOn, setCreateMenuOn] = useState(false);
-  const [items, setItems] = useState<Array<Category | Divider>>(categories);
+  const [items, setItems] = useState<Array<CategoryDividerItem>>([
+    {
+      id: 1,
+      name: '',
+      type: 'CATEGORY',
+      color: null,
+      dividerId: null,
+      prevId: null,
+      categories: [],
+    },
+  ]);
   const [modalOn, setModalOn] = useState(false);
   const [isCategory, setIsCategory] = useState(true);
-  const [item, setItem] = useState<CategoryItem>({
-    name: '',
-    categoryType: 'CATEGORY',
-    color: null,
-    prevId: 0,
-    dividerId: 0,
-  });
+  // const [item, setItem] = useState<CategoryItem>({
+  //   name: '',
+  //   categoryType: 'CATEGORY',
+  //   color: null,
+  //   prevId: 0,
+  //   dividerId: 0,
+  // });
 
   const menus = [
     {
@@ -42,14 +55,14 @@ export default function Categories() {
     },
   ];
 
-  const sortItemsByPrevId = (items: Array<Category | Divider>) => {
+  const sortItemsByPrevId = (items: Array<CategoryDividerItem>) => {
     const firstItem = items.find((item) => item.prevId === null);
     const sortedItems = [];
     let currentItem = firstItem;
     let iterations = 0;
     while (currentItem && iterations < items.length) {
-      if (currentItem.type === 'divider' && currentItem.children.length > 0) {
-        currentItem.children = sortItemsByPrevId(currentItem.children);
+      if (currentItem.type === 'DIVIDER' && currentItem.categories.length > 0) {
+        currentItem.categories = sortItemsByPrevId(currentItem.categories);
       }
       sortedItems.push(currentItem);
       currentItem = items.find((item) => item.prevId === currentItem?.prevId);
@@ -57,6 +70,7 @@ export default function Categories() {
     }
     return sortedItems;
   };
+
   const handleDragStart = (e: DragEvent<HTMLElement>) => {
     const dragData = {
       itemId: e.currentTarget.id,
@@ -92,8 +106,8 @@ export default function Categories() {
 
       const { targetId, targetParentId } = draggedOverId;
       // dragOver한 아이템밑으로 itemId 설정
-      if (targetParentId === id && item.type === 'divider') {
-        const newChildren = item.children.filter(
+      if (targetParentId === id && item.type === 'DIVIDER') {
+        const newChildren = item.categories.filter(
           (child) => child.id !== itemId
         );
         return { ...item, children: newChildren };
@@ -110,6 +124,14 @@ export default function Categories() {
     setItems(sortItemsByPrevId(updatedItems));
     setDraggedOverId(null);
   };
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const categories = await getCategoryItems(data.accessToken);
+      setItems(categories);
+    };
+    getCategories();
+  }, [items, data.accessToken]);
 
   return (
     <div className="mt-4 w-64 text-Body-1">
@@ -133,24 +155,27 @@ export default function Categories() {
       )}
       <ul>
         {items.map((item) => {
-          if (item.type === 'category') {
+          if (item.type === 'CATEGORY') {
             return (
               <li
                 key={item.id}
-                className="h-14 flex items-center justify-between border-b-[1px] border-Gray-02"
+                className="h-14 flex items-center justify-between border-b-[1px] border-Gray-02 cursor-pointer"
                 draggable
                 onDragStart={handleDragStart}
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
                 onDragLeave={handleDragLeave}
                 id={item.id + ''}
-                data-id={item.parentId}
+                data-id={item.dividerId}
+                onClick={() => {
+                  setModalOn(false);
+                }}
               >
-                <RootCategoryItem title={item.name} color={item.color} />
+                <RootCategoryItem title={item.name} color={item.color!} />
               </li>
             );
           }
-          if (item.type === 'divider') {
+          if (item.type === 'DIVIDER') {
             return (
               <li
                 key={item.id}
@@ -165,8 +190,8 @@ export default function Categories() {
                   isDraggedOver={draggedOverId?.targetId === item.id + ''}
                 />
                 <ul>
-                  {item.children.map((child) => {
-                    if (child.type === 'category') {
+                  {item.categories.map((child) => {
+                    if (child.type === 'CATEGORY') {
                       return (
                         <li
                           key={child.id}
@@ -177,10 +202,10 @@ export default function Categories() {
                           onDrop={handleDrop}
                           onDragLeave={handleDragLeave}
                           id={child.id + ''}
-                          data-id={child.parentId}
+                          data-id={child.dividerId}
                         >
                           <NestedCategoryItem
-                            color={child.color}
+                            color={child.color!}
                             title={child.name}
                           />
                         </li>

@@ -1,43 +1,8 @@
 import { POST } from '@/service/HttpClient';
+import { refreshAccessToken } from '@/service/member';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
-async function refreshAccessToken(token: {
-  refreshToken: string;
-  accessToken: string;
-}) {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/members/issue-access-token`,
-      {
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          refreshToken: token.refreshToken,
-        },
-        method: 'POST',
-      }
-    );
-
-    const { accessToken, refreshToken } = await response.json();
-
-    if (!response.ok) {
-      throw Error('[Network Error] RefreshToken 재발급 통신 에러');
-    }
-
-    return {
-      ...token,
-      accessToken,
-      refreshToken: refreshToken ?? token.refreshToken,
-    };
-  } catch (error) {
-    console.log(error);
-
-    return {
-      ...token,
-      error: '[Network Error] RefreshToken 재발급 통신 에러',
-    };
-  }
-}
+import { signOut } from 'next-auth/react';
 
 const handler = NextAuth({
   providers: [
@@ -70,14 +35,25 @@ const handler = NextAuth({
       if (user && account) {
         return {
           ...user,
-          accessTokenExpires: Date.now() + 24 * 60 * 60 * 1000,
+          accessTokenExpires: Date.now() + 2000000,
         };
       }
+
       if (Date.now() < token.accessTokenExpires) {
         return token;
       }
 
-      return refreshAccessToken(token);
+      const { accessToken, refreshToken } = await refreshAccessToken(token);
+
+      if (!accessToken || !refreshToken) {
+        return signOut();
+      }
+
+      return {
+        ...token,
+        accessToken,
+        refreshToken: refreshToken ?? token.refreshToken,
+      };
     },
     async session({ session, token }: any) {
       if (token) {

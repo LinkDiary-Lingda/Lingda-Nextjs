@@ -28,7 +28,12 @@ export default function InputModal({ isCategory, modalOn, setModalOn }: Props) {
     },
   });
   const onSubmit: SubmitHandler<CategoryItem> = async (item) => {
-    await createCategoryItem(item, data.accessToken);
+    try {
+      await createCategoryItem(item, data.accessToken);
+      setModalOn(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

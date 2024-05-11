@@ -1,19 +1,29 @@
-export type Category = {
+// export type Category = {
+//   id: number;
+//   color: string;
+//   type: 'category';
+//   name: string;
+//   parentId: number | null;
+//   prevId: number | null;
+// };
+// export type Divider = {
+//   id: number;
+//   type: 'divider';
+//   name: string;
+//   parentId: number | null;
+//   prevId: number;
+//   children: Array<Category | Divider>;
+// };
+
+export interface CategoryDividerItem {
   id: number;
-  color: string;
-  type: 'category';
   name: string;
-  parentId: number | null;
+  type: 'CATEGORY' | 'DIVIDER';
+  color: CategoryColor;
+  dividerId: number | null;
   prevId: number | null;
-};
-export type Divider = {
-  id: number;
-  type: 'divider';
-  name: string;
-  parentId: number | null;
-  prevId: number;
-  children: Array<Category | Divider>;
-};
+  categories: CategoryDividerItem[];
+}
 
 export type CategoryColor =
   | '#F04242'
@@ -35,44 +45,12 @@ export type CategoryItem = {
 
 export const categories = [
   {
-    id: 0,
-    type: 'category',
-    color: 'red',
-    name: '햄스터 키우기',
-    parentId: null,
-    prevId: null,
-  },
-  {
     id: 1,
-    type: 'divider',
-    name: '디자인 블로그',
-    parentId: null,
-    prevId: 0,
-    children: [
-      {
-        id: 5,
-        type: 'category',
-        color: 'green',
-        name: '폰트',
-        parentId: 1,
-        prevId: null,
-      },
-      {
-        id: 6,
-        type: 'category',
-        color: 'blue',
-        name: '색상',
-        parentId: 1,
-        prevId: 5,
-      },
-    ],
-  },
-  {
-    id: 2,
-    type: 'category',
-    color: 'orange',
-    name: '강아지 키우기',
-    parentId: null,
-    prevId: 1,
+    name: '안녕',
+    type: 'CATEGORY',
+    color: '#F04242',
+    dividerId: null,
+    prevId: null,
+    categories: [],
   },
 ];
