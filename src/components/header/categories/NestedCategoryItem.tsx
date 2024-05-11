@@ -10,7 +10,7 @@ type Props = {
 export default function NestedCategoryItem({ color, title }: Props) {
   return (
     <>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center">
         <FaCircle size={20} color={color} />
         <p>{title}</p>
       </div>

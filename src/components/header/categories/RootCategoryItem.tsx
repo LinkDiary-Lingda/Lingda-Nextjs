@@ -43,7 +43,7 @@ export default function RootCategoryItem({
   return (
     <>
       <div className="w-full flex items-center justify-between relative">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <FaCircle size={20} color={color} />
           <p>{title}</p>
         </div>

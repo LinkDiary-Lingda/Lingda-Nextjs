@@ -197,9 +197,11 @@ export default function Categories({ setMenuOn }: Props) {
                 onDragLeave={handleDragLeave}
               >
                 <DividerItem
-                  title={item.name}
+                  name={item.name}
                   id={item.id + ''}
+                  dividerId={item.id}
                   isDraggedOver={draggedOverId?.targetId === item.id + ''}
+                  setItems={setItems}
                 />
                 <ul>
                   {item.categories.map((child) => {
