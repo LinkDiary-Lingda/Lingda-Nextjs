@@ -7,7 +7,7 @@ export default function ColorPalete() {
   const [selected, setSelected] = useState<CategoryColor>('#F04242');
 
   return (
-    <div className="flex gap-2 mt-2 -my-4">
+    <div className="flex gap-2 mt-2">
       {[
         '#F04242',
         '#F08A42',

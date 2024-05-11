@@ -17,11 +17,9 @@ export default function Categories() {
     targetParentId: string | null;
   } | null>(null);
   const [createMenuOn, setCreateMenuOn] = useState(false);
-  const handleCreateBtn = async (item: CategoryItem) => {
-    await createCategoryItem(item, data.accessToken);
-  };
   const [items, setItems] = useState<Array<Category | Divider>>(categories);
   const [modalOn, setModalOn] = useState(false);
+  const [isCategory, setIsCategory] = useState(true);
   const [item, setItem] = useState<CategoryItem>({
     name: '',
     categoryType: 'CATEGORY',
@@ -33,11 +31,17 @@ export default function Categories() {
   const menus = [
     {
       title: '디바이더 추가하기',
-      handleClick: () => handleCreateBtn(item),
+      handleClick: () => {
+        setModalOn(true);
+        setIsCategory(false);
+      },
     },
     {
       title: '주제 추가하기',
-      handleClick: () => handleCreateBtn(item),
+      handleClick: () => {
+        setModalOn(true);
+        setIsCategory(true);
+      },
     },
   ];
 
@@ -123,8 +127,13 @@ export default function Categories() {
         </button>
         {createMenuOn && <MenuBox menus={menus} position="right-0" />}
       </div>
-      {modalOn && <InputModal isCategory />}
-      <InputModal />
+      {modalOn && (
+        <InputModal
+          isCategory={isCategory}
+          modalOn={modalOn}
+          setModalOn={setModalOn}
+        />
+      )}
       <ul>
         {items.map((item) => {
           if (item.type === 'category') {

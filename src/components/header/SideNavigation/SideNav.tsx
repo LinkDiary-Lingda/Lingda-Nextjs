@@ -7,7 +7,7 @@ type Props = {
 };
 export default function SideNav({ handleBgClick }: Props) {
   return (
-    <section className="w-full absolute z-20">
+    <section className="w-full absolute z-10">
       <div
         className="absolute left-2 w-full h-[100vh] bg-black opacity-30"
         onClick={handleBgClick}

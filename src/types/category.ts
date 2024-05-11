@@ -27,10 +27,10 @@ export type CategoryColor =
 
 export type CategoryItem = {
   name: string;
-  categoryType: 'CATEGORY' | 'DIVIDER';
-  color: CategoryColor;
-  prevId: number;
-  dividerId: number;
+  categoryType: 'CATEGORY' | 'DIVIDER' | string;
+  color: CategoryColor | string;
+  prevId: number | null;
+  dividerId: number | null;
 };
 
 export const categories = [
