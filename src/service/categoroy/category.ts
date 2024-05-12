@@ -40,17 +40,14 @@ export async function deleteCategoryItem(id: number, token: string) {
   }
 }
 
-export async function editCategoryItem({
-  id,
-  name,
-  color,
-  token,
-}: {
+export type EditItem = {
   id: number;
   name: string;
   color?: CategoryColor;
   token: string;
-}) {
+};
+
+export async function editCategoryItem({ id, name, color, token }: EditItem) {
   try {
     const categories = await PUT({
       path: `categories/${id}`,

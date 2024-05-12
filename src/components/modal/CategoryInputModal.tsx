@@ -4,12 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import ColorPalete from './ColorPalete';
 import { CategoryItem } from '@/types/category';
 import cls from 'classnames';
-import {
-  createCategoryItem,
-  editCategoryItem,
-  getCategoryItems,
-} from '@/service/categoroy/category';
-import { useSession } from 'next-auth/react';
+import useCategory from '@/hooks/category/useCategory';
 
 type Props = {
   isCategory: boolean;
@@ -24,13 +19,11 @@ export default function InputModal({
   setModalOn,
   isEdit,
 }: Props) {
-  const { data }: any = useSession();
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
-    getValues,
   } = useForm({
     defaultValues: {
       name: '',
@@ -40,32 +33,20 @@ export default function InputModal({
       dividerId: null,
     },
   });
+  const { createCategoryQuery, editCategoryItemQuery } = useCategory();
 
   const onCreateSubmit: SubmitHandler<CategoryItem> = async (item) => {
-    try {
-      await createCategoryItem(item, data.accessToken);
-      setModalOn(false);
-      const categories = await getCategoryItems(data.accessToken);
-    } catch (error) {
-      console.log(error);
-    }
+    await createCategoryQuery(item);
+    setModalOn(false);
   };
 
   const onEditSubmit: SubmitHandler<CategoryItem> = async (item) => {
-    try {
-      if (isEdit) {
-        await editCategoryItem({
-          id: isEdit.id,
-          name: item.name,
-          color: item.color,
-          token: data.accessToken,
-        });
-        setModalOn(false);
-        const categories = await getCategoryItems(data.accessToken);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    await editCategoryItemQuery({
+      id: isEdit?.id,
+      name: item.name,
+      color: item.color,
+    });
+    setModalOn(false);
   };
 
   return (
