@@ -15,7 +15,6 @@ type Props = {
   isCategory: boolean;
   modalOn: boolean;
   setModalOn: Dispatch<SetStateAction<boolean>>;
-  setItems: Dispatch<SetStateAction<any>>;
   isEdit?: { id: number; name: string; color?: string };
 };
 
@@ -23,7 +22,6 @@ export default function InputModal({
   isCategory,
   modalOn,
   setModalOn,
-  setItems,
   isEdit,
 }: Props) {
   const { data }: any = useSession();
@@ -48,7 +46,6 @@ export default function InputModal({
       await createCategoryItem(item, data.accessToken);
       setModalOn(false);
       const categories = await getCategoryItems(data.accessToken);
-      setItems(categories);
     } catch (error) {
       console.log(error);
     }
@@ -65,7 +62,6 @@ export default function InputModal({
         });
         setModalOn(false);
         const categories = await getCategoryItems(data.accessToken);
-        setItems(categories);
       }
     } catch (error) {
       console.log(error);
@@ -164,7 +160,9 @@ export default function InputModal({
                     <button
                       type="button"
                       className="h-[44px] flex-1 text-Primary-04 border-t border-Primary-02"
-                      onClick={() => setModalOn(false)}
+                      onClick={() => {
+                        setModalOn(false);
+                      }}
                     >
                       취소
                     </button>

@@ -6,20 +6,16 @@ import cls from 'classnames';
 import MenuBox from '@/components/menu/MenuBox';
 import Alert from '@/components/Alert';
 import InputModal from '@/components/modal/CategoryInputModal';
+import { deleteCategoryItem } from '@/service/categoroy/category';
+import useCategory from '@/hooks/category/useCategory';
 
 type Props = {
   name: string;
   id: string;
   isDraggedOver: boolean;
-  setItems: Dispatch<SetStateAction<any>>;
 };
 
-export default function DividerItem({
-  name,
-  id,
-  isDraggedOver,
-  setItems,
-}: Props) {
+export default function DividerItem({ name, id, isDraggedOver }: Props) {
   const [menuOn, setMenuOn] = useState(false);
   const [modalOn, setModalOn] = useState(false);
   const [isCategory, setIsCategory] = useState(true);
@@ -31,6 +27,8 @@ export default function DividerItem({
     e.stopPropagation();
     setMenuOn(!menuOn);
   };
+
+  const { deleteCategoryItemQuery } = useCategory();
 
   const menus = [
     {
@@ -67,7 +65,7 @@ export default function DividerItem({
     },
   ];
   const handleDelete = async () => {
-    // await deleteCategoryItem(categoryId, token);
+    await deleteCategoryItemQuery(parseInt(id));
     setDeleteOn(false);
   };
   return (
@@ -109,7 +107,6 @@ export default function DividerItem({
           isCategory={isCategory}
           modalOn={modalOn}
           setModalOn={setModalOn}
-          setItems={setItems}
           isEdit={isEdit}
         />
       )}

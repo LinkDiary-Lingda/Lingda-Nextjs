@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import OverlayProvider from '@/components/modal/OverlayProvider';
 import { NextAuthProvider } from '@/context/NextAuthProvider';
-import { ToastContainer } from 'react-toastify';
+import { Flip, ToastContainer } from 'react-toastify';
 import ReactQueryClientProvider from '@/hooks/ReactQueryClientProvider';
 
 const pretendardBoldFont = localFont({
@@ -49,7 +49,14 @@ export default function RootLayout({
               <main className="font-pretendardRegular">{children}</main>
             </NextAuthProvider>
           </OverlayProvider>
-          <ToastContainer />
+          <ToastContainer
+            position="bottom-center"
+            autoClose={1500}
+            hideProgressBar={true}
+            closeOnClick
+            theme="dark"
+            transition={Flip}
+          />
         </ReactQueryClientProvider>
       </body>
     </html>

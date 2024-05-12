@@ -19,15 +19,15 @@ export default function MyPageLayout({
       <Filters />
       <section className="mt-1 flex flex-col h-[85vh] overflow-auto scrollbar-hide">
         {children}
-        <div className="sticky bottom-12 ml-auto mr-4">
-          <Link
-            className="w-[60px] h-[60px] rounded-full bg-Primary-02 flex items-center justify-center"
-            href="/new"
-          >
-            <FaPlus size={40} color="white" />
-          </Link>
-        </div>
       </section>
+      <div className="sticky bottom-12 ml-auto mr-4">
+        <Link
+          className="w-[60px] h-[60px] rounded-full bg-Primary-02 flex items-center justify-center"
+          href="/new"
+        >
+          <FaPlus size={40} color="white" />
+        </Link>
+      </div>
     </>
   );
 }

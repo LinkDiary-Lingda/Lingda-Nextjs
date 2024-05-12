@@ -16,6 +16,8 @@ import InputModal from '@/components/modal/CategoryInputModal';
 import { getCategoryItems } from '@/service/categoroy/category';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import useCategory from '@/hooks/category/useCategory';
+import { toast } from 'react-toastify';
 
 type Props = {
   setMenuOn: Dispatch<SetStateAction<boolean>>;
@@ -29,17 +31,6 @@ export default function Categories({ setMenuOn }: Props) {
     targetParentId: string | null;
   } | null>(null);
   const [createMenuOn, setCreateMenuOn] = useState(false);
-  const [items, setItems] = useState<Array<CategoryDividerItem>>([
-    {
-      id: 1,
-      name: '',
-      type: 'CATEGORY',
-      color: null,
-      dividerId: null,
-      prevId: null,
-      categories: [],
-    },
-  ]);
   const [modalOn, setModalOn] = useState(false);
   const [isCategory, setIsCategory] = useState(true);
 
@@ -126,18 +117,9 @@ export default function Categories({ setMenuOn }: Props) {
     });
     console.log(updatedItems);
 
-    setItems(sortItemsByPrevId(updatedItems));
     setDraggedOverId(null);
   };
-
-  useEffect(() => {
-    const getCategories = async () => {
-      const categories = await getCategoryItems(data.accessToken);
-      setItems(categories);
-    };
-    getCategories();
-  }, [data.accessToken]);
-
+  const { categoriesQuery } = useCategory();
   return (
     <div className="mt-4 w-64 text-Body-1">
       <div className="h-14 flex items-center border-b-[1px] justify-between relative">
@@ -156,80 +138,79 @@ export default function Categories({ setMenuOn }: Props) {
           isCategory={isCategory}
           modalOn={modalOn}
           setModalOn={setModalOn}
-          setItems={setItems}
         />
       )}
       <ul>
-        {items.map((item) => {
-          if (item.type === 'CATEGORY') {
-            return (
-              <li
-                key={item.id}
-                className="h-14 flex items-center justify-between border-b-[1px] border-Gray-02 cursor-pointer"
-                draggable
-                onDragStart={handleDragStart}
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                onDragLeave={handleDragLeave}
-                id={item.id + ''}
-                data-id={item.dividerId}
-                onClick={() => {
-                  setMenuOn(false);
-                  router.push(`/my/${item.id}`);
-                }}
-              >
-                <RootCategoryItem
-                  categoryId={item.id}
-                  title={item.name}
-                  color={item.color!}
-                  token={data.accessToken}
-                />
-              </li>
-            );
-          }
-          if (item.type === 'DIVIDER') {
-            return (
-              <li
-                key={item.id}
-                className="flex flex-col justify-between border-b-[1px] border-Gray-02"
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                onDragLeave={handleDragLeave}
-              >
-                <DividerItem
-                  name={item.name}
+        {categoriesQuery &&
+          categoriesQuery.map((item) => {
+            if (item.type === 'CATEGORY') {
+              return (
+                <li
+                  key={item.id}
+                  className="h-14 flex items-center justify-between border-b-[1px] border-Gray-02 cursor-pointer"
+                  draggable
+                  onDragStart={handleDragStart}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  onDragLeave={handleDragLeave}
                   id={item.id + ''}
-                  isDraggedOver={draggedOverId?.targetId === item.id + ''}
-                  setItems={setItems}
-                />
-                <ul>
-                  {item.categories.map((child) => {
-                    if (child.type === 'CATEGORY') {
-                      return (
-                        <li
-                          key={child.id}
-                          className="h-14 ml-6 flex items-center justify-between"
-                          draggable
-                          onDragStart={handleDragStart}
-                          onDragOver={handleDragOver}
-                          onDrop={handleDrop}
-                          onDragLeave={handleDragLeave}
-                          id={child.id + ''}
-                          data-id={child.dividerId}
-                        >
-                          <NestedCategoryItem
-                            color={child.color!}
-                            title={child.name}
-                          />
-                        </li>
-                      );
-                    }
-                  })}
-                </ul>
-              </li>
-            );
-          }
-        })}
+                  data-id={item.dividerId}
+                  onClick={() => {
+                    setMenuOn(false);
+                    router.push(`/my/${item.id}`);
+                  }}
+                >
+                  <RootCategoryItem
+                    categoryId={item.id}
+                    title={item.name}
+                    color={item.color!}
+                    token={data.accessToken}
+                  />
+                </li>
+              );
+            }
+            if (item.type === 'DIVIDER') {
+              return (
+                <li
+                  key={item.id}
+                  className="flex flex-col justify-between border-b-[1px] border-Gray-02"
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  onDragLeave={handleDragLeave}
+                >
+                  <DividerItem
+                    name={item.name}
+                    id={item.id + ''}
+                    isDraggedOver={draggedOverId?.targetId === item.id + ''}
+                  />
+                  <ul>
+                    {item.categories.map((child) => {
+                      if (child.type === 'CATEGORY') {
+                        return (
+                          <li
+                            key={child.id}
+                            className="h-14 ml-6 flex items-center justify-between"
+                            draggable
+                            onDragStart={handleDragStart}
+                            onDragOver={handleDragOver}
+                            onDrop={handleDrop}
+                            onDragLeave={handleDragLeave}
+                            id={child.id + ''}
+                            data-id={child.dividerId}
+                          >
+                            <NestedCategoryItem
+                              color={child.color!}
+                              title={child.name}
+                            />
+                          </li>
+                        );
+                      }
+                    })}
+                  </ul>
+                </li>
+              );
+            }
+          })}
       </ul>
     </div>
   );
