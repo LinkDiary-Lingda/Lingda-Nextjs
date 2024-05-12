@@ -1,7 +1,7 @@
 'use client';
 import Alert from '@/components/Alert';
 import MenuBox from '@/components/menu/MenuBox';
-import { deleteCategoryItem } from '@/service/category';
+import { deleteCategoryItem } from '@/service/categoroy/category';
 import React, { DragEvent, MouseEvent, useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaCircle } from 'react-icons/fa';
@@ -43,7 +43,7 @@ export default function RootCategoryItem({
   return (
     <>
       <div className="w-full flex items-center justify-between relative">
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
           <FaCircle size={20} color={color} />
           <p>{title}</p>
         </div>

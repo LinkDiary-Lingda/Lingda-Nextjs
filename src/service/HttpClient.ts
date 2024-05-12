@@ -15,12 +15,8 @@ export const GET = async ({
   })
     .then(async (res) => {
       if (!res.ok) throw Error(res.status.toString());
-      const text = await res.text();
-      if (text) {
-        const result = await JSON.parse(text);
-        return result;
-      }
-      return [];
+      const result = await res.json();
+      return result;
     })
     .catch((error) => {
       console.log(error);
@@ -78,8 +74,8 @@ export const DELETE = async ({
     body: JSON.stringify(body),
   })
     .then(async (res) => {
-      const result = await res.json();
       if (!res.ok) throw Error(res.status.toString());
+      const result = await res.json();
       return result;
     })
     .catch((error) => {
@@ -107,8 +103,8 @@ export const PUT = async ({
     body: JSON.stringify(body),
   })
     .then(async (res) => {
-      const result = await res.json();
       if (!res.ok) throw Error(res.status.toString());
+      const result = await res.json();
       return result;
     })
     .catch((error) => {

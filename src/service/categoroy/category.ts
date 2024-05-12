@@ -3,7 +3,7 @@ import {
   CategoryDividerItem,
   CategoryItem,
 } from '@/types/category';
-import { DELETE, GET, POST, PUT } from './HttpClient';
+import { DELETE, GET, POST, PUT } from '../HttpClient';
 
 export async function createCategoryItem(
   category: CategoryItem,

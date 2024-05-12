@@ -13,7 +13,7 @@ import { CategoryDividerItem } from '@/types/category';
 import { GoPlus } from 'react-icons/go';
 import MenuBox from '@/components/menu/MenuBox';
 import InputModal from '@/components/modal/CategoryInputModal';
-import { getCategoryItems } from '@/service/category';
+import { getCategoryItems } from '@/service/categoroy/category';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -199,7 +199,6 @@ export default function Categories({ setMenuOn }: Props) {
                 <DividerItem
                   name={item.name}
                   id={item.id + ''}
-                  dividerId={item.id}
                   isDraggedOver={draggedOverId?.targetId === item.id + ''}
                   setItems={setItems}
                 />

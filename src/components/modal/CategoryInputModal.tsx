@@ -4,7 +4,11 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import ColorPalete from './ColorPalete';
 import { CategoryItem } from '@/types/category';
 import cls from 'classnames';
-import { createCategoryItem, editCategoryItem } from '@/service/category';
+import {
+  createCategoryItem,
+  editCategoryItem,
+  getCategoryItems,
+} from '@/service/categoroy/category';
 import { useSession } from 'next-auth/react';
 
 type Props = {
@@ -32,7 +36,7 @@ export default function InputModal({
   } = useForm({
     defaultValues: {
       name: '',
-      categoryType: isCategory ? 'CATEGORY' : 'DIVIDER',
+      type: isCategory ? 'CATEGORY' : 'DIVIDER',
       color: isCategory ? '#F04242' : null,
       prevId: null,
       dividerId: null,
@@ -43,7 +47,8 @@ export default function InputModal({
     try {
       await createCategoryItem(item, data.accessToken);
       setModalOn(false);
-      setItems((prev) => [...prev, { ...item, type: item.categoryType }]);
+      const categories = await getCategoryItems(data.accessToken);
+      setItems(categories);
     } catch (error) {
       console.log(error);
     }
@@ -59,8 +64,8 @@ export default function InputModal({
           token: data.accessToken,
         });
         setModalOn(false);
-        // 추후 재귀 함수 불러야함
-        // setItems((prev) => [...prev, { ...item, type: item.categoryType }]);
+        const categories = await getCategoryItems(data.accessToken);
+        setItems(categories);
       }
     } catch (error) {
       console.log(error);

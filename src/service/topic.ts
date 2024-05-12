@@ -6,9 +6,12 @@ export async function getTopics(
 ): Promise<TopicItem[]> {
   try {
     const topics = await GET({
-      path: `topics/category/?id=${categoryId}`,
+      path: categoryId
+        ? `topics/category?categoryId=${categoryId}`
+        : `topics/category`,
       token,
     });
+
     return topics;
   } catch (error) {
     console.log(error);

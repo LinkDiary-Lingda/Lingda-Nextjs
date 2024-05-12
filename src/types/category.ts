@@ -21,7 +21,7 @@ export type CategoryColor =
 
 export type CategoryItem = {
   name: string;
-  categoryType: 'CATEGORY' | 'DIVIDER' | string;
+  type: 'CATEGORY' | 'DIVIDER' | string;
   color: CategoryColor | string;
   prevId: number | null;
   dividerId: number | null;
