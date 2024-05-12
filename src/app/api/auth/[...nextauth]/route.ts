@@ -40,7 +40,6 @@ const handler = NextAuth({
           accessTokenExpires: Date.now() + 2000000,
         };
       }
-      console.log(token, '이거토큰');
 
       if (Date.now() < token.accessTokenExpires) {
         return token;
