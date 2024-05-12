@@ -10,8 +10,7 @@ export async function createCategoryItem(
   token: string
 ) {
   try {
-    const created = await POST({ path: 'categories', body: category, token });
-    return created;
+    await POST({ path: 'categories', body: category, token });
   } catch (error) {
     console.log(error);
     throw error;
@@ -32,8 +31,7 @@ export async function getCategoryItems(
 
 export async function deleteCategoryItem(id: number, token: string) {
   try {
-    const categories = await DELETE({ path: `categories/${id}`, token });
-    return categories;
+    await DELETE({ path: `categories/${id}`, token });
   } catch (error) {
     console.log(error);
     throw error;
@@ -49,12 +47,11 @@ export type EditItem = {
 
 export async function editCategoryItem({ id, name, color, token }: EditItem) {
   try {
-    const categories = await PUT({
+    await PUT({
       path: `categories/${id}`,
       token,
       body: { name, color },
     });
-    return categories;
   } catch (error) {
     console.log(error);
     throw error;

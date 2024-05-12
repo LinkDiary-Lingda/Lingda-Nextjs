@@ -22,12 +22,13 @@ export default function useCategory() {
 
   const queryClient = useQueryClient();
   const router = useRouter();
+
   const { data: categoriesQuery } = useQuery({
     queryKey: ['categories', user],
     queryFn: () => getCategoryItems(token),
   });
 
-  const { data: createCategoryQuery } = useMutation({
+  const { mutate: createCategoryQuery } = useMutation({
     mutationFn: (data: CategoryItem) => createCategoryItem(data, token),
     onSuccess: (data, { type }) => {
       queryClient.invalidateQueries({ queryKey: ['categories', user] });
@@ -37,7 +38,7 @@ export default function useCategory() {
     },
   });
 
-  const { data: editCategoryItemQuery } = useMutation({
+  const { mutate: editCategoryItemQuery } = useMutation({
     mutationFn: (data: EditItem) => editCategoryItem({ ...data, token }),
     onSuccess: (data, { color }) => {
       queryClient.invalidateQueries({ queryKey: ['categories', user] });

@@ -1,8 +1,8 @@
 'use client';
 import Alert from '@/components/Alert';
 import MenuBox from '@/components/menu/MenuBox';
-import { deleteCategoryItem } from '@/service/categoroy/category';
-import React, { DragEvent, MouseEvent, useState } from 'react';
+import useCategory from '@/hooks/category/useCategory';
+import React, { MouseEvent, useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaCircle } from 'react-icons/fa';
 
@@ -10,16 +10,11 @@ type Props = {
   categoryId: number;
   color: string;
   title: string;
-  token: string;
 };
 
-export default function RootCategoryItem({
-  categoryId,
-  color,
-  title,
-  token,
-}: Props) {
+export default function RootCategoryItem({ categoryId, color, title }: Props) {
   const [menuOn, setMenuOn] = useState(false);
+  const [modalOn, setModalOn] = useState(false);
   const [deleteOn, setDeleteOn] = useState(false);
   const handleMenuBtn = (e: MouseEvent) => {
     e.stopPropagation();
@@ -36,8 +31,12 @@ export default function RootCategoryItem({
       },
     },
   ];
-  const handleDelete = async () => {
-    await deleteCategoryItem(categoryId, token);
+
+  const { deleteCategoryItemQuery, editCategoryItemQuery } = useCategory();
+  const handleDelete = (e: MouseEvent) => {
+    e.stopPropagation();
+    deleteCategoryItemQuery(categoryId);
+    setMenuOn(false);
     setDeleteOn(false);
   };
   return (
@@ -63,7 +62,10 @@ export default function RootCategoryItem({
           title="카테고리를 삭제하시겠습니까?"
           informativeText={title}
           secondaryBtn="취소"
-          secondaryAction={() => setDeleteOn(false)}
+          secondaryAction={(e) => {
+            e.stopPropagation();
+            setDeleteOn(false);
+          }}
           primaryBtn="삭제하기"
           primaryAction={handleDelete}
         />

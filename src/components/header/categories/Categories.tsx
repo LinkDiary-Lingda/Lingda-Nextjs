@@ -1,11 +1,5 @@
 'use client';
-import React, {
-  Dispatch,
-  DragEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import React, { Dispatch, DragEvent, SetStateAction, useState } from 'react';
 import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
 import NestedCategoryItem from './NestedCategoryItem';
@@ -13,18 +7,14 @@ import { CategoryDividerItem } from '@/types/category';
 import { GoPlus } from 'react-icons/go';
 import MenuBox from '@/components/menu/MenuBox';
 import InputModal from '@/components/modal/CategoryInputModal';
-import { getCategoryItems } from '@/service/categoroy/category';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import useCategory from '@/hooks/category/useCategory';
-import { toast } from 'react-toastify';
 
 type Props = {
   setMenuOn: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function Categories({ setMenuOn }: Props) {
-  const { data }: any = useSession();
   const router = useRouter();
   const [draggedOverId, setDraggedOverId] = useState<{
     targetId: string;
@@ -120,6 +110,7 @@ export default function Categories({ setMenuOn }: Props) {
     setDraggedOverId(null);
   };
   const { categoriesQuery } = useCategory();
+
   return (
     <div className="mt-4 w-64 text-Body-1">
       <div className="h-14 flex items-center border-b-[1px] justify-between relative">
@@ -164,7 +155,6 @@ export default function Categories({ setMenuOn }: Props) {
                     categoryId={item.id}
                     title={item.name}
                     color={item.color!}
-                    token={data.accessToken}
                   />
                 </li>
               );

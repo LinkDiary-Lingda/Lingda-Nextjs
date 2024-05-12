@@ -1,5 +1,5 @@
 'use client';
-import React, { Dispatch, MouseEvent, SetStateAction, useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import cls from 'classnames';
@@ -58,9 +58,9 @@ export default function DividerItem({ name, id, isDraggedOver }: Props) {
     {
       title: '삭제하기',
       warning: true,
-      handleClick: (e: MouseEvent) => {
-        e.stopPropagation();
+      handleClick: () => {
         setDeleteOn(true);
+        setMenuOn(false);
       },
     },
   ];
@@ -97,7 +97,10 @@ export default function DividerItem({ name, id, isDraggedOver }: Props) {
           title="디바이더를 삭제하시겠습니까?"
           informativeText={name}
           secondaryBtn="취소"
-          secondaryAction={() => setDeleteOn(false)}
+          secondaryAction={() => {
+            setDeleteOn(false);
+            setMenuOn(false);
+          }}
           primaryBtn="삭제하기"
           primaryAction={handleDelete}
         />

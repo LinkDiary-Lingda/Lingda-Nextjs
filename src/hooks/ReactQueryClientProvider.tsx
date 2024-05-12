@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import useApiError from './handlers/useApiError';
 import {
   QueryCache,
@@ -13,18 +13,21 @@ export default function ReactQueryClientProvider({
   children: React.ReactNode;
 }) {
   const { handleError } = useApiError();
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      mutations: { onError: handleError },
-      queries: {
-        throwOnError: true,
-        retry: false,
-      },
-    },
-    queryCache: new QueryCache({
-      onError: handleError,
-    }),
-  });
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          mutations: { onError: handleError },
+          queries: {
+            throwOnError: true,
+            retry: false,
+          },
+        },
+        queryCache: new QueryCache({
+          onError: handleError,
+        }),
+      })
+  );
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );

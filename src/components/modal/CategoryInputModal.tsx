@@ -35,8 +35,8 @@ export default function InputModal({
   });
   const { createCategoryQuery, editCategoryItemQuery } = useCategory();
 
-  const onCreateSubmit: SubmitHandler<CategoryItem> = async (item) => {
-    await createCategoryQuery(item);
+  const onCreateSubmit: SubmitHandler<CategoryItem> = (item) => {
+    createCategoryQuery(item);
     setModalOn(false);
   };
 
