@@ -5,6 +5,7 @@ import OverlayProvider from '@/components/modal/OverlayProvider';
 import { NextAuthProvider } from '@/context/NextAuthProvider';
 import { Flip, ToastContainer } from 'react-toastify';
 import ReactQueryClientProvider from '@/hooks/ReactQueryClientProvider';
+import { CategoryContextProvider } from '@/context/CategoryContext';
 
 const pretendardBoldFont = localFont({
   src: './font/Pretendard-Bold.woff',
@@ -46,7 +47,9 @@ export default function RootLayout({
         <ReactQueryClientProvider>
           <OverlayProvider>
             <NextAuthProvider>
-              <main className="font-pretendardRegular">{children}</main>
+              <CategoryContextProvider>
+                <main className="font-pretendardRegular">{children}</main>
+              </CategoryContextProvider>
             </NextAuthProvider>
           </OverlayProvider>
           <ToastContainer

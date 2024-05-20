@@ -14,13 +14,35 @@ export default function New() {
     getValues,
     setError,
     clearErrors,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      name: '',
+      categoryId: 0,
+      contentRequest: {
+        textContents: [
+          {
+            text: '',
+          },
+        ],
+        imageContents: [
+          {
+            imageUrl: '',
+          },
+        ],
+        urlContents: [
+          {
+            url: '',
+          },
+        ],
+      },
+    },
+  });
   const [link, setLink] = useState('');
   return (
     <div className="flex flex-col relative h-[90vh]">
       <div className="flex flex-col items-center mt-4">
         <input
-          {...register('title', {
+          {...register('name', {
             required: {
               value: true,
               message: '글 제목을 입력해주세요.',
@@ -29,7 +51,7 @@ export default function New() {
           placeholder="글 제목을 입력하세요."
           className="w-[312px] h-[55px] border-b-2 outline-none text-Body-1"
         />
-        <div className="w-[312px] h-[55px] border-b-2 text-Body-1 flex items-center justify-between">
+        {/* <div className="w-[312px] h-[55px] border-b-2 text-Body-1 flex items-center justify-between">
           <input
             {...register('category', {
               required: {
@@ -43,7 +65,7 @@ export default function New() {
           <button className="h-6 px-2 border border-Primary-02 text-Primary-02 text-Detail-1 font-pretendardBold rounded-md">
             카테고리 선택
           </button>
-        </div>
+        </div> */}
         <div className="mt-6 w-[312px]  flex flex-row gap-2 items-center border-b-2 ">
           <FaCirclePlus size={20} color="#9E9E9E" />
           <input
