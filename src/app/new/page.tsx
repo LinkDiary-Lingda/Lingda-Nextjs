@@ -1,23 +1,23 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import LinkInput from './LinkInput';
 import { FaCirclePlus } from 'react-icons/fa6';
 import { FaPlus } from 'react-icons/fa';
 import NextButton from '@/components/NextButton';
+import { useCategoryContext } from '@/context/CategoryContext';
 
 export default function New() {
+  const [urlNum, setUrlNum] = useState(1);
+  const [textNum, setTextNum] = useState(1);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
-    setError,
-    clearErrors,
   } = useForm({
     defaultValues: {
       name: '',
-      categoryId: 0,
+      categoryId: null,
       contentRequest: {
         textContents: [
           {
@@ -37,7 +37,34 @@ export default function New() {
       },
     },
   });
-  const [link, setLink] = useState('');
+  const { categoryState } = useCategoryContext();
+
+  const renderLinkInputs = useMemo(() => {
+    const inputs = [];
+    for (let i = 0; i < urlNum; i++) {
+      inputs.push(
+        <div
+          className="mt-6 w-[312px]  flex flex-row gap-2 items-center border-b-2"
+          key={i + 'urlLink'}
+        >
+          <button
+            type="button"
+            aria-label="add-link-button"
+            onClick={() => setUrlNum((prev) => prev + 1)}
+          >
+            <FaCirclePlus size={20} color="#9E9E9E" />
+          </button>
+          <input
+            {...register(`contentRequest.urlContents.${i}.url`)}
+            placeholder="링크 추가 하기 (선택사항)"
+            className="w-[312px] h-[55px] outline-none"
+          />
+        </div>
+      );
+    }
+    return inputs;
+  }, [register, urlNum]);
+
   return (
     <div className="flex flex-col relative h-[90vh]">
       <div className="flex flex-col items-center mt-4">
@@ -51,43 +78,29 @@ export default function New() {
           placeholder="글 제목을 입력하세요."
           className="w-[312px] h-[55px] border-b-2 outline-none text-Body-1"
         />
-        {/* <div className="w-[312px] h-[55px] border-b-2 text-Body-1 flex items-center justify-between">
-          <input
-            {...register('category', {
-              required: {
-                value: true,
-                message: '카테고리를 선택해주세요.',
-              },
-            })}
-            placeholder="카테고리를 선택해주세요."
-            className="outline-none "
+        <div className="w-[312px] h-[55px] border-b-2 text-Body-1 flex items-center justify-between">
+          <p className="text-Primary-04">
+            {categoryState.name || '최상위 디바이더'}
+          </p>
+          {/* <input
+            // {...register('catego', {
+            //   required: {
+            //     value: true,
+            //     message: '카테고리를 선택해주세요.',
+            //   },
+            // })}
+            className="outline-none bg-none"
+            value={categoryState.name || '최상위 디바이더'}
+            disabled
           />
           <button className="h-6 px-2 border border-Primary-02 text-Primary-02 text-Detail-1 font-pretendardBold rounded-md">
             카테고리 선택
-          </button>
-        </div> */}
-        <div className="mt-6 w-[312px]  flex flex-row gap-2 items-center border-b-2 ">
-          <FaCirclePlus size={20} color="#9E9E9E" />
-          <input
-            value={link}
-            onChange={(e) => setLink(e.target.value)}
-            placeholder="링크 추가 하기 (선택사항)"
-            className="w-[312px] h-[55px] outline-none"
-          />
+          </button> */}
         </div>
-        {link && (
-          <div className="mt-6 w-[312px] flex flex-row gap-2 items-center border-b-2 ">
-            <FaCirclePlus size={20} color="#9E9E9E" />
-            <input
-              onChange={(e) => setLink(e.target.value)}
-              placeholder="링크 추가 하기 (선택사항)"
-              className="w-[312px] h-[55px] outline-none"
-            />
-          </div>
-        )}
-        <div className="mt-6 w-[312px] flex flex-row gap-2 items-center border-b-2 ">
-          <FaCirclePlus size={20} color="#9E9E9E" />
+        {renderLinkInputs}
+        <div className="mt-6 w-[312px]  flex flex-row gap-2 items-center border-b-2">
           <input
+            {...register(`contentRequest.textContents.0.text`)}
             placeholder="내용 추가 하기 (선택사항)"
             className="w-[312px] h-[55px] outline-none"
           />

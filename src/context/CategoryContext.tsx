@@ -2,12 +2,12 @@
 import React, { Dispatch, createContext, useContext, useState } from 'react';
 
 interface CategoryContextProps {
-  categoryState: { id: number | undefined };
+  categoryState: { id: number | null; name: string };
   setCategoryState: Dispatch<any>;
 }
 
 export const CategoryContext = createContext<CategoryContextProps>({
-  categoryState: { id: undefined },
+  categoryState: { id: null, name: '' },
   setCategoryState: () => {},
 });
 
@@ -16,7 +16,10 @@ export const CategoryContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [categoryState, setCategoryState] = useState({ id: undefined });
+  const [categoryState, setCategoryState] = useState({
+    id: null,
+    name: '',
+  });
   return (
     <CategoryContext.Provider value={{ categoryState, setCategoryState }}>
       {children}
