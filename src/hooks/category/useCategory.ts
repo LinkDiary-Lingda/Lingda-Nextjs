@@ -1,10 +1,12 @@
 'use client';
+import { CategoryOrderBody } from './../../types/category';
 import {
   EditItem,
   createCategoryItem,
   deleteCategoryItem,
   editCategoryItem,
   getCategoryItems,
+  orderCategoryItem,
 } from '@/service/categoroy/category';
 import { CategoryItem } from '@/types/category';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -56,10 +58,20 @@ export default function useCategory() {
     },
   });
 
+  const { mutate: orderCategoryItemQuery } = useMutation({
+    mutationFn: ({ id, dividerId, prevId }: Omit<CategoryOrderBody, 'token'>) =>
+      orderCategoryItem({ id, dividerId, prevId, token }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['categories', user] });
+      toast('수정되었습니다.');
+    },
+  });
+
   return {
     categoriesQuery,
     createCategoryQuery,
     editCategoryItemQuery,
     deleteCategoryItemQuery,
+    orderCategoryItemQuery,
   };
 }

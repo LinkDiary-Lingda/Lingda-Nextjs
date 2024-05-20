@@ -42,10 +42,9 @@ const handler = NextAuth({
       }
 
       if (Date.now() < token.accessTokenExpires) {
-        console.log('hi');
-
         return token;
       }
+
       const { accessToken, refreshToken, error } = await refreshAccessToken(
         token
       );

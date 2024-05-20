@@ -3,12 +3,12 @@ import React, { Dispatch, DragEvent, SetStateAction, useState } from 'react';
 import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
 import NestedCategoryItem from './NestedCategoryItem';
-import { CategoryDividerItem } from '@/types/category';
 import { GoPlus } from 'react-icons/go';
 import MenuBox from '@/components/menu/MenuBox';
 import InputModal from '@/components/modal/CategoryInputModal';
 import { useRouter } from 'next/navigation';
 import useCategory from '@/hooks/category/useCategory';
+import cls from 'classnames';
 
 type Props = {
   setMenuOn: Dispatch<SetStateAction<boolean>>;
@@ -16,13 +16,15 @@ type Props = {
 
 export default function Categories({ setMenuOn }: Props) {
   const router = useRouter();
+  const [targetId, setTargetId] = useState<string | null>(null);
   const [draggedOverId, setDraggedOverId] = useState<{
-    targetId: string;
-    targetParentId: string | null;
+    id: string;
+    parentId: string | null;
   } | null>(null);
   const [createMenuOn, setCreateMenuOn] = useState(false);
   const [modalOn, setModalOn] = useState(false);
   const [isCategory, setIsCategory] = useState(true);
+  const { categoriesQuery, orderCategoryItemQuery } = useCategory();
 
   const menus = [
     {
@@ -41,75 +43,47 @@ export default function Categories({ setMenuOn }: Props) {
     },
   ];
 
-  const sortItemsByPrevId = (items: Array<CategoryDividerItem>) => {
-    const firstItem = items.find((item) => item.prevId === null);
-    const sortedItems = [];
-    let currentItem = firstItem;
-    let iterations = 0;
-    while (currentItem && iterations < items.length) {
-      if (currentItem.type === 'DIVIDER' && currentItem.categories.length > 0) {
-        currentItem.categories = sortItemsByPrevId(currentItem.categories);
-      }
-      sortedItems.push(currentItem);
-      currentItem = items.find((item) => item.prevId === currentItem?.prevId);
-      iterations++;
-    }
-    return sortedItems;
-  };
-
   const handleDragStart = (e: DragEvent<HTMLElement>) => {
-    const dragData = {
-      itemId: e.currentTarget.id,
-      parentId: e.currentTarget.getAttribute('data-id'),
-    };
-    e.dataTransfer.setData('application/json', JSON.stringify(dragData));
+    setTargetId(e.currentTarget.id);
   };
 
-  const handleDragOver = (e: DragEvent<HTMLElement>) => {
+  const handleCategoryDragOver = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
     setDraggedOverId({
-      targetId: e.currentTarget.id,
-      targetParentId: e.currentTarget.getAttribute('data-id'),
+      id: e.currentTarget.id,
+      parentId: e.currentTarget.getAttribute('data-id'),
+    });
+  };
+  const handleDividerDragOver = (e: DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    setDraggedOverId({
+      id: '0',
+      parentId: e.currentTarget.id,
     });
   };
 
   const handleDragLeave = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
-    setDraggedOverId(null);
+    // setDraggedOverId(null);
+    // setTargetId(null);
   };
 
   const handleDrop = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
-    if (draggedOverId === null) return;
+    if (targetId && draggedOverId) {
+      console.log('없나여??');
 
-    const { itemId, parentId } = JSON.parse(
-      e.dataTransfer.getData('application/json')
-    );
-
-    const updatedItems = items.map((item) => {
-      const id = item.id.toString();
-      if (id !== itemId) return item;
-
-      const { targetId, targetParentId } = draggedOverId;
-      // dragOver한 아이템밑으로 itemId 설정
-      if (targetParentId === id && item.type === 'DIVIDER') {
-        const newChildren = item.categories.filter(
-          (child) => child.id !== itemId
-        );
-        return { ...item, children: newChildren };
-      }
-      return {
-        ...item,
-        prevId: parseInt(targetId),
-        parentId:
-          targetParentId !== null ? parseInt(targetParentId) : targetParentId,
-      };
-    });
-    console.log(updatedItems);
-
+      orderCategoryItemQuery({
+        id: parseInt(targetId),
+        dividerId: draggedOverId.parentId
+          ? parseInt(draggedOverId.parentId)
+          : null,
+        prevId: parseInt(draggedOverId.id),
+      });
+    }
     setDraggedOverId(null);
+    setTargetId(null);
   };
-  const { categoriesQuery } = useCategory();
 
   return (
     <div className="mt-4 w-64 text-Body-1">
@@ -129,6 +103,7 @@ export default function Categories({ setMenuOn }: Props) {
           isCategory={isCategory}
           modalOn={modalOn}
           setModalOn={setModalOn}
+          setMenuOn={setCreateMenuOn}
         />
       )}
       <ul>
@@ -138,10 +113,22 @@ export default function Categories({ setMenuOn }: Props) {
               return (
                 <li
                   key={item.id}
-                  className="h-14 flex items-center justify-between border-b-[1px] border-Gray-02 cursor-pointer"
+                  className={cls(
+                    'h-14 flex items-center justify-between cursor-pointer',
+                    {
+                      'border-Primary-03 border-b-[1px]':
+                        draggedOverId?.id === item.id + '',
+                      'border-b-[1px] border-Gray-02':
+                        draggedOverId?.id !== item.id + '',
+                      'bg-Primary-01 border-Primary-03 border-[1px]':
+                        targetId === item.id + '',
+                      'bg-none border-b-[1px] border-Gray-02':
+                        targetId !== item.id + '',
+                    }
+                  )}
                   draggable
                   onDragStart={handleDragStart}
-                  onDragOver={handleDragOver}
+                  onDragOver={handleCategoryDragOver}
                   onDrop={handleDrop}
                   onDragLeave={handleDragLeave}
                   id={item.id + ''}
@@ -153,7 +140,7 @@ export default function Categories({ setMenuOn }: Props) {
                 >
                   <RootCategoryItem
                     categoryId={item.id}
-                    title={item.name}
+                    name={item.name}
                     color={item.color!}
                   />
                 </li>
@@ -164,14 +151,18 @@ export default function Categories({ setMenuOn }: Props) {
                 <li
                   key={item.id}
                   className="flex flex-col justify-between border-b-[1px] border-Gray-02"
-                  onDragOver={handleDragOver}
+                  draggable
+                  onDragOver={handleDividerDragOver}
                   onDrop={handleDrop}
                   onDragLeave={handleDragLeave}
+                  onDragStart={handleDragStart}
+                  id={item.id + ''}
+                  data-id={item.dividerId}
                 >
                   <DividerItem
                     name={item.name}
                     id={item.id + ''}
-                    isDraggedOver={draggedOverId?.targetId === item.id + ''}
+                    isDraggedOver={draggedOverId?.id === item.id + ''}
                   />
                   <ul>
                     {item.categories.map((child) => {
@@ -182,7 +173,7 @@ export default function Categories({ setMenuOn }: Props) {
                             className="h-14 ml-6 flex items-center justify-between"
                             draggable
                             onDragStart={handleDragStart}
-                            onDragOver={handleDragOver}
+                            onDragOver={handleCategoryDragOver}
                             onDrop={handleDrop}
                             onDragLeave={handleDragLeave}
                             id={child.id + ''}

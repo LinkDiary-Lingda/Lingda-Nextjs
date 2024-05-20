@@ -10,6 +10,7 @@ type Props = {
   isCategory: boolean;
   modalOn: boolean;
   setModalOn: Dispatch<SetStateAction<boolean>>;
+  setMenuOn: Dispatch<SetStateAction<boolean>>;
   isEdit?: { id: number; name: string; color?: string };
 };
 
@@ -18,6 +19,7 @@ export default function InputModal({
   modalOn,
   setModalOn,
   isEdit,
+  setMenuOn,
 }: Props) {
   const {
     register,
@@ -38,6 +40,7 @@ export default function InputModal({
   const onCreateSubmit: SubmitHandler<CategoryItem> = (item) => {
     createCategoryQuery(item);
     setModalOn(false);
+    setMenuOn(false);
   };
 
   const onEditSubmit: SubmitHandler<CategoryItem> = async (item) => {
@@ -47,6 +50,7 @@ export default function InputModal({
       color: item.color,
     });
     setModalOn(false);
+    setMenuOn(false);
   };
 
   return (
@@ -87,7 +91,10 @@ export default function InputModal({
                     <button
                       type="button"
                       className="h-[44px] flex-1 text-Primary-04 border-t border-Primary-02"
-                      onClick={() => setModalOn(false)}
+                      onClick={() => {
+                        setModalOn(false);
+                        setMenuOn(false);
+                      }}
                     >
                       취소
                     </button>
@@ -143,6 +150,7 @@ export default function InputModal({
                       className="h-[44px] flex-1 text-Primary-04 border-t border-Primary-02"
                       onClick={() => {
                         setModalOn(false);
+                        setMenuOn(false);
                       }}
                     >
                       취소

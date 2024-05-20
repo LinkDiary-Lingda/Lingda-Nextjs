@@ -2,6 +2,7 @@ import {
   CategoryColor,
   CategoryDividerItem,
   CategoryItem,
+  CategoryOrderBody,
 } from '@/types/category';
 import { DELETE, GET, POST, PUT } from '../HttpClient';
 
@@ -51,6 +52,24 @@ export async function editCategoryItem({ id, name, color, token }: EditItem) {
       path: `categories/${id}`,
       token,
       body: { name, color },
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function orderCategoryItem({
+  id,
+  token,
+  dividerId,
+  prevId,
+}: CategoryOrderBody) {
+  try {
+    await PUT({
+      path: `categories/${id}/order`,
+      token,
+      body: { dividerId, prevId },
     });
   } catch (error) {
     console.log(error);

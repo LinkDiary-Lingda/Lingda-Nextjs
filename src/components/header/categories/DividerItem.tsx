@@ -6,7 +6,6 @@ import cls from 'classnames';
 import MenuBox from '@/components/menu/MenuBox';
 import Alert from '@/components/Alert';
 import InputModal from '@/components/modal/CategoryInputModal';
-import { deleteCategoryItem } from '@/service/categoroy/category';
 import useCategory from '@/hooks/category/useCategory';
 
 type Props = {
@@ -73,7 +72,7 @@ export default function DividerItem({ name, id, isDraggedOver }: Props) {
       <div
         id={id + ''}
         className={cls('h-14 flex items-center justify-between relative', {
-          'border-dashed border-b-4': isDraggedOver,
+          'border-Primary-03 border-b-[1px]': isDraggedOver,
           'border-none border-b-0': !isDraggedOver,
         })}
       >
@@ -111,6 +110,7 @@ export default function DividerItem({ name, id, isDraggedOver }: Props) {
           modalOn={modalOn}
           setModalOn={setModalOn}
           isEdit={isEdit}
+          setMenuOn={setMenuOn}
         />
       )}
     </>

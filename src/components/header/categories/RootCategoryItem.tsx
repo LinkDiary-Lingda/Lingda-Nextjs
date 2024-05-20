@@ -1,6 +1,7 @@
 'use client';
 import Alert from '@/components/Alert';
 import MenuBox from '@/components/menu/MenuBox';
+import InputModal from '@/components/modal/CategoryInputModal';
 import useCategory from '@/hooks/category/useCategory';
 import React, { MouseEvent, useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -9,11 +10,14 @@ import { FaCircle } from 'react-icons/fa';
 type Props = {
   categoryId: number;
   color: string;
-  title: string;
+  name: string;
 };
 
-export default function RootCategoryItem({ categoryId, color, title }: Props) {
+export default function RootCategoryItem({ categoryId, color, name }: Props) {
   const [menuOn, setMenuOn] = useState(false);
+  const [isEdit, setIsEdit] = useState<
+    { id: number; name: string; color?: string } | undefined
+  >({ id: categoryId, name });
   const [modalOn, setModalOn] = useState(false);
   const [deleteOn, setDeleteOn] = useState(false);
   const handleMenuBtn = (e: MouseEvent) => {
@@ -21,7 +25,14 @@ export default function RootCategoryItem({ categoryId, color, title }: Props) {
     setMenuOn(!menuOn);
   };
   const menus = [
-    { title: '수정하기', handleClick: () => {} },
+    {
+      title: '수정하기',
+      handleClick: (e: MouseEvent) => {
+        e.stopPropagation();
+        setModalOn(true);
+        setIsEdit({ id: categoryId, name });
+      },
+    },
     {
       title: '삭제하기',
       warning: true,
@@ -32,7 +43,7 @@ export default function RootCategoryItem({ categoryId, color, title }: Props) {
     },
   ];
 
-  const { deleteCategoryItemQuery, editCategoryItemQuery } = useCategory();
+  const { deleteCategoryItemQuery } = useCategory();
   const handleDelete = (e: MouseEvent) => {
     e.stopPropagation();
     deleteCategoryItemQuery(categoryId);
@@ -41,10 +52,13 @@ export default function RootCategoryItem({ categoryId, color, title }: Props) {
   };
   return (
     <>
-      <div className="w-full flex items-center justify-between relative">
+      <div
+        className="w-full flex items-center justify-between relative"
+        onClick={(e) => e.preventDefault()}
+      >
         <div className="flex items-center gap-2">
           <FaCircle size={20} color={color} />
-          <p>{title}</p>
+          <p>{name}</p>
         </div>
         <button
           type="button"
@@ -60,14 +74,23 @@ export default function RootCategoryItem({ categoryId, color, title }: Props) {
         <Alert
           isOpen={deleteOn}
           title="카테고리를 삭제하시겠습니까?"
-          informativeText={title}
+          informativeText={name}
           secondaryBtn="취소"
-          secondaryAction={(e) => {
-            e.stopPropagation();
+          secondaryAction={() => {
             setDeleteOn(false);
+            setMenuOn(false);
           }}
           primaryBtn="삭제하기"
           primaryAction={handleDelete}
+        />
+      )}
+      {modalOn && (
+        <InputModal
+          isCategory={true}
+          modalOn={modalOn}
+          setModalOn={setModalOn}
+          isEdit={isEdit}
+          setMenuOn={setMenuOn}
         />
       )}
     </>
