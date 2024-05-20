@@ -1,15 +1,25 @@
 'use client';
-import React, { useMemo, useState } from 'react';
+import React, {
+  ChangeEvent,
+  MouseEvent,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useForm } from 'react-hook-form';
 import LinkInput from './LinkInput';
 import { FaCirclePlus } from 'react-icons/fa6';
 import { FaPlus } from 'react-icons/fa';
 import NextButton from '@/components/NextButton';
 import { useCategoryContext } from '@/context/CategoryContext';
+import useTopic from '@/hooks/topic/useTopic';
+import Image from 'next/image';
 
 export default function New() {
   const [urlNum, setUrlNum] = useState(1);
-  const [textNum, setTextNum] = useState(1);
+  const [images, setImages] = useState<string[]>([]);
+  const fileInput = useRef(null);
+
   const {
     register,
     handleSubmit,
@@ -38,13 +48,14 @@ export default function New() {
     },
   });
   const { categoryState } = useCategoryContext();
+  const { updateImageQuery } = useTopic();
 
   const renderLinkInputs = useMemo(() => {
     const inputs = [];
     for (let i = 0; i < urlNum; i++) {
       inputs.push(
         <div
-          className="mt-6 w-[312px]  flex flex-row gap-2 items-center border-b-2"
+          className="h-[55px] w-[312px] flex flex-row gap-2 items-center border-b-2"
           key={i + 'urlLink'}
         >
           <button
@@ -57,13 +68,29 @@ export default function New() {
           <input
             {...register(`contentRequest.urlContents.${i}.url`)}
             placeholder="링크 추가 하기 (선택사항)"
-            className="w-[312px] h-[55px] outline-none"
+            className="w-[312px] h-[53px] outline-none"
           />
         </div>
       );
     }
     return inputs;
   }, [register, urlNum]);
+
+  const handleImageBtn = () => {
+    fileInput.current?.click();
+  };
+
+  const handleUploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files);
+    if (e.target.files) {
+      const imageBody = e.target.files[0];
+      const profileImageUrl = await updateImageQuery({
+        imageBody,
+        name: imageBody.name,
+      });
+      setImages((prev) => [...prev, profileImageUrl]);
+    }
+  };
 
   return (
     <div className="flex flex-col relative h-[90vh]">
@@ -78,7 +105,7 @@ export default function New() {
           placeholder="글 제목을 입력하세요."
           className="w-[312px] h-[55px] border-b-2 outline-none text-Body-1"
         />
-        <div className="w-[312px] h-[55px] border-b-2 text-Body-1 flex items-center justify-between">
+        <div className="w-[312px] h-[55px] border-b-2 text-Body-1 flex items-center justify-between mb-6">
           <p className="text-Primary-04">
             {categoryState.name || '최상위 디바이더'}
           </p>
@@ -106,10 +133,37 @@ export default function New() {
           />
         </div>
         <div className="w-full mt-6">
-          <div className="flex ml-3">
-            <span className="h-20 w-20 bg-Gray-02 rounded-lg flex items-center justify-center">
+          <div className="flex ml-3 gap-3">
+            <button
+              className="h-20 w-20 bg-Gray-02 rounded-lg flex items-center justify-center"
+              type="button"
+              onClick={handleImageBtn}
+            >
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInput}
+                className="hidden"
+                onChange={handleUploadImage}
+              />
               <FaCirclePlus color="#9E9E9E" size={21} />
-            </span>
+            </button>
+            {images.length > 0 &&
+              images.map((imageUrl) => (
+                <div
+                  className="h-20 w-20 rounded-lg overflow-hidden"
+                  key={imageUrl}
+                >
+                  <Image
+                    height={80}
+                    width={80}
+                    src={
+                      'https://image.giftmoa.co.kr/images/544b3a22-6ee8-4762-a12a-333d90618222.jpeg'
+                    }
+                    alt="added-topic-image"
+                  />
+                </div>
+              ))}
           </div>
         </div>
       </div>
