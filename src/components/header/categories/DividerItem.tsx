@@ -111,6 +111,7 @@ export default function DividerItem({ name, id, isDraggedOver }: Props) {
           setModalOn={setModalOn}
           isEdit={isEdit}
           setMenuOn={setMenuOn}
+          dividerId={id ? parseInt(id) : null}
         />
       )}
     </>

@@ -63,7 +63,6 @@ export default function useCategory() {
       orderCategoryItem({ id, dividerId, prevId, token }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories', user] });
-      toast('수정되었습니다.');
     },
   });
 

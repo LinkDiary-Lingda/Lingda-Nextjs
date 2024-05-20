@@ -64,15 +64,11 @@ export default function Categories({ setMenuOn }: Props) {
 
   const handleDragLeave = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
-    // setDraggedOverId(null);
-    // setTargetId(null);
   };
 
   const handleDrop = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
     if (targetId && draggedOverId) {
-      console.log('없나여??');
-
       orderCategoryItemQuery({
         id: parseInt(targetId),
         dividerId: draggedOverId.parentId
@@ -104,6 +100,7 @@ export default function Categories({ setMenuOn }: Props) {
           modalOn={modalOn}
           setModalOn={setModalOn}
           setMenuOn={setCreateMenuOn}
+          dividerId={null}
         />
       )}
       <ul>
@@ -142,6 +139,7 @@ export default function Categories({ setMenuOn }: Props) {
                     categoryId={item.id}
                     name={item.name}
                     color={item.color!}
+                    dividerId={item.dividerId}
                   />
                 </li>
               );

@@ -12,6 +12,7 @@ type Props = {
   setModalOn: Dispatch<SetStateAction<boolean>>;
   setMenuOn: Dispatch<SetStateAction<boolean>>;
   isEdit?: { id: number; name: string; color?: string };
+  dividerId: number | null;
 };
 
 export default function InputModal({
@@ -20,6 +21,7 @@ export default function InputModal({
   setModalOn,
   isEdit,
   setMenuOn,
+  dividerId,
 }: Props) {
   const {
     register,
@@ -32,7 +34,7 @@ export default function InputModal({
       type: isCategory ? 'CATEGORY' : 'DIVIDER',
       color: isCategory ? '#F04242' : null,
       prevId: null,
-      dividerId: null,
+      dividerId: dividerId,
     },
   });
   const { createCategoryQuery, editCategoryItemQuery } = useCategory();

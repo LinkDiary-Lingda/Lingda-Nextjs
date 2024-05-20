@@ -11,9 +11,15 @@ type Props = {
   categoryId: number;
   color: string;
   name: string;
+  dividerId: number | null;
 };
 
-export default function RootCategoryItem({ categoryId, color, name }: Props) {
+export default function RootCategoryItem({
+  categoryId,
+  color,
+  name,
+  dividerId,
+}: Props) {
   const [menuOn, setMenuOn] = useState(false);
   const [isEdit, setIsEdit] = useState<
     { id: number; name: string; color?: string } | undefined
@@ -91,6 +97,7 @@ export default function RootCategoryItem({ categoryId, color, name }: Props) {
           setModalOn={setModalOn}
           isEdit={isEdit}
           setMenuOn={setMenuOn}
+          dividerId={dividerId}
         />
       )}
     </>
