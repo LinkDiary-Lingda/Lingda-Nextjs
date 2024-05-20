@@ -1,18 +1,15 @@
-import { FaPlus } from 'react-icons/fa';
+import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { getCategoryItems } from '@/service/categoroy/category';
-import { getServerSession } from 'next-auth';
-import { getTopics } from '@/service/topic';
 import Filters from '../filters';
+import useTopic from '@/hooks/topic/useTopic';
+import Content from '../content';
 
 type Props = {
   params: { id: number | null };
 };
 export default async function MyId({ params }: Props) {
   const { id } = params;
-  const session = await getServerSession();
-  const topics = await getTopics(id, session?.user?.email || '');
+  const { topicQuery } = useTopic();
 
-  return <></>;
+  return <>{topicQuery && <>{topicQuery.length > 0 && <Content />}</>}</>;
 }

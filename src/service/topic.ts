@@ -1,4 +1,4 @@
-import { GET } from './HttpClient';
+import { GET, POST } from './HttpClient';
 
 export async function getTopics(
   categoryId: number | null,
@@ -13,6 +13,25 @@ export async function getTopics(
     });
 
     return topics;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function createTopic(
+  item: Omit<
+    TopicItem,
+    'id' | 'categoryName' | 'stared' | 'createdDate' | 'updatedDate'
+  >,
+  token: string
+) {
+  try {
+    const created = await POST({
+      path: 'topics',
+      token,
+      body: item,
+    });
   } catch (error) {
     console.log(error);
     throw error;
