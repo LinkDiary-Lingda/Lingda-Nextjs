@@ -1,5 +1,5 @@
 'use client';
-import { createTopic, getTopics } from '@/service/topic';
+import { createTopic, getTopics, updateImage } from '@/service/topic';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import React from 'react';
@@ -36,5 +36,11 @@ export default function useTopic() {
       toast('토픽이 생성되었습니다.');
     },
   });
-  return { topicQuery, categoryTopicQuery, createTopicQuery };
+
+  const { mutateAsync: updateImageQuery } = useMutation({
+    mutationFn: (data: { imageBody: any; name: string }) =>
+      updateImage({ ...data, token }),
+  });
+
+  return { topicQuery, categoryTopicQuery, createTopicQuery, updateImageQuery };
 }
