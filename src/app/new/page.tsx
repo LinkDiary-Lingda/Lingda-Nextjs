@@ -12,6 +12,13 @@ export default function New() {
   const [images, setImages] = useState<string[]>([]);
   const fileInput = useRef(null);
   const { categoryState } = useCategoryContext();
+  const textarea = useRef<HTMLTextAreaElement>(null);
+  const handleResizeHeight = () => {
+    if (textarea.current) {
+      textarea.current.style.height = 'auto';
+      textarea.current.style.height = textarea.current.scrollHeight + 'px';
+    }
+  };
 
   const {
     register,
@@ -130,10 +137,15 @@ export default function New() {
         </div>
         {renderLinkInputs}
         <div className="mt-6 w-[312px]  flex flex-row gap-2 items-center border-b-2">
-          <input
-            {...register(`contentRequest.textContents.0.text`)}
+          <textarea
+            ref={textarea}
+            onInput={handleResizeHeight}
+            rows={2}
+            onChange={(e) => {
+              setValue('contentRequest.textContents.0.text', e.target.value);
+            }}
             placeholder="내용 추가 하기 (선택사항)"
-            className="w-[312px] h-[55px] outline-none"
+            className="w-[312px] outline-none resize-y"
           />
         </div>
         <div className="w-full mt-6">

@@ -11,7 +11,6 @@ export default function TopicHeader() {
   const { id } = useParams();
 
   const [menuOn, setMenuOn] = useState(false);
-  const [modalOn, setModalOn] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [deleteOn, setDeleteOn] = useState(false);
   const handleMenuBtn = () => {
@@ -22,7 +21,6 @@ export default function TopicHeader() {
     {
       title: '수정하기',
       handleClick: () => {
-        setModalOn(true);
         setIsEdit(true);
       },
     },
@@ -31,7 +29,6 @@ export default function TopicHeader() {
       warning: true,
       handleClick: () => {
         setDeleteOn(true);
-        setMenuOn(false);
       },
     },
   ];
