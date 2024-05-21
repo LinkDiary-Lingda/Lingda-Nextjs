@@ -6,7 +6,6 @@ import { useCategoryContext } from '@/context/CategoryContext';
 import useTopic from '@/hooks/topic/useTopic';
 import Image from 'next/image';
 import cls from 'classnames';
-import { defaultTopic } from '@/types/topic';
 
 export default function New() {
   const [urlNum, setUrlNum] = useState(1);

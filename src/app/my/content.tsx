@@ -11,6 +11,7 @@ export default function Content({ topic }: { topic: TopicItem }) {
   const {
     name,
     id,
+    color,
     categoryName,
     stared,
     contentResponses: { imageContents, textContents, urlContents },
@@ -27,14 +28,17 @@ export default function Content({ topic }: { topic: TopicItem }) {
           <TopicButtons stared={stared} id={id} />
         </div>
         <div className="flex items-center gap-1 mt-1">
-          <FaCircle color="red" size={14} />
+          <FaCircle color={color} size={14} />
           <p className="text-Gray-06 text-Body-2">
             {categoryName || '전체 보기'}
           </p>
         </div>
       </div>
       <div className=" flex gap-2 items-center">
-        <a href={urlContents[0].url} className="text-Blue-02 text-Body-1">
+        <a
+          href={urlContents[0].url}
+          className="text-Blue-02 text-Body-1 truncate"
+        >
           {urlContents[0].url}
         </a>
         {urlContents.length > 1 && (
@@ -57,7 +61,7 @@ export default function Content({ topic }: { topic: TopicItem }) {
             .filter((image) => image.imageUrl)
             .map((image) => (
               <button
-                className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"
+                className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0 overflow-hidden"
                 key={image.imageUrl}
               >
                 <Image
@@ -65,6 +69,7 @@ export default function Content({ topic }: { topic: TopicItem }) {
                   width={80}
                   src={image.imageUrl}
                   alt="added-topic-image"
+                  className="rounded-lg object-cover"
                 />
               </button>
             ))}
