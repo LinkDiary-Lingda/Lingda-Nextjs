@@ -1,12 +1,15 @@
 'use client';
 import Alert from '@/components/Alert';
 import MenuBox from '@/components/menu/MenuBox';
-import { useRouter } from 'next/navigation';
+import useTopic from '@/hooks/topic/useTopic';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { IoMdArrowBack } from 'react-icons/io';
 
 export default function TopicHeader() {
+  const { id } = useParams();
+
   const [menuOn, setMenuOn] = useState(false);
   const [modalOn, setModalOn] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -33,7 +36,13 @@ export default function TopicHeader() {
     },
   ];
 
-  const handleDelete = () => {};
+  const { trashTopicQuery } = useTopic();
+
+  const handleDelete = () => {
+    if (typeof id === 'string') {
+      trashTopicQuery(parseInt(id));
+    }
+  };
   return (
     <>
       <nav>

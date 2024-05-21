@@ -111,3 +111,13 @@ export async function getTopic(id: number, token: string) {
     throw error;
   }
 }
+
+export async function trashTopic(id: number, token: string) {
+  try {
+    const deleted = await DELETE({ path: `topics/${id}`, token });
+    return deleted;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}

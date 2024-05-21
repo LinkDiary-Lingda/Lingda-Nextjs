@@ -5,6 +5,7 @@ import {
   getTopic,
   getTopics,
   starTopic,
+  trashTopic,
   updateImage,
 } from '@/service/topic';
 import { TopicItem } from '@/types/topic';
@@ -72,6 +73,15 @@ export default function useTopic() {
     },
   });
 
+  const { mutate: trashTopicQuery } = useMutation({
+    mutationFn: (id: number) => trashTopic(id, token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['topics', user] });
+      toast('토픽이 삭제되었습니다.');
+      router.back();
+    },
+  });
+
   return {
     topicQuery,
     categoryTopicQuery,
@@ -80,5 +90,6 @@ export default function useTopic() {
     updateImageQuery,
     starTopicQuery,
     cancelStarTopicQuery,
+    trashTopicQuery,
   };
 }
