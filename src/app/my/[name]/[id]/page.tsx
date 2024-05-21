@@ -1,7 +1,5 @@
 'use client';
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Filters from '../../filters';
+import React, { useEffect, useState } from 'react';
 import useTopic from '@/hooks/topic/useTopic';
 import Content from '../../content';
 import Nothing from '../../nothing';
@@ -16,14 +14,14 @@ export default function MyId({ params: { id, name } }: Props) {
   const { categoryTopicQuery } = useTopic();
   const { setCategoryState } = useCategoryContext();
 
-  useState(() => {
+  useEffect(() => {
     async function getTopics() {
       const topics = await categoryTopicQuery(id);
       setTopics(topics);
     }
     setCategoryState({ id, name: decodeURI(name) });
     getTopics();
-  }, [id]);
+  }, [id, name, categoryTopicQuery, setCategoryState]);
 
   return (
     <>

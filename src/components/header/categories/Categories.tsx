@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import useCategory from '@/hooks/category/useCategory';
 import cls from 'classnames';
 import Link from 'next/link';
+import { CategoryDividerItem } from '@/types/category';
 
 type Props = {
   setMenuOn: Dispatch<SetStateAction<boolean>>;
@@ -95,7 +96,7 @@ export default function Categories({ setMenuOn }: Props) {
     });
   };
 
-  const renderCategory = (category) => (
+  const renderCategory = (category: CategoryDividerItem) => (
     <li
       key={category.id}
       className={cls('h-14 flex items-center justify-between cursor-pointer', {
@@ -127,7 +128,7 @@ export default function Categories({ setMenuOn }: Props) {
     </li>
   );
 
-  const renderDivider = (divider) => (
+  const renderDivider = (divider: CategoryDividerItem) => (
     <li
       key={divider.id}
       className="flex flex-col justify-between border-b-[1px] border-Gray-02"

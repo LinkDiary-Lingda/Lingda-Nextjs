@@ -1,5 +1,6 @@
 import { toast } from 'react-toastify';
 import { DELETE, GET, POST } from './HttpClient';
+import { TopicItem } from '@/types/topic';
 
 export async function getTopics(
   categoryId: number | null,

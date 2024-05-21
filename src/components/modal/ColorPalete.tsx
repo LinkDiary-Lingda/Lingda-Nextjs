@@ -1,11 +1,10 @@
 'use client';
-import { CategoryColor, CategoryItem } from '@/types/category';
+import { CategoryColor } from '@/types/category';
 import React, { useState } from 'react';
 import cls from 'classnames';
 import { FaCircle } from 'react-icons/fa';
-import { UseFormSetValue } from 'react-hook-form';
 type Props = {
-  setValue: UseFormSetValue<CategoryItem>;
+  setValue: any;
 };
 export default function ColorPalete({ setValue }: Props) {
   const [selected, setSelected] = useState<CategoryColor>('#F04242');

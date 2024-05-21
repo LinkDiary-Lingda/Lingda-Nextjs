@@ -13,7 +13,7 @@ type InputProps = {
   btnHandled: boolean;
   btnHandledMsg: string;
   setBtnState: (status: boolean) => void;
-  error?: FieldError;
+  error?: any;
 };
 
 export default function InputGroupWithBtn({

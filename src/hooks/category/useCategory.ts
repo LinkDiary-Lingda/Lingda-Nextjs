@@ -40,7 +40,7 @@ export default function useCategory() {
   });
 
   const { mutate: editCategoryItemQuery } = useMutation({
-    mutationFn: (data: EditItem) => editCategoryItem({ ...data, token }),
+    mutationFn: (data: any) => editCategoryItem({ ...data, token }),
     onSuccess: (data, { color }) => {
       queryClient.invalidateQueries({ queryKey: ['categories', user] });
       color

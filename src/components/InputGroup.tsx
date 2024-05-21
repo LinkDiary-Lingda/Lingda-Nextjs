@@ -8,7 +8,7 @@ type InputProps = {
   placeholder: string;
   type: string;
   register: () => any;
-  error?: FieldError;
+  error?: any;
 };
 
 export default function InputGroup({

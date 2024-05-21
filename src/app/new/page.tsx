@@ -6,11 +6,12 @@ import { useCategoryContext } from '@/context/CategoryContext';
 import useTopic from '@/hooks/topic/useTopic';
 import Image from 'next/image';
 import cls from 'classnames';
+import { TopicItem } from '@/types/topic';
 
 export default function New() {
   const [urlNum, setUrlNum] = useState(1);
   const [images, setImages] = useState<string[]>([]);
-  const fileInput = useRef(null);
+  const fileInput = useRef<HTMLInputElement>(null);
   const { categoryState } = useCategoryContext();
   const textarea = useRef<HTMLTextAreaElement>(null);
   const handleResizeHeight = () => {
@@ -96,7 +97,7 @@ export default function New() {
     }
   };
 
-  const handleSumbitBtn = (data) => {
+  const handleSumbitBtn = (data: any) => {
     createTopicQuery(data);
   };
 

@@ -85,25 +85,25 @@ export default function Edit() {
   }, [register, urlNum]);
 
   const handleImageBtn = () => {
-    fileInput.current?.click();
+    // fileInput.current?.click();
   };
 
   const handleUploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const imageBody = e.target.files[0];
-      const profileImageUrl = await updateImageQuery({
-        imageBody,
-        name: imageBody.name,
-      });
-      setImages((prev) => [...prev, profileImageUrl]);
-      setValue(
-        `contentRequest.imageContents.${images.length}.imageUrl`,
-        profileImageUrl
-      );
-    }
+    // if (e.target.files) {
+    //   const imageBody = e.target.files[0];
+    //   const profileImageUrl = await updateImageQuery({
+    //     imageBody,
+    //     name: imageBody.name,
+    //   });
+    //   setImages((prev) => [...prev, profileImageUrl]);
+    //   setValue(
+    //     `contentRequest.imageContents.${images.length}.imageUrl`,
+    //     profileImageUrl
+    //   );
+    // }
   };
 
-  const handleSumbitBtn = (data) => {
+  const handleSumbitBtn = (data: any) => {
     createTopicQuery(data);
   };
 
