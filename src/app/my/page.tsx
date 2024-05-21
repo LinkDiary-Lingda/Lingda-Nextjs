@@ -8,5 +8,14 @@ import useTopic from '@/hooks/topic/useTopic';
 export default function My() {
   const { topicQuery } = useTopic();
 
-  return <>{topicQuery && <>{topicQuery.length > 0 && <Content />}</>}</>;
+  return (
+    <>
+      {topicQuery && (
+        <>
+          {topicQuery.length > 0 &&
+            topicQuery.map((topic) => <Content topic={topic} key={topic.id} />)}
+        </>
+      )}
+    </>
+  );
 }

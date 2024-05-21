@@ -1,54 +1,67 @@
+import Image from 'next/image';
 import React from 'react';
 import { CiShare1 } from 'react-icons/ci';
 import { FaCircle, FaRegStar, FaStar } from 'react-icons/fa';
 import { IoIosLink } from 'react-icons/io';
+import TopicButtons from './topicButtons';
 
-export default function Content() {
+export default function Content({ topic }: { topic: TopicItem }) {
+  const {
+    name,
+    categoryName,
+    stared,
+    contentResponses: { imageContents, textContents, urlContents },
+  } = topic;
+
   return (
     <div className="px-4 py-8 border-b-2 border-Gray-02 flex flex-col gap-4">
       <div>
         <div className="flex justify-between items-center">
-          <h2 className="text-Heading-4 font-bold">내 손안의 링크 다이어리</h2>
-          <div className="flex gap-3">
-            <button type="button" aria-label="star-button">
-              <FaStar color="#57E5C3" size={16} />
-            </button>
-            <button type="button" aria-label="share-button">
-              <CiShare1 color="#9E9E9E" size={16} />
-            </button>
-          </div>
+          <h2 className="text-Heading-4 font-bold">{name}</h2>
+          <TopicButtons stared={stared} />
         </div>
         <div className="flex items-center gap-1 mt-1">
           <FaCircle color="red" size={14} />
-          <p className="text-Gray-06 text-Body-2">진짜 핵심 모음집</p>
+          <p className="text-Gray-06 text-Body-2">
+            {categoryName || '전체 보기'}
+          </p>
         </div>
       </div>
       <div className=" flex gap-2 items-center">
-        <a href="http://localhost:3000" className="text-Blue-02 text-Body-1">
-          http://localhost:3000
+        <a href={urlContents[0].url} className="text-Blue-02 text-Body-1">
+          {urlContents[0].url}
         </a>
-        <button className="flex items-center text-Gray-06 bg-Gray-02 px-2 py-1 rounded-full">
-          <IoIosLink />
-          <p>+2</p>
-        </button>
+        {urlContents.length > 1 && (
+          <button className="flex items-center text-Gray-06 bg-Gray-02 px-2 py-1 rounded-full">
+            <IoIosLink />
+            <p>+{urlContents.length - 1}</p>
+          </button>
+        )}
       </div>
       <div>
-        <article className="w-full text-Gray-08 text-Body-2 leading-Body-2">
-          안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕
-          안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕안녕
-        </article>
+        {textContents[0].text && (
+          <article className="w-full text-Gray-08 text-Body-2 leading-Body-2">
+            {textContents[0].text}
+          </article>
+        )}
       </div>
       <div className="flex gap-3 overflow-x-auto scrollbar-hide">
-        <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
-        <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
-        <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
-        <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
-        <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
-        <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
-        <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
-        <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
-        <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
-        <p className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"></p>
+        {imageContents.length > 0 &&
+          imageContents
+            .filter((image) => image.imageUrl)
+            .map((image) => (
+              <button
+                className="h-[80px] w-[80px] rounded-lg bg-Gray-04 flex-shrink-0"
+                key={image.imageUrl}
+              >
+                <Image
+                  height={80}
+                  width={80}
+                  src={image.imageUrl}
+                  alt="added-topic-image"
+                />
+              </button>
+            ))}
       </div>
     </div>
   );

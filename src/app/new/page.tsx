@@ -14,6 +14,7 @@ import NextButton from '@/components/NextButton';
 import { useCategoryContext } from '@/context/CategoryContext';
 import useTopic from '@/hooks/topic/useTopic';
 import Image from 'next/image';
+import cls from 'classnames';
 
 export default function New() {
   const [urlNum, setUrlNum] = useState(1);
@@ -24,6 +25,7 @@ export default function New() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm({
     defaultValues: {
       name: '',
@@ -48,7 +50,7 @@ export default function New() {
     },
   });
   const { categoryState } = useCategoryContext();
-  const { updateImageQuery } = useTopic();
+  const { updateImageQuery, createTopicQuery } = useTopic();
 
   const renderLinkInputs = useMemo(() => {
     const inputs = [];
@@ -81,7 +83,6 @@ export default function New() {
   };
 
   const handleUploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files);
     if (e.target.files) {
       const imageBody = e.target.files[0];
       const profileImageUrl = await updateImageQuery({
@@ -89,7 +90,14 @@ export default function New() {
         name: imageBody.name,
       });
       setImages((prev) => [...prev, profileImageUrl]);
+      images.forEach((image, index) =>
+        setValue(`contentRequest.imageContents.${index}.imageUrl`, image)
+      );
     }
+  };
+
+  const handleSumbitBtn = (data) => {
+    createTopicQuery(data);
   };
 
   return (
@@ -105,6 +113,11 @@ export default function New() {
           placeholder="글 제목을 입력하세요."
           className="w-[312px] h-[55px] border-b-2 outline-none text-Body-1"
         />
+        {errors.name && (
+          <small className="w-full ml-8 mt-1 text-start text-Red-02">
+            {errors.name.message}
+          </small>
+        )}
         <div className="w-[312px] h-[55px] border-b-2 text-Body-1 flex items-center justify-between mb-6">
           <p className="text-Primary-04">
             {categoryState.name || '최상위 디바이더'}
@@ -157,9 +170,7 @@ export default function New() {
                   <Image
                     height={80}
                     width={80}
-                    src={
-                      'https://image.giftmoa.co.kr/images/544b3a22-6ee8-4762-a12a-333d90618222.jpeg'
-                    }
+                    src={imageUrl}
                     alt="added-topic-image"
                   />
                 </div>
@@ -168,7 +179,17 @@ export default function New() {
         </div>
       </div>
       <div className="absolute bottom-0 flex justify-center items-center w-full">
-        <NextButton text="작성하기" errors={errors} />
+        <button
+          type="button"
+          className={cls('w-[312px] h-[56px] text-white rounded-lg', {
+            'bg-Primary-02': Object.keys(errors).length < 1,
+            'bg-Primary-01': Object.keys(errors).length > 0,
+          })}
+          disabled={Object.keys(errors).length !== 0}
+          onClick={handleSubmit(handleSumbitBtn)}
+        >
+          작성하기
+        </button>
       </div>
     </div>
   );

@@ -11,5 +11,14 @@ export default async function MyId({ params }: Props) {
   const { id } = params;
   const { topicQuery } = useTopic();
 
-  return <>{topicQuery && <>{topicQuery.length > 0 && <Content />}</>}</>;
+  return (
+    <>
+      {topicQuery && (
+        <>
+          {topicQuery.length > 0 &&
+            topicQuery.map((topic) => <Content topic={topic} key={topic.id} />)}
+        </>
+      )}
+    </>
+  );
 }
