@@ -18,17 +18,19 @@ export default function TopicHeader() {
   };
   const router = useRouter();
   const menus = [
-    {
-      title: '수정하기',
-      handleClick: () => {
-        setIsEdit(true);
-      },
-    },
+    // {
+    //   title: '수정하기',
+    //   handleClick: () => {
+    //     setIsEdit(true);
+    //     setDeleteOn(false);
+    //   },
+    // },
     {
       title: '삭제하기',
       warning: true,
       handleClick: () => {
         setDeleteOn(true);
+        setIsEdit(false);
       },
     },
   ];
@@ -40,6 +42,10 @@ export default function TopicHeader() {
       trashTopicQuery(parseInt(id));
     }
   };
+  const hadleEdit = () => {
+    router.push(`/topic/edit/${id}`);
+  };
+
   return (
     <>
       <nav>
@@ -83,20 +89,22 @@ export default function TopicHeader() {
           />
         </div>
       )}
-      {/* {modalOn && (
-        <Alert
-          isOpen={deleteOn}
-          title="디바이더를 삭제하시겠습니까?"
-          informativeText=""
-          secondaryBtn="취소"
-          secondaryAction={() => {
-            setDeleteOn(false);
-            setMenuOn(false);
-          }}
-          primaryBtn="삭제하기"
-          primaryAction={handleDelete}
-        />
-      )} */}
+      {isEdit && (
+        <div className="relative h-[100vh] -ml-6 -mt-12">
+          <Alert
+            isOpen={isEdit}
+            title="글을 수정하시겠습니까?"
+            informativeText=""
+            secondaryBtn="취소"
+            secondaryAction={() => {
+              setIsEdit(false);
+              setMenuOn(false);
+            }}
+            primaryBtn="수정하기"
+            primaryAction={hadleEdit}
+          />
+        </div>
+      )}
     </>
   );
 }
