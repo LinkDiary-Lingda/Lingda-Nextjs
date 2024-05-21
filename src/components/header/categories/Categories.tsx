@@ -26,6 +26,7 @@ export default function Categories({ setMenuOn }: Props) {
   const [modalOn, setModalOn] = useState(false);
   const [isCategory, setIsCategory] = useState(true);
   const { categoriesQuery, orderCategoryItemQuery } = useCategory();
+  const [openCategories, setOpenCategories] = useState<Set<number>>(new Set());
 
   const menus = [
     {
@@ -82,6 +83,50 @@ export default function Categories({ setMenuOn }: Props) {
     setTargetId(null);
   };
 
+  const toggleCategory = (id: number) => {
+    setOpenCategories((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
+  const renderCategory = (category) => (
+    <li
+      key={category.id}
+      className={cls('h-14 flex items-center justify-between cursor-pointer', {
+        'border-Primary-03 border-b-[1px]':
+          draggedOverId?.id === category.id + '',
+        'border-b-[1px] border-Gray-02': draggedOverId?.id !== category.id + '',
+        'bg-Primary-01 border-Primary-03 border-[1px]':
+          targetId === category.id + '',
+        'bg-none border-b-[1px] border-Gray-02': targetId !== category.id + '',
+      })}
+      draggable
+      onDragStart={handleDragStart}
+      onDragOver={handleCategoryDragOver}
+      onDrop={handleDrop}
+      onDragLeave={handleDragLeave}
+      id={category.id + ''}
+      data-id={category.dividerId}
+      onClick={() => {
+        setMenuOn(false);
+        router.push(`/my/${category.name}/${category.id}`);
+      }}
+    >
+      <RootCategoryItem
+        categoryId={category.id}
+        name={category.name}
+        color={category.color!}
+        dividerId={category.dividerId}
+      />
+    </li>
+  );
+
   return (
     <div className="mt-4 w-64 text-Body-1">
       <div className="h-14 flex items-center border-b-[1px] justify-between relative">
@@ -117,42 +162,7 @@ export default function Categories({ setMenuOn }: Props) {
         {categoriesQuery &&
           categoriesQuery.map((item) => {
             if (item.type === 'CATEGORY') {
-              return (
-                <li
-                  key={item.id}
-                  className={cls(
-                    'h-14 flex items-center justify-between cursor-pointer',
-                    {
-                      'border-Primary-03 border-b-[1px]':
-                        draggedOverId?.id === item.id + '',
-                      'border-b-[1px] border-Gray-02':
-                        draggedOverId?.id !== item.id + '',
-                      'bg-Primary-01 border-Primary-03 border-[1px]':
-                        targetId === item.id + '',
-                      'bg-none border-b-[1px] border-Gray-02':
-                        targetId !== item.id + '',
-                    }
-                  )}
-                  draggable
-                  onDragStart={handleDragStart}
-                  onDragOver={handleCategoryDragOver}
-                  onDrop={handleDrop}
-                  onDragLeave={handleDragLeave}
-                  id={item.id + ''}
-                  data-id={item.dividerId}
-                  onClick={() => {
-                    setMenuOn(false);
-                    router.push(`/my/${item.name}/${item.id}`);
-                  }}
-                >
-                  <RootCategoryItem
-                    categoryId={item.id}
-                    name={item.name}
-                    color={item.color!}
-                    dividerId={item.dividerId}
-                  />
-                </li>
-              );
+              return renderCategory(item);
             }
             if (item.type === 'DIVIDER') {
               return (
@@ -166,36 +176,21 @@ export default function Categories({ setMenuOn }: Props) {
                   onDragStart={handleDragStart}
                   id={item.id + ''}
                   data-id={item.dividerId}
+                  onClick={() => {
+                    toggleCategory(item.id);
+                  }}
                 >
                   <DividerItem
                     name={item.name}
                     id={item.id + ''}
                     isDraggedOver={draggedOverId?.id === item.id + ''}
+                    toggled={openCategories}
                   />
-                  <ul>
-                    {item.categories.map((child) => {
-                      if (child.type === 'CATEGORY') {
-                        return (
-                          <li
-                            key={child.id}
-                            className="h-14 ml-6 flex items-center justify-between"
-                            draggable
-                            onDragStart={handleDragStart}
-                            onDragOver={handleCategoryDragOver}
-                            onDrop={handleDrop}
-                            onDragLeave={handleDragLeave}
-                            id={child.id + ''}
-                            data-id={child.dividerId}
-                          >
-                            <NestedCategoryItem
-                              color={child.color!}
-                              title={child.name}
-                            />
-                          </li>
-                        );
-                      }
-                    })}
-                  </ul>
+                  {openCategories.has(item.id) && (
+                    <ul className="ml-6">
+                      {item.categories && item.categories.map(renderCategory)}
+                    </ul>
+                  )}
                 </li>
               );
             }

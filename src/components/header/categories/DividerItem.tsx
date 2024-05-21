@@ -1,20 +1,31 @@
 'use client';
 import React, { MouseEvent, useState } from 'react';
-import { IoIosArrowDown } from 'react-icons/io';
+import {
+  IoIosArrowDown,
+  IoIosArrowDroprightCircle,
+  IoIosArrowUp,
+} from 'react-icons/io';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import cls from 'classnames';
 import MenuBox from '@/components/menu/MenuBox';
 import Alert from '@/components/Alert';
 import InputModal from '@/components/modal/CategoryInputModal';
 import useCategory from '@/hooks/category/useCategory';
+import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
 
 type Props = {
   name: string;
   id: string;
   isDraggedOver: boolean;
+  toggled: Set<number>;
 };
 
-export default function DividerItem({ name, id, isDraggedOver }: Props) {
+export default function DividerItem({
+  name,
+  id,
+  isDraggedOver,
+  toggled,
+}: Props) {
   const [menuOn, setMenuOn] = useState(false);
   const [modalOn, setModalOn] = useState(false);
   const [isCategory, setIsCategory] = useState(true);
@@ -67,17 +78,26 @@ export default function DividerItem({ name, id, isDraggedOver }: Props) {
     await deleteCategoryItemQuery(parseInt(id));
     setDeleteOn(false);
   };
+
   return (
     <>
       <div
-        id={id + ''}
+        id={id}
         className={cls('h-14 flex items-center justify-between relative', {
           'border-Primary-03 border-b-[1px]': isDraggedOver,
           'border-none border-b-0': !isDraggedOver,
         })}
       >
-        <div className="flex items-center gap-2">
-          <IoIosArrowDown size={20} color="#9E9E9E" />
+        <div className="flex items-center">
+          {toggled.has(parseInt(id)) ? (
+            <IoIosArrowDown size={20} color="#9E9E9E" className="mr-2" />
+          ) : (
+            <MdOutlineKeyboardArrowRight
+              size={24}
+              color="#9E9E9E"
+              className="mr-1"
+            />
+          )}
           <p>{name}</p>
         </div>
         <button

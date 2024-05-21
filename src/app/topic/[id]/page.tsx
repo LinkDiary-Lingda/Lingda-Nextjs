@@ -79,11 +79,11 @@ export default function Page({ params: { id } }: Props) {
               </div>
               {photoModalOn && selectedImage && (
                 <div
-                  className="bg-opacity-50 bg-black z-30 w-[360px] h-[100vh] absolute top-0 -ml-8 flex flex-col justify-center items-center"
+                  className="bg-opacity-50 bg-black z-30 w-[360px] h-[100vh] absolute top-0 -ml-8 flex flex-col justify-center"
                   onClick={() => setPhotoModalOn(false)}
                 >
                   <div
-                    className="flex flex-col justify-center items-center"
+                    className="flex flex-col items-center"
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
