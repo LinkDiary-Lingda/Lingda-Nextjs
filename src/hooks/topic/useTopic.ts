@@ -2,10 +2,12 @@
 import {
   cancelStarTopic,
   createTopic,
+  getTopic,
   getTopics,
   starTopic,
   updateImage,
 } from '@/service/topic';
+import { TopicItem } from '@/types/topic';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -24,6 +26,10 @@ export default function useTopic() {
   const { data: topicQuery } = useQuery({
     queryKey: ['topics', user, null],
     queryFn: () => getTopics(null, token),
+  });
+
+  const { mutateAsync: topicDetailQuery } = useMutation({
+    mutationFn: (id: number) => getTopic(id, token),
   });
 
   const { mutate: categoryTopicQuery } = useMutation({
@@ -69,6 +75,7 @@ export default function useTopic() {
   return {
     topicQuery,
     categoryTopicQuery,
+    topicDetailQuery,
     createTopicQuery,
     updateImageQuery,
     starTopicQuery,

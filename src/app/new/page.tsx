@@ -15,6 +15,7 @@ import { useCategoryContext } from '@/context/CategoryContext';
 import useTopic from '@/hooks/topic/useTopic';
 import Image from 'next/image';
 import cls from 'classnames';
+import { defaultTopic } from '@/types/topic';
 
 export default function New() {
   const [urlNum, setUrlNum] = useState(1);
@@ -27,27 +28,7 @@ export default function New() {
     formState: { errors },
     setValue,
   } = useForm({
-    defaultValues: {
-      name: '',
-      categoryId: null,
-      contentRequest: {
-        textContents: [
-          {
-            text: '',
-          },
-        ],
-        imageContents: [
-          {
-            imageUrl: '',
-          },
-        ],
-        urlContents: [
-          {
-            url: '',
-          },
-        ],
-      },
-    },
+    defaultValues: defaultTopic,
   });
   const { categoryState } = useCategoryContext();
   const { updateImageQuery, createTopicQuery } = useTopic();

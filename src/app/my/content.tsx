@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import React from 'react';
 import { CiShare1 } from 'react-icons/ci';
-import { FaCircle, FaRegStar, FaStar } from 'react-icons/fa';
+import { FaCircle } from 'react-icons/fa';
 import { IoIosLink } from 'react-icons/io';
 import TopicButtons from './TopicButtons';
 import Link from 'next/link';
+import { TopicItem } from '@/types/topic';
 
 export default function Content({ topic }: { topic: TopicItem }) {
   const {

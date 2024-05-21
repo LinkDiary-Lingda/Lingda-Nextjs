@@ -101,3 +101,13 @@ export async function cancelStarTopic(id: number, token: string) {
     throw error;
   }
 }
+
+export async function getTopic(id: number, token: string) {
+  try {
+    const topic = await GET({ path: `topics/${id}`, token });
+    return topic;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}

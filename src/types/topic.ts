@@ -1,6 +1,7 @@
-interface TopicItem {
+export interface TopicItem {
   id: number;
   name: string;
+  color: string;
   categoryId: number | null;
   categoryName: string;
   stared: boolean;
@@ -24,3 +25,25 @@ type TextContent = {
 type UrlContent = {
   url: string;
 };
+
+export const defaultTopic ={
+  name: '',
+  categoryId: null,
+  contentRequest: {
+    textContents: [
+      {
+        text: '',
+      },
+    ],
+    imageContents: [
+      {
+        imageUrl: '',
+      },
+    ],
+    urlContents: [
+      {
+        url: '',
+      },
+    ],
+  },
+},}
