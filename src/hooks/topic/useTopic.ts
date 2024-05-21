@@ -1,5 +1,10 @@
 'use client';
-import { createTopic, getTopics, updateImage } from '@/service/topic';
+import {
+  createTopic,
+  getTopics,
+  starTopic,
+  updateImage,
+} from '@/service/topic';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -22,8 +27,8 @@ export default function useTopic() {
 
   const { mutate: categoryTopicQuery } = useMutation({
     mutationFn: (categoryId: number | null) => getTopics(categoryId, token),
-    onSuccess: (data, categoryId) => {
-      queryClient.invalidateQueries({ queryKey: ['topics', user, categoryId] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['topics', user] });
     },
   });
 
@@ -34,8 +39,8 @@ export default function useTopic() {
         'id' | 'categoryName' | 'stared' | 'createdDate' | 'updatedDate'
       >
     ) => createTopic(item, token),
-    onSuccess: (data, { categoryId }) => {
-      queryClient.invalidateQueries({ queryKey: ['topics', user, categoryId] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['topics', user] });
       toast('토픽이 생성되었습니다.');
       router.back();
     },
@@ -44,6 +49,13 @@ export default function useTopic() {
   const { mutateAsync: updateImageQuery } = useMutation({
     mutationFn: (data: { imageBody: any; name: string }) =>
       updateImage({ ...data, token }),
+  });
+
+  const { mutate: starTopicQuery } = useMutation({
+    mutationFn: (id: number) => starTopic(id, token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['topics', user] });
+    },
   });
 
   return { topicQuery, categoryTopicQuery, createTopicQuery, updateImageQuery };

@@ -81,3 +81,13 @@ export async function updateImage({
     throw error;
   }
 }
+
+export async function starTopic(id: number, token: string) {
+  try {
+    const stared = await POST({ path: `topics/stars/${id}`, token });
+    return stared;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
