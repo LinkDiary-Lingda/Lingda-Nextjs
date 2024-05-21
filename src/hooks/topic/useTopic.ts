@@ -32,7 +32,7 @@ export default function useTopic() {
     mutationFn: (id: number) => getTopic(id, token),
   });
 
-  const { mutate: categoryTopicQuery } = useMutation({
+  const { mutateAsync: categoryTopicQuery } = useMutation({
     mutationFn: (categoryId: number | null) => getTopics(categoryId, token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['topics', user] });

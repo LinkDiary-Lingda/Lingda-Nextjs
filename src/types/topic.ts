@@ -26,7 +26,7 @@ type UrlContent = {
   url: string;
 };
 
-export const defaultTopic ={
+export const defaultTopic = {
   name: '',
   categoryId: null,
   contentRequest: {
@@ -46,4 +46,4 @@ export const defaultTopic ={
       },
     ],
   },
-},}
+};

@@ -6,8 +6,10 @@ import Link, { LinkProps } from 'next/link';
 import Image from 'next/image';
 import useTopic from '@/hooks/topic/useTopic';
 import { TopicItem } from '@/types/topic';
-
-export default function Page({ params: { id } }: { params: { id: number } }) {
+type Props = {
+  params: { id: number };
+};
+export default function Page({ params: { id } }: Props) {
   const { topicDetailQuery } = useTopic();
   const [topic, setTopic] = useState<TopicItem>();
   useEffect(() => {

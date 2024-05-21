@@ -9,6 +9,7 @@ import InputModal from '@/components/modal/CategoryInputModal';
 import { useRouter } from 'next/navigation';
 import useCategory from '@/hooks/category/useCategory';
 import cls from 'classnames';
+import Link from 'next/link';
 
 type Props = {
   setMenuOn: Dispatch<SetStateAction<boolean>>;
@@ -84,7 +85,7 @@ export default function Categories({ setMenuOn }: Props) {
   return (
     <div className="mt-4 w-64 text-Body-1">
       <div className="h-14 flex items-center border-b-[1px] justify-between relative">
-        <p>전체보기</p>
+        <Link href="/my">전체보기</Link>
         <button
           className="w-9 h-9 flex items-center justify-center"
           aria-label="create-category-btn"
@@ -132,7 +133,7 @@ export default function Categories({ setMenuOn }: Props) {
                   data-id={item.dividerId}
                   onClick={() => {
                     setMenuOn(false);
-                    router.push(`/my/${item.id}`);
+                    router.push(`/my/${item.name}/${item.id}`);
                   }}
                 >
                   <RootCategoryItem

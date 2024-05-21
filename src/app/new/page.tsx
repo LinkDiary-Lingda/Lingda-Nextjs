@@ -1,16 +1,7 @@
 'use client';
-import React, {
-  ChangeEvent,
-  MouseEvent,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { ChangeEvent, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import LinkInput from './LinkInput';
 import { FaCirclePlus } from 'react-icons/fa6';
-import { FaPlus } from 'react-icons/fa';
-import NextButton from '@/components/NextButton';
 import { useCategoryContext } from '@/context/CategoryContext';
 import useTopic from '@/hooks/topic/useTopic';
 import Image from 'next/image';
@@ -21,6 +12,7 @@ export default function New() {
   const [urlNum, setUrlNum] = useState(1);
   const [images, setImages] = useState<string[]>([]);
   const fileInput = useRef(null);
+  const { categoryState } = useCategoryContext();
 
   const {
     register,
@@ -28,9 +20,29 @@ export default function New() {
     formState: { errors },
     setValue,
   } = useForm({
-    defaultValues: defaultTopic,
+    defaultValues: {
+      name: '',
+      categoryId: categoryState.id || null,
+      contentRequest: {
+        textContents: [
+          {
+            text: '',
+          },
+        ],
+        imageContents: [
+          {
+            imageUrl: '',
+          },
+        ],
+        urlContents: [
+          {
+            url: '',
+          },
+        ],
+      },
+    },
   });
-  const { categoryState } = useCategoryContext();
+
   const { updateImageQuery, createTopicQuery } = useTopic();
 
   const renderLinkInputs = useMemo(() => {
@@ -71,8 +83,9 @@ export default function New() {
         name: imageBody.name,
       });
       setImages((prev) => [...prev, profileImageUrl]);
-      images.forEach((image, index) =>
-        setValue(`contentRequest.imageContents.${index}.imageUrl`, image)
+      setValue(
+        `contentRequest.imageContents.${images.length}.imageUrl`,
+        profileImageUrl
       );
     }
   };
@@ -100,9 +113,7 @@ export default function New() {
           </small>
         )}
         <div className="w-[312px] h-[55px] border-b-2 text-Body-1 flex items-center justify-between mb-6">
-          <p className="text-Primary-04">
-            {categoryState.name || '최상위 디바이더'}
-          </p>
+          <p className="text-Primary-04">{categoryState.name || '전체보기'}</p>
           {/* <input
             // {...register('catego', {
             //   required: {

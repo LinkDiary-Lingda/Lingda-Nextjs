@@ -18,6 +18,8 @@ export default function Filters() {
       ...selectedFilters,
       [name]: !selectedFilters[name],
     });
+    switch (name) {
+    }
   };
   return (
     <div className="my-6">
