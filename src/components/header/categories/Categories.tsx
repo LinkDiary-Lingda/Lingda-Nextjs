@@ -2,7 +2,6 @@
 import React, { Dispatch, DragEvent, SetStateAction, useState } from 'react';
 import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
-import NestedCategoryItem from './NestedCategoryItem';
 import { GoPlus } from 'react-icons/go';
 import MenuBox from '@/components/menu/MenuBox';
 import InputModal from '@/components/modal/CategoryInputModal';
@@ -56,6 +55,7 @@ export default function Categories({ setMenuOn }: Props) {
       parentId: e.currentTarget.getAttribute('data-id'),
     });
   };
+
   const handleDividerDragOver = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
     setDraggedOverId({
@@ -127,6 +127,41 @@ export default function Categories({ setMenuOn }: Props) {
     </li>
   );
 
+  const renderDivider = (divider) => (
+    <li
+      key={divider.id}
+      className="flex flex-col justify-between border-b-[1px] border-Gray-02"
+      draggable
+      onDragOver={handleDividerDragOver}
+      onDrop={handleDrop}
+      onDragLeave={handleDragLeave}
+      onDragStart={handleDragStart}
+      id={divider.id + ''}
+      data-id={divider.dividerId}
+    >
+      <DividerItem
+        name={divider.name}
+        id={divider.id + ''}
+        isDraggedOver={draggedOverId?.id === divider.id + ''}
+        toggled={openCategories.has(divider.id)}
+        onToggle={() => toggleCategory(divider.id)}
+      />
+      {openCategories.has(divider.id) && (
+        <ul className="pl-6">
+          {divider.categories &&
+            divider.categories.map((item) => {
+              if (item.type === 'CATEGORY') {
+                return renderCategory(item);
+              }
+              if (item.type === 'DIVIDER') {
+                return renderDivider(item);
+              }
+            })}
+        </ul>
+      )}
+    </li>
+  );
+
   return (
     <div className="mt-4 w-64 text-Body-1">
       <div className="h-14 flex items-center border-b-[1px] justify-between relative">
@@ -165,34 +200,7 @@ export default function Categories({ setMenuOn }: Props) {
               return renderCategory(item);
             }
             if (item.type === 'DIVIDER') {
-              return (
-                <li
-                  key={item.id}
-                  className="flex flex-col justify-between border-b-[1px] border-Gray-02"
-                  draggable
-                  onDragOver={handleDividerDragOver}
-                  onDrop={handleDrop}
-                  onDragLeave={handleDragLeave}
-                  onDragStart={handleDragStart}
-                  id={item.id + ''}
-                  data-id={item.dividerId}
-                  onClick={() => {
-                    toggleCategory(item.id);
-                  }}
-                >
-                  <DividerItem
-                    name={item.name}
-                    id={item.id + ''}
-                    isDraggedOver={draggedOverId?.id === item.id + ''}
-                    toggled={openCategories}
-                  />
-                  {openCategories.has(item.id) && (
-                    <ul className="ml-6">
-                      {item.categories && item.categories.map(renderCategory)}
-                    </ul>
-                  )}
-                </li>
-              );
+              return renderDivider(item);
             }
           })}
       </ul>

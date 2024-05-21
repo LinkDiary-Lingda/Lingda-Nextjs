@@ -1,10 +1,6 @@
 'use client';
 import React, { MouseEvent, useState } from 'react';
-import {
-  IoIosArrowDown,
-  IoIosArrowDroprightCircle,
-  IoIosArrowUp,
-} from 'react-icons/io';
+import { IoIosArrowDown } from 'react-icons/io';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import cls from 'classnames';
 import MenuBox from '@/components/menu/MenuBox';
@@ -17,7 +13,8 @@ type Props = {
   name: string;
   id: string;
   isDraggedOver: boolean;
-  toggled: Set<number>;
+  toggled: boolean;
+  onToggle: () => void;
 };
 
 export default function DividerItem({
@@ -25,6 +22,7 @@ export default function DividerItem({
   id,
   isDraggedOver,
   toggled,
+  onToggle,
 }: Props) {
   const [menuOn, setMenuOn] = useState(false);
   const [modalOn, setModalOn] = useState(false);
@@ -87,9 +85,10 @@ export default function DividerItem({
           'border-Primary-03 border-b-[1px]': isDraggedOver,
           'border-none border-b-0': !isDraggedOver,
         })}
+        onClick={onToggle}
       >
         <div className="flex items-center">
-          {toggled.has(parseInt(id)) ? (
+          {toggled ? (
             <IoIosArrowDown size={20} color="#9E9E9E" className="mr-2" />
           ) : (
             <MdOutlineKeyboardArrowRight

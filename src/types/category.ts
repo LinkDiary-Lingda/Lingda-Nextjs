@@ -43,5 +43,5 @@ export interface CategoryOrderBody {
   id: number;
   token: string;
   dividerId: number | null;
-  prevId: number;
+  prevId: number | null;
 }
