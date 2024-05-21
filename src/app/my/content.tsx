@@ -3,7 +3,8 @@ import React from 'react';
 import { CiShare1 } from 'react-icons/ci';
 import { FaCircle, FaRegStar, FaStar } from 'react-icons/fa';
 import { IoIosLink } from 'react-icons/io';
-import TopicButtons from './topicButtons';
+import TopicButtons from './TopicButtons';
+import Link from 'next/link';
 
 export default function Content({ topic }: { topic: TopicItem }) {
   const {
@@ -15,7 +16,10 @@ export default function Content({ topic }: { topic: TopicItem }) {
   } = topic;
 
   return (
-    <div className="px-4 py-8 border-b-2 border-Gray-02 flex flex-col gap-4">
+    <Link
+      className="px-4 py-8 border-b-2 border-Gray-02 flex flex-col gap-4"
+      href={`/topic/${id}`}
+    >
       <div>
         <div className="flex justify-between items-center">
           <h2 className="text-Heading-4 font-bold">{name}</h2>
@@ -64,6 +68,6 @@ export default function Content({ topic }: { topic: TopicItem }) {
               </button>
             ))}
       </div>
-    </div>
+    </Link>
   );
 }

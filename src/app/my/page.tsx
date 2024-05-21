@@ -1,9 +1,7 @@
 'use client';
-import { FaPlus } from 'react-icons/fa';
 import Content from './content';
-import Filters from './filters';
-import Link from 'next/link';
 import useTopic from '@/hooks/topic/useTopic';
+import Nothing from './nothing';
 
 export default function My() {
   const { topicQuery } = useTopic();
@@ -12,8 +10,11 @@ export default function My() {
     <>
       {topicQuery && (
         <>
-          {topicQuery.length > 0 &&
-            topicQuery.map((topic) => <Content topic={topic} key={topic.id} />)}
+          {topicQuery.length > 0 ? (
+            topicQuery.map((topic) => <Content topic={topic} key={topic.id} />)
+          ) : (
+            <Nothing />
+          )}
         </>
       )}
     </>
