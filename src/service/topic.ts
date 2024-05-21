@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { GET, POST } from './HttpClient';
+import { DELETE, GET, POST } from './HttpClient';
 
 export async function getTopics(
   categoryId: number | null,
@@ -85,6 +85,16 @@ export async function updateImage({
 export async function starTopic(id: number, token: string) {
   try {
     const stared = await POST({ path: `topics/stars/${id}`, token });
+    return stared;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function cancelStarTopic(id: number, token: string) {
+  try {
+    const stared = await DELETE({ path: `topics/stars/${id}`, token });
     return stared;
   } catch (error) {
     console.log(error);

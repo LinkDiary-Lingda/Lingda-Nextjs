@@ -1,5 +1,6 @@
 'use client';
 import {
+  cancelStarTopic,
   createTopic,
   getTopics,
   starTopic,
@@ -58,5 +59,19 @@ export default function useTopic() {
     },
   });
 
-  return { topicQuery, categoryTopicQuery, createTopicQuery, updateImageQuery };
+  const { mutate: cancelStarTopicQuery } = useMutation({
+    mutationFn: (id: number) => cancelStarTopic(id, token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['topics', user] });
+    },
+  });
+
+  return {
+    topicQuery,
+    categoryTopicQuery,
+    createTopicQuery,
+    updateImageQuery,
+    starTopicQuery,
+    cancelStarTopicQuery,
+  };
 }

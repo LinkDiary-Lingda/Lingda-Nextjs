@@ -8,6 +8,7 @@ import TopicButtons from './topicButtons';
 export default function Content({ topic }: { topic: TopicItem }) {
   const {
     name,
+    id,
     categoryName,
     stared,
     contentResponses: { imageContents, textContents, urlContents },
@@ -18,7 +19,7 @@ export default function Content({ topic }: { topic: TopicItem }) {
       <div>
         <div className="flex justify-between items-center">
           <h2 className="text-Heading-4 font-bold">{name}</h2>
-          <TopicButtons stared={stared} />
+          <TopicButtons stared={stared} id={id} />
         </div>
         <div className="flex items-center gap-1 mt-1">
           <FaCircle color="red" size={14} />
