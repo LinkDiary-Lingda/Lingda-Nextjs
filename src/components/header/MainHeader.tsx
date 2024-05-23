@@ -33,7 +33,7 @@ export default function MainHeader() {
           <li>
             <Link
               className="font-gmarketBold text-Heading-4 text-Primary-04"
-              href="http://localhost:3000"
+              href="/my"
             >
               Lingda
             </Link>
@@ -55,7 +55,7 @@ export default function MainHeader() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              console.log('hi');
+              console.log('hi, easter eggs event!');
             }}
           >
             <input
