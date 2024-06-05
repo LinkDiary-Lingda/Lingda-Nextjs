@@ -3,6 +3,10 @@ import useTopic from '@/hooks/topic/useTopic';
 import React, { MouseEvent, useState } from 'react';
 import { CiShare1 } from 'react-icons/ci';
 import { FaRegStar, FaStar } from 'react-icons/fa';
+import fullStar from '../../images/full-star.png';
+import emptyStar from '../../images/empty-star.png';
+import shareImg from '../../images/share-image.png';
+import Image from 'next/image';
 
 export default function TopicButtons({
   stared,
@@ -32,16 +36,21 @@ export default function TopicButtons({
           aria-label="cancel-stared-button"
           onClick={handleCancelStarBtn}
         >
-          <FaStar color="#57E5C3" size={16} />
+          <Image
+            src={fullStar}
+            width={20}
+            height={20}
+            alt="star-cancel-button"
+          />
         </button>
       ) : (
         <button type="button" aria-label="star-button" onClick={handleStarBtn}>
-          <FaRegStar color="#57E5C3" size={16} />
+          <Image src={emptyStar} width={20} height={20} alt="star-button" />
         </button>
       )}
 
       <button type="button" aria-label="share-button">
-        <CiShare1 color="#9E9E9E" size={16} />
+        <Image src={shareImg} width={20} height={20} alt="share-button" />
       </button>
     </div>
   );
