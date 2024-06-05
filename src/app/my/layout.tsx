@@ -25,7 +25,7 @@ export default function MyPageLayout({
           className="w-[60px] h-[60px] rounded-full bg-Primary-02 flex items-center justify-center"
           href="/new"
         >
-          <FaPlus size={40} color="white" />
+          <FaPlus size={28} color="white" />
         </Link>
       </div>
     </>

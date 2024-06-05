@@ -10,18 +10,22 @@ import { CategoryContextProvider } from '@/context/CategoryContext';
 const pretendardBoldFont = localFont({
   src: './font/Pretendard-Bold.woff',
   variable: '--font-pretendard-bold',
+  display: 'swap',
 });
 const pretendardRegularFont = localFont({
   src: './font/Pretendard-Regular.woff',
   variable: '--font-pretendard-regular',
+  display: 'swap',
 });
 const gmarketBoldFont = localFont({
   src: './font/GmarketSansTTFBold.ttf',
   variable: '--font-gmarket-bold',
+  display: 'swap',
 });
 const gmarketMediumFont = localFont({
   src: './font/GmarketSansTTFMedium.ttf',
   variable: '--font-gmarket-medium',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {

@@ -3,6 +3,7 @@ import React from 'react';
 import LoginForm from './LoginForm';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
+import Loading from '../loading';
 
 export default async function Login() {
   const session = await getServerSession();
@@ -10,8 +11,9 @@ export default async function Login() {
     return redirect('/');
   }
   return (
-    <div className="h-full flex flex-col justify-between items-center">
+    <div className="h-full w-full flex flex-col justify-between items-center">
       <section>
+        <Loading />
         <div className="mt-20">
           <h1 className="text-Primary-03 text-Heading-2 font-gmarketBold">
             Lingda
