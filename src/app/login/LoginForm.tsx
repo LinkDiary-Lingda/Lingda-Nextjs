@@ -30,7 +30,7 @@ export default function LoginForm() {
   };
   return (
     <form
-      className="flex flex-col gap-5 mt-10"
+      className="w-full flex flex-col gap-5 mt-10"
       onSubmit={handleSubmit(handleLoginBtn)}
     >
       <InputGroup
@@ -53,8 +53,23 @@ export default function LoginForm() {
           })
         }
       />
-      {error && <small className="text-red-500 -mt-4">{error}</small>}
-      <div className="mt-12">
+      {errors.password && !errors.username && (
+        <small className="text-Error -my-4 ml-2">
+          {errors.password.message}
+        </small>
+      )}
+      {!errors.password && errors.username && (
+        <small className="text-Error -my-4 ml-2">
+          {errors.username.message}
+        </small>
+      )}
+      {errors.password && errors.username && (
+        <small className="text-Error -my-4 ml-2">
+          아이디 또는 비밀번호가 일치하지 않습니다.
+        </small>
+      )}
+      {error && <small className="text-Error -mt-y ml-2">{error}</small>}
+      <div className="mt-12 w-full">
         <NextButton text="로그인하기" errors={errors} />
       </div>
     </form>

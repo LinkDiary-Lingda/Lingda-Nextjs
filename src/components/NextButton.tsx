@@ -10,10 +10,13 @@ export default function NextButton({ text, errors }: NextButtonPros) {
   return (
     <button
       type="submit"
-      className={cls('w-[312px] h-[56px] text-white rounded-lg', {
-        'bg-Primary-02': Object.keys(errors).length < 1,
-        'bg-Primary-01': Object.keys(errors).length > 0,
-      })}
+      className={cls(
+        'w-full h-[56px] text-On-Primary rounded-lg font-bold text-Body-1',
+        {
+          'bg-Primary': Object.keys(errors).length < 1,
+          'bg-Primary-Container': Object.keys(errors).length > 0,
+        }
+      )}
       disabled={Object.keys(errors).length !== 0}
     >
       {text}

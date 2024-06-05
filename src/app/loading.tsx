@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Loading() {
   return (
-    <div className="absolute transform left-1/2 -translate-x-1/2 top-1/4 bg-black bg-opacity-20 w-full h-full -translate-y-1/4 max-w-[490px] flex justify-center items-center">
+    <div className="absolute transform left-1/2 -translate-x-1/2 top-1/4 bg-black bg-opacity-30 w-full h-full -translate-y-1/4 max-w-[490px] flex justify-center items-center">
       <svg
         aria-hidden="true"
         className="w-10 h-10 text-gray-200 animate-spin dark:text-gray-500 fill-gray-400"

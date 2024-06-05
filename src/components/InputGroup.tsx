@@ -24,15 +24,16 @@ export default function InputGroup({
     setValue(e.target.value);
     onChange(e);
   };
+
   return (
-    <div className="flex flex-col gap-1">
+    <div className="w-full flex flex-col gap-1">
       {label && <label htmlFor={name}>{label}</label>}
       <div
         className={cls(
-          'flex flex-row items-center justify-between w-[312px] h-[56px] px-4 border rounded-md',
-          { 'border-Gray-02': !error || !value },
-          { 'border-Primary-02': value },
-          { 'border-Red-02': error }
+          'flex flex-row items-center justify-between w-full h-[56px] px-4 rounded-md',
+          { 'border border-Error': error },
+          { 'border border-Surface-Container': !error && !value },
+          { 'border-2 border-Primary': value }
         )}
       >
         <input
@@ -40,10 +41,10 @@ export default function InputGroup({
           onChange={handleInputChange}
           placeholder={placeholder}
           type={type}
-          className="outline-none placeholder:text-Gray-06 text-semibold h-[54px] w-[280px]"
+          className="outline-none placeholder:text-On-Surface-Third placeholder:font-medium w-full text-On-Surface-Primary font-semibold"
         />
       </div>
-      {error && <small className="text-red-500">{error.message}</small>}
+      {/* {error && <small className="text-Error">{error.message}</small>} */}
     </div>
   );
 }
