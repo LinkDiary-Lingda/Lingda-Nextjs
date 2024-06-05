@@ -11,9 +11,9 @@ export default async function Login() {
     return redirect('/');
   }
   return (
-    <div className="h-full w-full flex flex-col justify-between items-center">
+    <div className="flex flex-col justify-between items-center">
+      <Loading />
       <section>
-        <Loading />
         <div className="mt-20">
           <h1 className="text-Primary-03 text-Heading-2 font-gmarketBold">
             Lingda
