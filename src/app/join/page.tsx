@@ -58,7 +58,7 @@ export default function Join() {
     <section className="w-full h-full flex flex-col items-center">
       <div className="w-full h-full flex flex-col">
         <BackHeader title="가입하기" />
-        <div className="pt-6 pb-12 text-Heading-3 leading-Heading-3 font-pretendardBold">
+        <div className="pt-6 pb-12 text-Heading-3 leading-Heading-3 font-pretendardBold text-On-Surface-Primary">
           <h1>아래 정보로</h1>
           <h1>가입을 진행합니다.</h1>
         </div>

@@ -10,14 +10,17 @@ export default function BackHeader({ title }: { title: string }) {
     <nav>
       <ul className="flex flex-row justify-between items-center h-[48px] w-full">
         <li
-          className="text-Heading-3 cursor-pointer"
+          className="cursor-pointer"
           onClick={router.back}
           aria-label="go-back-button"
         >
           <Image src={backArrow} width={16} height={15} alt="back-button" />
         </li>
         <li>
-          <p className="text-Heading-4" aria-label="title">
+          <p
+            className="text-Heading-4 text-On-Surface-Primary font-bold"
+            aria-label="title"
+          >
             {title}
           </p>
         </li>
