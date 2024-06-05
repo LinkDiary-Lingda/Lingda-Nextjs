@@ -52,7 +52,7 @@ export default function RootLayout({
           <OverlayProvider>
             <NextAuthProvider>
               <CategoryContextProvider>
-                <main className="font-pretendardRegular">{children}</main>
+                <main>{children}</main>
               </CategoryContextProvider>
             </NextAuthProvider>
           </OverlayProvider>
