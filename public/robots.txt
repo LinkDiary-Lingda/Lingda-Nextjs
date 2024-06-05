@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /my
+
+Sitemap: https://www.lingda.app/sitemap.xml

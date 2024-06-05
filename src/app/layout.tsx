@@ -35,7 +35,16 @@ export const metadata: Metadata = {
     default: '링크 다이어리 | Lingda',
   },
   description: '간편하게 링크와 메모, 북마크를 관리해보세요!',
+  authors: [{ name: 'Lingda Team' }],
   icons: { icon: './icon.ico' },
+  openGraph: {
+    type: 'website',
+    url: 'https://lingda.app',
+    title: '링크 다이어리 | Lingda',
+    description: '간편하게 링크와 메모, 북마크를 관리해보세요!',
+    images: [{ url: 'https://lingda.app/lingda-og-image.png' }],
+    locale: 'ko_KR',
+  },
 };
 
 export default function RootLayout({
@@ -48,6 +57,7 @@ export default function RootLayout({
       lang="ko"
       className={`${pretendardBoldFont.variable} ${pretendardRegularFont.variable} ${gmarketBoldFont.variable} ${gmarketMediumFont.variable}`}
     >
+      <head></head>
       <body>
         <ReactQueryClientProvider>
           <OverlayProvider>

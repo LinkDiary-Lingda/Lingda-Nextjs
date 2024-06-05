@@ -2,7 +2,6 @@ import MainHeader from '@/components/header/MainHeader';
 import type { Metadata } from 'next';
 import Filters from './filters';
 import Link from 'next/link';
-import { FaPlus } from 'react-icons/fa';
 import addPlus from '../../images/add-plus.png';
 import Image from 'next/image';
 

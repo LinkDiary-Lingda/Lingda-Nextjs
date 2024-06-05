@@ -1,11 +1,10 @@
-import { hostname } from 'os';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'image.lingda.app', port: '' },
+      { protocol: 'https', hostname: 'image.giftmoa.co.kr', port: '' },
     ],
   },
 };
