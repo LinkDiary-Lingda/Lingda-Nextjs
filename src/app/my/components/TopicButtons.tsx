@@ -1,11 +1,9 @@
 'use client';
 import useTopic from '@/hooks/topic/useTopic';
 import React, { MouseEvent, useState } from 'react';
-import { CiShare1 } from 'react-icons/ci';
-import { FaRegStar, FaStar } from 'react-icons/fa';
-import fullStar from '../../images/full-star.png';
-import emptyStar from '../../images/empty-star.png';
-import shareImg from '../../images/share-image.png';
+import fullStar from '../../../images/full-star.png';
+import emptyStar from '../../../images/empty-star.png';
+import shareImg from '../../../images/share-image.png';
 import Image from 'next/image';
 
 export default function TopicButtons({
@@ -19,11 +17,13 @@ export default function TopicButtons({
   const { starTopicQuery } = useTopic();
   const handleStarBtn = (e: MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsStared(true);
     starTopicQuery(id);
   };
   const handleCancelStarBtn = (e: MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setIsStared(false);
     starTopicQuery(id);
   };

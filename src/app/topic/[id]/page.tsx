@@ -43,7 +43,7 @@ export default function Page({ params: { id } }: Props) {
           </div>
           {topic.contentResponses && (
             <div className="flex flex-col gap-4 mt-4">
-              <div className="flex flex-col gap-1 text-Blue-02 text-Body-1">
+              <div className="flex flex-col gap-1 text-Success text-Body-1 leading-Body-1">
                 {topic.contentResponses.urlContents.length > 0 &&
                   topic.contentResponses.urlContents.map(({ url }) => (
                     <Link href={url} key={url}>

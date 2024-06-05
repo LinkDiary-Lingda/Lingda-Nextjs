@@ -14,15 +14,15 @@ export interface TopicItem {
   };
 }
 
-type ImageContent = {
+export type ImageContent = {
   imageUrl: string;
 };
 
-type TextContent = {
+export type TextContent = {
   text: string;
 };
 
-type UrlContent = {
+export type UrlContent = {
   url: string;
 };
 

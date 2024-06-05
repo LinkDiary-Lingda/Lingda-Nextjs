@@ -1,6 +1,6 @@
 import MainHeader from '@/components/header/MainHeader';
 import type { Metadata } from 'next';
-import Filters from './filters';
+import Filters from './components/filters';
 import Link from 'next/link';
 import addPlus from '../../images/add-plus.png';
 import Image from 'next/image';
@@ -18,7 +18,7 @@ export default function MyPageLayout({
     <>
       <MainHeader />
       <Filters />
-      <section className="mt-1 flex flex-col h-[85vh] overflow-auto scrollbar-hide">
+      <section className="flex flex-col h-[85vh] overflow-auto scrollbar-hide">
         {children}
       </section>
       <div className="sticky bottom-12 ml-auto mr-4">

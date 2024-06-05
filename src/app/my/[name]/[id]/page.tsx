@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import useTopic from '@/hooks/topic/useTopic';
-import Content from '../../content';
-import Nothing from '../../nothing';
+import Content from '../../components/content';
+import Nothing from '../../components/nothing';
 import { TopicItem } from '@/types/topic';
 import { useCategoryContext } from '@/context/CategoryContext';
 
@@ -28,7 +28,16 @@ export default function MyId({ params: { id, name } }: Props) {
       {topics && (
         <>
           {topics.length > 0 ? (
-            topics.map((topic) => <Content topic={topic} key={topic.id} />)
+            topics.map((topic, index) => {
+              if (index === 0) {
+                return (
+                  <div className="-mt-6" key={topic.id}>
+                    <Content topic={topic} />
+                  </div>
+                );
+              }
+              return <Content topic={topic} key={topic.id} />;
+            })
           ) : (
             <Nothing />
           )}

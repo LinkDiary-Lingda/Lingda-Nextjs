@@ -4,7 +4,6 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'image.lingda.app', port: '' },
-      { protocol: 'https', hostname: 'image.giftmoa.co.kr', port: '' },
     ],
   },
 };
