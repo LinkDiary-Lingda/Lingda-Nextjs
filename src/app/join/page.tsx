@@ -96,6 +96,7 @@ export default function Join() {
                   required: { value: true, message: '비밀번호를 입력해주세요' },
                 })
               }
+              clearErrors={() => clearErrors('password')}
             />
             <InputGroup
               type="password"
@@ -112,7 +113,18 @@ export default function Join() {
                     '비밀번호가 일치하지 않습니다.',
                 })
               }
+              clearErrors={() => clearErrors('passwordConfirm')}
             />
+            {errors.password && (
+              <small className="text-Error -my-4">
+                {errors.password.message}
+              </small>
+            )}
+            {errors.passwordConfirm && (
+              <small className="text-Error -my-4">
+                {errors.passwordConfirm.message}
+              </small>
+            )}
           </div>
           <div className="mb-6">
             <NextButton text="가입하기" errors={errors} />

@@ -23,7 +23,7 @@ export default async function Login() {
         <div className="flex justify-center">
           <LoginForm />
         </div>
-        {/* <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-4">
           <ul className="w-[203px] flex flex-row items-center justify-between text-On-Surface-Third text-Body-2 leading-Body-2">
             <li>
               <Link href="/account">아이디 찾기</Link>
@@ -35,7 +35,7 @@ export default async function Login() {
               <Link href="/account">비밀번호 찾기</Link>
             </li>
           </ul>
-        </div> */}
+        </div>
       </section>
       <section className="w-full flex flex-row justify-center items-center gap-[10px] text-Body-2 mb-12">
         <span className="text-On-Surface-Secondary">아이디가 없나요?</span>

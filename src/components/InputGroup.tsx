@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { FieldError } from 'react-hook-form';
+import { FieldError, UseFormClearErrors } from 'react-hook-form';
 import cls from 'classnames';
 
 type InputProps = {
@@ -9,6 +9,7 @@ type InputProps = {
   type: string;
   register: () => any;
   error?: any;
+  clearErrors?: UseFormClearErrors<any>;
 };
 
 export default function InputGroup({
@@ -17,10 +18,14 @@ export default function InputGroup({
   type,
   register,
   error,
+  clearErrors,
 }: InputProps) {
   const [value, setValue] = useState('');
   const { onChange, name } = register();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (clearErrors) {
+      clearErrors();
+    }
     setValue(e.target.value);
     onChange(e);
   };
@@ -33,7 +38,7 @@ export default function InputGroup({
           'flex flex-row items-center justify-between w-full h-[56px] px-4 rounded-md',
           { 'border border-Error': error },
           { 'border border-Surface-Container': !error && !value },
-          { 'border-2 border-Primary': value }
+          { 'border-2 border-Primary': value && !error }
         )}
       >
         <input
