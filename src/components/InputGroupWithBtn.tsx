@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { FieldError } from 'react-hook-form';
+import { FieldError, UseFormClearErrors } from 'react-hook-form';
 import cls from 'classnames';
 
 type InputProps = {
@@ -14,6 +14,7 @@ type InputProps = {
   btnHandledMsg: string;
   setBtnState: (status: boolean) => void;
   error?: any;
+  clearErrors: UseFormClearErrors<any>;
 };
 
 export default function InputGroupWithBtn({
@@ -27,24 +28,26 @@ export default function InputGroupWithBtn({
   btnHandledMsg,
   setBtnState,
   error,
+  clearErrors,
 }: InputProps) {
   const [value, setValue] = useState('');
   const { onChange, name } = register();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    clearErrors();
     setValue(e.target.value);
     setBtnState(false);
     onChange(e);
   };
   return (
-    <div className="flex flex-col gap-1">
+    <div className="w-full flex flex-col gap-1">
       {label && <label htmlFor={name}>{label}</label>}
       <div
         className={cls(
-          'flex flex-row items-center justify-between w-[312px] h-[56px] px-4 border rounded-md',
-          { 'border-Gray-02': !error || !value },
-          { 'border-Primary-02': value && !btnHandled },
-          { 'border-Blue-02': btnHandled },
-          { 'border-Red-02': error }
+          'flex flex-row items-center justify-between h-[56px] px-4 rounded-md',
+          { 'border border-Surface-Container': !error && !value },
+          { 'border-2 border-Primary': value && !btnHandled && !error },
+          { 'border border-Success': btnHandled },
+          { 'border border-Error': error }
         )}
       >
         <input
@@ -52,14 +55,16 @@ export default function InputGroupWithBtn({
           onChange={handleInputChange}
           placeholder={placeholder}
           type={type}
-          className="outline-none placeholder:text-Gray-06 text-semibold h-[54px] w-[230px]"
+          className="text-Body-1 outline-none placeholder:text-On-Surface-Third placeholder:font-medium text-On-Surface-Primary font-semibold w-[230px]"
         />
         <div>
           <button
+            type="button"
             className={cls(
-              'text-Detail-1 text-Gray-06 underline underline-offset-4',
-              { 'text-Primary-04': value }
+              'text-Detail-1 text-Gray-06 underline underline-offset-4 font-bold',
+              { 'text-Primary-04': value && !error }
             )}
+            disabled={error || btnHandled}
             onClick={btnOnClick}
           >
             {btnTitle}
@@ -72,7 +77,7 @@ export default function InputGroupWithBtn({
         </small>
       )}
       {btnHandledMsg && (
-        <small role="inform" className="text-Blue-02">
+        <small role="inform" className="text-Success">
           {btnHandledMsg}
         </small>
       )}

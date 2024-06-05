@@ -1,7 +1,8 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { IoMdArrowBack } from 'react-icons/io';
+import backArrow from '../../images/header-arrow.png';
+import Image from 'next/image';
 
 export default function BackHeader({ title }: { title: string }) {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function BackHeader({ title }: { title: string }) {
           onClick={router.back}
           aria-label="go-back-button"
         >
-          <IoMdArrowBack />
+          <Image src={backArrow} width={16} height={15} alt="back-button" />
         </li>
         <li>
           <p className="text-Heading-4" aria-label="title">
