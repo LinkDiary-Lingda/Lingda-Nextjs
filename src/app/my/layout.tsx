@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import Filters from './filters';
 import Link from 'next/link';
 import { FaPlus } from 'react-icons/fa';
+import addPlus from '../../images/add-plus.png';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: '내 링크',
@@ -22,10 +24,15 @@ export default function MyPageLayout({
       </section>
       <div className="sticky bottom-12 ml-auto mr-4">
         <Link
-          className="w-[60px] h-[60px] rounded-full bg-Primary-02 flex items-center justify-center"
+          className="w-[60px] h-[60px] rounded-full bg-Primary flex items-center justify-center shadow-lg"
           href="/new"
         >
-          <FaPlus size={28} color="white" />
+          <Image
+            src={addPlus}
+            width={28}
+            height={28}
+            alt="create-topic-button"
+          />
         </Link>
       </div>
     </>
