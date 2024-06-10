@@ -1,5 +1,5 @@
 'use client';
-import React, { Dispatch, DragEvent, SetStateAction, useState } from 'react';
+import React, { DragEvent, useState } from 'react';
 import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
 import { GoPlus } from 'react-icons/go';
@@ -8,13 +8,14 @@ import InputModal from '@/components/modal/CategoryInputModal';
 import { useRouter } from 'next/navigation';
 import useCategory from '@/hooks/category/useCategory';
 import cls from 'classnames';
-import Link from 'next/link';
 import { CategoryDividerItem } from '@/types/category';
 import { useRecoilState } from 'recoil';
-import { sideNavState } from '@/atoms/sideNavState';
+import { openedDividerState, sideNavState } from '@/atoms/sideNavState';
 
 export default function Categories() {
   const [sideNavOn, setSideNavOn] = useRecoilState(sideNavState);
+  const [openCategories, setOpenCategories] =
+    useRecoilState(openedDividerState);
 
   const router = useRouter();
   const [targetId, setTargetId] = useState<string | null>(null);
@@ -26,7 +27,6 @@ export default function Categories() {
   const [modalOn, setModalOn] = useState(false);
   const [isCategory, setIsCategory] = useState(true);
   const { categoriesQuery, orderCategoryItemQuery } = useCategory();
-  const [openCategories, setOpenCategories] = useState<Set<number>>(new Set());
 
   const menus = [
     {
