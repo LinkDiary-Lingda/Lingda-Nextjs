@@ -7,7 +7,9 @@ import MenuBox from '@/components/menu/MenuBox';
 import Alert from '@/components/Alert';
 import InputModal from '@/components/modal/CategoryInputModal';
 import useCategory from '@/hooks/category/useCategory';
-import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
+import arrowRight from '../../../images/arrow-right.png';
+import arrowDown from '../../../images/arrow-down.png';
+import Image from 'next/image';
 
 type Props = {
   name: string;
@@ -87,17 +89,23 @@ export default function DividerItem({
         })}
         onClick={onToggle}
       >
-        <div className="flex items-center">
+        <div className="flex items-center gap-1">
           {toggled ? (
-            <IoIosArrowDown size={20} color="#9E9E9E" className="mr-2" />
+            <Image
+              src={arrowDown}
+              width={20}
+              height={20}
+              alt="opened-category-arrow-img"
+            />
           ) : (
-            <MdOutlineKeyboardArrowRight
-              size={24}
-              color="#9E9E9E"
-              className="mr-1"
+            <Image
+              src={arrowRight}
+              width={20}
+              height={20}
+              alt="closed-category-arrow-img"
             />
           )}
-          <p>{name}</p>
+          <p className="text-On-Surface-Primary text-Body-1">{name}</p>
         </div>
         <button
           type="button"

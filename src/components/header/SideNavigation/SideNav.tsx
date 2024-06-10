@@ -13,15 +13,11 @@ export default function SideNav({ handleBgClick }: Props) {
   return (
     <section
       // 슬라이드 애니메이션 작업중이었음...
-      className={`w-full absolute z-10 transition-all ease-in duration-300 left-6 ${
+      className={`w-screen max-w-[490px] absolute z-10 transition-all ease-in duration-300 -left-6 flex flex-row ${
         sideNavOn ? ' visible' : 'hidden'
       }`}
     >
-      <div
-        className="absolute w-full h-[100vh] bg-black opacity-30"
-        onClick={handleBgClick}
-      ></div>
-      <div className="absolute min-w-[302px] flex flex-col h-[100vh] bg-white z-20 pr-1 -translate-x-6">
+      <div className="w-10/12 h-[100vh] bg-white z-20 flex flex-col px-6">
         <UserStatus />
         <Categories />
         <div className="mt-6">
@@ -36,6 +32,10 @@ export default function SideNav({ handleBgClick }: Props) {
           </ul>
         </div>
       </div>
+      <div
+        className="w-2/12 h-[100vh] bg-black opacity-30 flex flex-1"
+        onClick={handleBgClick}
+      ></div>
     </section>
   );
 }

@@ -2,7 +2,7 @@
 import React, { DragEvent, useState } from 'react';
 import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
-import { GoPlus } from 'react-icons/go';
+import plusBtn from '../../../images/plus-btn.png';
 import MenuBox from '@/components/menu/MenuBox';
 import InputModal from '@/components/modal/CategoryInputModal';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import cls from 'classnames';
 import { CategoryDividerItem } from '@/types/category';
 import { useRecoilState } from 'recoil';
 import { openedDividerState, sideNavState } from '@/atoms/sideNavState';
+import Image from 'next/image';
 
 export default function Categories() {
   const [sideNavOn, setSideNavOn] = useRecoilState(sideNavState);
@@ -164,7 +165,7 @@ export default function Categories() {
   );
 
   return (
-    <div className="mt-4 w-64 text-Body-1">
+    <div className="mt-4 text-Body-1">
       <div className="h-14 flex items-center border-b-[1px] justify-between relative">
         <button
           type="button"
@@ -181,7 +182,12 @@ export default function Categories() {
           aria-label="create-category-btn"
           onClick={() => setCreateMenuOn(!createMenuOn)}
         >
-          <GoPlus size={24} />
+          <Image
+            src={plusBtn}
+            width={24}
+            height={24}
+            alt="add-category-button"
+          />
         </button>
         {createMenuOn && <MenuBox menus={menus} position="right-0" />}
       </div>

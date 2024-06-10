@@ -16,7 +16,7 @@ export default function MainHeader() {
   };
   return (
     <>
-      <div className="relative">
+      <div className="relative ">
         <SideNav handleBgClick={handleBgClick} />
       </div>
       <nav>

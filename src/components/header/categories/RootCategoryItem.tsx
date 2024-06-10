@@ -64,7 +64,7 @@ export default function RootCategoryItem({
       >
         <div className="flex items-center gap-2">
           <FaCircle size={20} color={color} />
-          <p>{name}</p>
+          <p className="text-On-Surface-Primary text-Body-1">{name}</p>
         </div>
         <button
           type="button"
