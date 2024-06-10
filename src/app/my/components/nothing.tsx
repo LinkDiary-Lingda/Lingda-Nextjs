@@ -14,8 +14,8 @@ export default function Nothing() {
         priority
       />
       <div className="flex flex-col items-center mt-6 text-On-Surface-Primary text-Body-1 leading-Body-1">
-        <p>일치하는 정보와</p>
-        <p>일치하는 검색 결과가 없습니다.</p>
+        <p>앗, 토픽이 없네요.</p>
+        <p>아래 추가 버튼을 통해 토픽을 생성해보세요!</p>
       </div>
     </div>
   );
