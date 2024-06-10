@@ -10,12 +10,12 @@ import useCategory from '@/hooks/category/useCategory';
 import cls from 'classnames';
 import Link from 'next/link';
 import { CategoryDividerItem } from '@/types/category';
+import { useRecoilState } from 'recoil';
+import { sideNavState } from '@/atoms/sideNavState';
 
-type Props = {
-  setMenuOn: Dispatch<SetStateAction<boolean>>;
-};
+export default function Categories() {
+  const [sideNavOn, setSideNavOn] = useRecoilState(sideNavState);
 
-export default function Categories({ setMenuOn }: Props) {
   const router = useRouter();
   const [targetId, setTargetId] = useState<string | null>(null);
   const [draggedOverId, setDraggedOverId] = useState<{
@@ -115,7 +115,7 @@ export default function Categories({ setMenuOn }: Props) {
       id={category.id + ''}
       data-id={category.dividerId}
       onClick={() => {
-        setMenuOn(false);
+        setSideNavOn(false);
         router.push(`/my/${category.name}/${category.id}`);
       }}
     >
@@ -170,7 +170,7 @@ export default function Categories({ setMenuOn }: Props) {
           type="button"
           aria-label="home-button"
           onClick={() => {
-            setMenuOn(false);
+            setSideNavOn(false);
             router.push(`/my`);
           }}
         >

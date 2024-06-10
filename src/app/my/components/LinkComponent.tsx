@@ -24,7 +24,7 @@ export default function LinkComponent({ urlContents }: Props) {
       </Link>
       {urlContents.length > 1 && (
         <button className="flex items-center bg-Surface-Container-Low text-On-Surface-Third text-Body-2 px-2 py-1 rounded-sm gap-[2px] flex-shrink-0">
-          <Image src={iosChain} fill alt="link-indicator" />
+          <Image src={iosChain} width={16} height={16} alt="link-indicator" />
           <p>+{urlContents.length - 1}</p>
         </button>
       )}

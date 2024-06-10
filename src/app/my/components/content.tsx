@@ -4,8 +4,8 @@ import React from 'react';
 import { FaCircle } from 'react-icons/fa';
 import TopicButtons from './TopicButtons';
 import { TopicItem } from '@/types/topic';
-import LinkComponent from './linkComponent';
 import { useRouter } from 'next/navigation';
+import LinkComponent from './LinkComponent';
 
 export default function Content({ topic }: { topic: TopicItem }) {
   const router = useRouter();

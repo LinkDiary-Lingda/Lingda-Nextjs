@@ -1,30 +1,31 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import './globals.css';
+import './styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import OverlayProvider from '@/components/modal/OverlayProvider';
 import { NextAuthProvider } from '@/context/NextAuthProvider';
 import { Flip, ToastContainer } from 'react-toastify';
 import ReactQueryClientProvider from '@/hooks/ReactQueryClientProvider';
 import { CategoryContextProvider } from '@/context/CategoryContext';
+import RecoilWrapper from '@/context/RecoilWrapper';
 
 const pretendardBoldFont = localFont({
-  src: './font/Pretendard-Bold.woff',
+  src: './styles/font/Pretendard-Bold.woff',
   variable: '--font-pretendard-bold',
   display: 'swap',
 });
 const pretendardRegularFont = localFont({
-  src: './font/Pretendard-Regular.woff',
+  src: './styles/font/Pretendard-Regular.woff',
   variable: '--font-pretendard-regular',
   display: 'swap',
 });
 const gmarketBoldFont = localFont({
-  src: './font/GmarketSansTTFBold.ttf',
+  src: './styles/font/GmarketSansTTFBold.ttf',
   variable: '--font-gmarket-bold',
   display: 'swap',
 });
 const gmarketMediumFont = localFont({
-  src: './font/GmarketSansTTFMedium.ttf',
+  src: './styles/font/GmarketSansTTFMedium.ttf',
   variable: '--font-gmarket-medium',
   display: 'swap',
 });
@@ -62,9 +63,11 @@ export default function RootLayout({
         <ReactQueryClientProvider>
           <OverlayProvider>
             <NextAuthProvider>
-              <CategoryContextProvider>
-                <main>{children}</main>
-              </CategoryContextProvider>
+              <RecoilWrapper>
+                <CategoryContextProvider>
+                  <main>{children}</main>
+                </CategoryContextProvider>
+              </RecoilWrapper>
             </NextAuthProvider>
           </OverlayProvider>
           <ToastContainer

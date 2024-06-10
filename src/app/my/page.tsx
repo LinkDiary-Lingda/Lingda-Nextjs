@@ -11,7 +11,16 @@ export default function My() {
       {topicQuery && (
         <>
           {topicQuery.length > 0 ? (
-            topicQuery.map((topic) => <Content topic={topic} key={topic.id} />)
+            topicQuery.map((topic, index) => {
+              if (index === 0) {
+                return (
+                  <div className="-mt-6" key={topic.id}>
+                    <Content topic={topic} />
+                  </div>
+                );
+              }
+              return <Content topic={topic} key={topic.id} />;
+            })
           ) : (
             <Nothing />
           )}

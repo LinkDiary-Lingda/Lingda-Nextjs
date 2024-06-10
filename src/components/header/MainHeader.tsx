@@ -5,19 +5,19 @@ import SideNav from './SideNavigation/SideNav';
 import headerMenu from '../../images/header-menu.png';
 import Image from 'next/image';
 import headerSearch from '../../images/header-search.png';
+import { useRecoilState } from 'recoil';
+import { sideNavState } from '@/atoms/sideNavState';
 
 export default function MainHeader() {
   const [searchOn, setSearchOn] = useState(false);
-  const [menuOn, setMenuOn] = useState(false);
+  const [sideNavOn, setSideNavOn] = useRecoilState(sideNavState);
   const handleBgClick = () => {
-    setMenuOn(false);
+    setSideNavOn(false);
   };
   return (
     <>
       <div className="relative">
-        {menuOn && (
-          <SideNav handleBgClick={handleBgClick} setMenuOn={setMenuOn} />
-        )}
+        <SideNav handleBgClick={handleBgClick} />
       </div>
       <nav>
         <ul className="flex flex-row justify-between items-center h-[48px]">
@@ -26,7 +26,7 @@ export default function MainHeader() {
               type="button"
               aria-label="menu-button"
               className="flex justify-center items-center"
-              onClick={() => setMenuOn(!menuOn)}
+              onClick={() => setSideNavOn(!sideNavOn)}
             >
               <Image
                 src={headerMenu}
