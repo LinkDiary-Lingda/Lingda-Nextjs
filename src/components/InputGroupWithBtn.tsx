@@ -64,7 +64,7 @@ export default function InputGroupWithBtn({
               'text-Detail-1 text-On-Surface-Third underline underline-offset-4 font-semibold',
               { 'text-Primary-04': value && !error }
             )}
-            disabled={error || btnHandled}
+            disabled={btnHandled}
             onClick={btnOnClick}
           >
             {btnTitle}
@@ -76,7 +76,7 @@ export default function InputGroupWithBtn({
           {error.message}
         </small>
       )}
-      {btnHandledMsg && (
+      {btnHandled && btnHandledMsg && (
         <small role="inform" className="text-Success">
           {btnHandledMsg}
         </small>
