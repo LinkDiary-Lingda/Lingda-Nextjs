@@ -1,6 +1,5 @@
 'use client';
 import React, { MouseEvent, useState } from 'react';
-import { IoIosArrowDown } from 'react-icons/io';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import cls from 'classnames';
 import MenuBox from '@/components/menu/MenuBox';

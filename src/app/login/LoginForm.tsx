@@ -4,29 +4,27 @@ import { useForm } from 'react-hook-form';
 import { LoginInputs } from '../../types/member';
 import InputGroup from '../../components/InputGroup';
 import NextButton from '@/components/NextButton';
-import { signIn } from 'next-auth/react';
+import { login } from '@/service/member';
 
 export default function LoginForm() {
-  const [error, setError] = useState('');
   const {
     register,
     handleSubmit,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<LoginInputs>();
 
   const handleLoginBtn = async ({ username, password }: LoginInputs) => {
-    try {
-      const result = await signIn('credentials', {
-        username,
-        password,
-        redirect: true,
-        callbackUrl: '/my',
+    const result = await login({ username, password });
+    if (result.message === '401')
+      setError('username', {
+        message: '아이디 또는 비밀번호가 일치하지 않습니다.',
       });
-    } catch (error) {
-      if (error === '401')
-        setError('아이디 또는 비밀번호가 일치하지 않습니다.');
-      return;
-    }
+    setError('password', {
+      message: '아이디 또는 비밀번호가 일치하지 않습니다.',
+    });
+    return result;
   };
   return (
     <form
@@ -42,6 +40,7 @@ export default function LoginForm() {
             required: { value: true, message: '아이디를 입력해주세요' },
           })
         }
+        clearErrors={clearErrors}
       />
       <InputGroup
         type="password"
@@ -52,6 +51,7 @@ export default function LoginForm() {
             required: { value: true, message: '비밀번호를 입력해주세요' },
           })
         }
+        clearErrors={clearErrors}
       />
       {errors.password && !errors.username && (
         <small className="text-Error -my-4 ml-2">
@@ -68,7 +68,6 @@ export default function LoginForm() {
           아이디 또는 비밀번호가 일치하지 않습니다.
         </small>
       )}
-      {error && <small className="text-Error -mt-y ml-2">{error}</small>}
       <div className="mt-12 w-full">
         <NextButton text="로그인하기" errors={errors} />
       </div>

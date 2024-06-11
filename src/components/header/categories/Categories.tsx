@@ -68,6 +68,7 @@ export default function Categories() {
 
   const handleDragLeave = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
+    setDraggedOverId(null);
   };
 
   const handleDrop = (e: DragEvent<HTMLElement>) => {
@@ -103,10 +104,44 @@ export default function Categories() {
       className={cls('h-14 flex items-center justify-between cursor-pointer', {
         'border-Primary-03 border-b-[1px]':
           draggedOverId?.id === category.id + '',
-        'border-b-[1px] border-Gray-02': draggedOverId?.id !== category.id + '',
-        'bg-Primary-01 border-Primary-03 border-[1px]':
+        'border-b-[1px] border-Outline-Low':
+          draggedOverId?.id !== category.id + '',
+        'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
           targetId === category.id + '',
-        'bg-none border-b-[1px] border-Gray-02': targetId !== category.id + '',
+        'bg-none border-b-[1px] border-Outline-Low':
+          targetId !== category.id + '',
+      })}
+      draggable
+      onDragStart={handleDragStart}
+      onDragOver={handleCategoryDragOver}
+      onDrop={handleDrop}
+      onDragLeave={handleDragLeave}
+      id={category.id + ''}
+      data-id={category.dividerId}
+      onClick={() => {
+        setSideNavOn(false);
+        router.push(`/my/${category.name}/${category.id}`);
+      }}
+    >
+      <RootCategoryItem
+        categoryId={category.id}
+        name={category.name}
+        color={category.color!}
+        dividerId={category.dividerId}
+      />
+    </li>
+  );
+
+  const renderNestedCategory = (category: CategoryDividerItem) => (
+    <li
+      key={category.id}
+      className={cls('h-14 flex items-center justify-between cursor-pointer', {
+        'border-Primary-03 border-b-[1px]':
+          draggedOverId?.id === category.id + '',
+        'border-none': draggedOverId?.id !== category.id + '',
+        'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
+          targetId === category.id + '',
+        'bg-none border-none': targetId !== category.id + '',
       })}
       draggable
       onDragStart={handleDragStart}
@@ -132,7 +167,7 @@ export default function Categories() {
   const renderDivider = (divider: CategoryDividerItem) => (
     <li
       key={divider.id}
-      className="flex flex-col justify-between border-b-[1px] border-Gray-02"
+      className="flex flex-col justify-between border-b-[1px] border-Outline-Low"
       draggable
       onDragOver={handleDividerDragOver}
       onDrop={handleDrop}
@@ -153,7 +188,7 @@ export default function Categories() {
           {divider.categories &&
             divider.categories.map((item) => {
               if (item.type === 'CATEGORY') {
-                return renderCategory(item);
+                return renderNestedCategory(item);
               }
               if (item.type === 'DIVIDER') {
                 return renderDivider(item);
@@ -166,7 +201,7 @@ export default function Categories() {
 
   return (
     <div className="mt-4 text-Body-1">
-      <div className="h-14 flex items-center border-b-[1px] justify-between relative">
+      <div className="h-14 flex items-center border-b-[1px] border-Outline justify-between relative">
         <button
           type="button"
           aria-label="home-button"
