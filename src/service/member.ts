@@ -29,14 +29,18 @@ export async function login({
   username: string;
   password: string;
 }) {
-  const token = await POST({
-    path: 'members/login',
-    body: {
-      username,
-      password,
-    },
-  });
-  return token;
+  try {
+    const token = await POST({
+      path: 'members/login',
+      body: {
+        username,
+        password,
+      },
+    });
+    return token;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function refreshAccessToken(token: {

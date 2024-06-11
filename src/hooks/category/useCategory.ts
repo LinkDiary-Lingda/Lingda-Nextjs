@@ -16,9 +16,9 @@ import React from 'react';
 import { toast } from 'react-toastify';
 
 export default function useCategory() {
-  const { data }: any = useSession();
-  const token = data.accessToken;
-  const user = data.user.name;
+  const { data: session, status }: any = useSession();
+  const token = session?.accessToken;
+  const user = session?.user.name;
 
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -26,6 +26,7 @@ export default function useCategory() {
   const { data: categoriesQuery } = useQuery({
     queryKey: ['categories', user],
     queryFn: () => getCategoryItems(token),
+    enabled: !!token,
   });
 
   const { mutate: createCategoryQuery } = useMutation({
