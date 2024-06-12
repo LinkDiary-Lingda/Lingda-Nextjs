@@ -7,11 +7,11 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { FaCirclePlus } from 'react-icons/fa6';
+import { useForm } from 'react-hook-form';
 import useTopic from '@/hooks/topic/useTopic';
 import Image from 'next/image';
 import addBtn from '../../images/topic-add-btn.png';
+import deleteBtn from '../../images/image-delete-btn.png';
 import cls from 'classnames';
 import { currentCategoryState } from '@/atoms/categoryState';
 import { useRecoilState } from 'recoil';
@@ -125,6 +125,15 @@ export default function New() {
     }
   };
 
+  const handleDeleteImage = (imageUrl: string) => {
+    const newImages = images.filter((image) => image !== imageUrl);
+    setImages(newImages);
+    setValue(
+      'contentRequest.imageContents',
+      newImages.map((url) => ({ imageUrl: url }))
+    );
+  };
+
   const handleSumbitBtn = (data: any) => {
     createTopicQuery(data);
   };
@@ -197,14 +206,30 @@ export default function New() {
                 className="hidden"
                 onChange={handleUploadImage}
               />
-              <FaCirclePlus color="#9E9E9E" size={21} />
+              <Image
+                src={addBtn}
+                width={32}
+                height={32}
+                alt="add-link-btn-img"
+              />
             </button>
             {images.length > 0 &&
               images.map((imageUrl) => (
                 <div
-                  className="h-20 w-20 rounded-lg overflow-hidden"
+                  className="relative h-20 w-20 rounded-lg overflow-hidden"
                   key={imageUrl}
                 >
+                  <button
+                    className="absolute top-0 right-0 rounded-full"
+                    onClick={() => handleDeleteImage(imageUrl)}
+                  >
+                    <Image
+                      src={deleteBtn}
+                      width={32}
+                      height={32}
+                      alt="delete-button-image"
+                    />
+                  </button>
                   <Image
                     height={80}
                     width={80}
