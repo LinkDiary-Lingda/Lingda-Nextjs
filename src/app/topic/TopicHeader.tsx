@@ -1,8 +1,10 @@
 'use client';
-import { editTopicState } from '@/atoms/topicState';
+import { currentCategoryState } from '@/atoms/categoryState';
+import { currentTopicState, editTopicState } from '@/atoms/topicState';
 import Alert from '@/components/Alert';
 import MenuBox from '@/components/menu/MenuBox';
 import useTopic from '@/hooks/topic/useTopic';
+import { defaultTopic } from '@/types/topic';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -16,6 +18,7 @@ export default function TopicHeader() {
   const [isEdit, setIsEdit] = useState(false);
   const [deleteOn, setDeleteOn] = useState(false);
   const [editTopic, setEditTopic] = useRecoilState(editTopicState);
+  const [_, setCurrentTopic] = useRecoilState(currentTopicState);
 
   const handleMenuBtn = () => {
     setMenuOn(!menuOn);
@@ -59,7 +62,10 @@ export default function TopicHeader() {
         <ul className="flex flex-row justify-between items-center h-[48px] w-full">
           <li
             className="text-Heading-3 cursor-pointer"
-            onClick={router.back}
+            onClick={() => {
+              setCurrentTopic(defaultTopic);
+              router.back();
+            }}
             aria-label="go-back-button"
           >
             <IoMdArrowBack />

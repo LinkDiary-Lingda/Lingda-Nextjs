@@ -4,11 +4,14 @@ import Categories from '../categories/Categories';
 import UserStatus from './UserStatus';
 import { useRecoilState } from 'recoil';
 import { sideNavState } from '@/atoms/sideNavState';
+import { useMenuModalState } from '@/hooks/modal/useModalState';
 
 export default function SideNav() {
   const [sideNavOn, setSideNavOn] = useRecoilState(sideNavState);
+  const { closeMenu } = useMenuModalState('sideNav');
   const handleBgClick = () => {
     setSideNavOn(false);
+    closeMenu();
   };
   return (
     <section

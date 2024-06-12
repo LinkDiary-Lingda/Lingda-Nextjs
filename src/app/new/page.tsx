@@ -258,7 +258,7 @@ export default function New() {
           )}
           {renderLinkInputs}
           <div className="relative mt-6 w-full flex gap-2 items-center border-b-[1px] border-Outline-Low">
-            {!currentTopic.contentRequest.textContents[0].text && (
+            {!currentTopic.contentRequest.textContents[0]?.text && (
               <Image
                 src={addBtn}
                 width={20}
@@ -270,7 +270,7 @@ export default function New() {
               ref={textarea}
               onInput={handleResizeHeight}
               rows={1}
-              defaultValue={currentTopic.contentRequest.textContents[0].text}
+              defaultValue={currentTopic.contentRequest.textContents[0]?.text}
               onChange={(e) => {
                 setValue('contentRequest.textContents.0.text', e.target.value);
                 setCurrentTopic((prevTopic) => {
@@ -313,30 +313,34 @@ export default function New() {
               </button>
               {currentTopic.contentRequest.imageContents.length > 0 &&
                 currentTopic.contentRequest.imageContents.map(
-                  ({ imageUrl }) => (
-                    <div
-                      className="relative h-20 w-20 rounded-lg overflow-hidden"
-                      key={imageUrl}
-                    >
-                      <button
-                        className="absolute top-0 right-0 rounded-full"
-                        onClick={() => handleDeleteImage(imageUrl)}
-                      >
-                        <Image
-                          src={deleteBtn}
-                          width={32}
-                          height={32}
-                          alt="delete-button-image"
-                        />
-                      </button>
-                      <Image
-                        height={80}
-                        width={80}
-                        src={imageUrl}
-                        alt="added-topic-image"
-                      />
-                    </div>
-                  )
+                  ({ imageUrl }) => {
+                    if (imageUrl !== '') {
+                      return (
+                        <div
+                          className="relative h-20 w-20 rounded-lg overflow-hidden"
+                          key={imageUrl}
+                        >
+                          <button
+                            className="absolute top-0 right-0 rounded-full"
+                            onClick={() => handleDeleteImage(imageUrl)}
+                          >
+                            <Image
+                              src={deleteBtn}
+                              width={32}
+                              height={32}
+                              alt="delete-button-image"
+                            />
+                          </button>
+                          <Image
+                            height={80}
+                            width={80}
+                            src={imageUrl}
+                            alt="added-topic-image"
+                          />
+                        </div>
+                      );
+                    }
+                  }
                 )}
             </div>
           </div>
