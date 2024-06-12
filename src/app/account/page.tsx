@@ -47,6 +47,7 @@ export default function Account() {
           btnHandled={false}
           btnHandledMsg={''}
           setBtnState={() => {}}
+          clearErrors={clearErrors}
         />
         <InputGroup
           type="password"
