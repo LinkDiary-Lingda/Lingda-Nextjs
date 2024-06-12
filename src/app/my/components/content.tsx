@@ -41,7 +41,7 @@ export default function Content({ topic }: { topic: TopicItem }) {
       <div className="flex flex-col gap-2">
         <LinkComponent urlContents={urlContents} />
         <div>
-          {textContents[0].text && (
+          {textContents[0]?.text && (
             <article className="w-full text-On-Surface-Secondary text-Body-2 leading-Body-2 line-clamp-2">
               {textContents[0].text}
             </article>

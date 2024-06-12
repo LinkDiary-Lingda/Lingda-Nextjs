@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import useTopic from '@/hooks/topic/useTopic';
 import { TopicItem } from '@/types/topic';
+
 type Props = {
   params: { id: number };
 };
@@ -28,7 +29,7 @@ export default function Page({ params: { id } }: Props) {
   };
 
   return (
-    <section className="mx-6">
+    <>
       <TopicHeader />
       {topic && (
         <>
@@ -54,7 +55,7 @@ export default function Page({ params: { id } }: Props) {
               <div>
                 <article className="text-Body-1">
                   {topic.contentResponses.textContents &&
-                    topic.contentResponses.textContents[0].text}
+                    topic.contentResponses.textContents[0]?.text}
                 </article>
               </div>
               <div className="shrink-0 gap-3 grid grid-cols-3">
@@ -121,6 +122,6 @@ export default function Page({ params: { id } }: Props) {
           )}
         </>
       )}
-    </section>
+    </>
   );
 }

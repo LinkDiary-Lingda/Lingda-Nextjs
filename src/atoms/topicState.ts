@@ -1,3 +1,4 @@
+import { defaultTopic } from '@/types/topic';
 import { atom } from 'recoil';
 
 export type CurrentTopicProps = {
@@ -13,5 +14,5 @@ export type CurrentTopicProps = {
 
 export const currentTopicState = atom<CurrentTopicProps>({
   key: 'currentTopicState',
-  default: undefined,
+  default: defaultTopic,
 });

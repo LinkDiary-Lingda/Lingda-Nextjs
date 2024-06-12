@@ -14,11 +14,12 @@ import addBtn from '../../images/topic-add-btn.png';
 import deleteBtn from '../../images/image-delete-btn.png';
 import cls from 'classnames';
 import { currentCategoryState } from '@/atoms/categoryState';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { isValidUrl } from '@/utils/validation';
 import BackHeader from '@/components/header/BackHeader';
 import { useRouter } from 'next/navigation';
 import { currentTopicState } from '@/atoms/topicState';
+import { defaultTopic } from '@/types/topic';
 
 export default function New() {
   const router = useRouter();
@@ -27,7 +28,6 @@ export default function New() {
   const [currentCategory] = useRecoilState(currentCategoryState);
   const [currentTopic, setCurrentTopic] = useRecoilState(currentTopicState);
   const textarea = useRef<HTMLTextAreaElement>(null);
-  const [inputValue, setInputValue] = useState('');
   const handleResizeHeight = () => {
     if (textarea.current) {
       textarea.current.style.height = 'auto';
@@ -36,7 +36,6 @@ export default function New() {
   };
 
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -44,25 +43,13 @@ export default function New() {
     watch,
   } = useForm({
     defaultValues: {
-      name: currentTopic?.name || '',
+      name: currentTopic.name || '',
       categoryId: currentCategory?.id || null,
       categoryName: currentCategory?.name || null,
       contentRequest: {
-        textContents: currentTopic?.contentRequest.textContents || [
-          {
-            text: '',
-          },
-        ],
-        imageContents: currentTopic?.contentRequest.imageContents || [
-          {
-            imageUrl: '',
-          },
-        ],
-        urlContents: currentTopic?.contentRequest.urlContents || [
-          {
-            url: '',
-          },
-        ],
+        textContents: currentTopic.contentRequest.textContents,
+        imageContents: currentTopic.contentRequest.imageContents,
+        urlContents: currentTopic.contentRequest.urlContents,
       },
     },
   });
@@ -86,7 +73,7 @@ export default function New() {
         return {
           ...prevTopic,
           contentRequest: {
-            ...prevTopic.contentRequest,
+            ...prevTopic?.contentRequest,
             urlContents: newUrls,
           },
         };
@@ -171,7 +158,24 @@ export default function New() {
   };
 
   const handleSumbitBtn = (data: any) => {
-    createTopicQuery(data);
+    const filteredData = {
+      ...data,
+      contentRequest: {
+        ...data.contentRequest,
+        textContents: data.contentRequest.textContents.filter(
+          (item: { text: string }) => item.text !== ''
+        ),
+        imageContents: data.contentRequest.imageContents.filter(
+          (item: { imageUrl: string }) => item.imageUrl !== ''
+        ),
+        urlContents: data.contentRequest.urlContents.filter(
+          (item: { url: string }) => item.url !== ''
+        ),
+      },
+    };
+
+    createTopicQuery(filteredData);
+    setCurrentTopic(defaultTopic);
   };
 
   return (
@@ -232,7 +236,7 @@ export default function New() {
           )}
           {renderLinkInputs}
           <div className="relative mt-6 w-full flex gap-2 items-center border-b-[1px] border-Outline-Low">
-            {!currentTopic.contentRequest.textContents?.[0]?.text && (
+            {!currentTopic.contentRequest.textContents[0].text && (
               <Image
                 src={addBtn}
                 width={20}
@@ -244,7 +248,7 @@ export default function New() {
               ref={textarea}
               onInput={handleResizeHeight}
               rows={1}
-              defaultValue={currentTopic.contentRequest.textContents?.[0]?.text}
+              defaultValue={currentTopic.contentRequest.textContents[0].text}
               onChange={(e) => {
                 setValue('contentRequest.textContents.0.text', e.target.value);
                 setCurrentTopic((prevTopic) => {
@@ -285,7 +289,7 @@ export default function New() {
                   alt="add-link-btn-img"
                 />
               </button>
-              {currentTopic.contentRequest.imageContents?.length > 0 &&
+              {currentTopic.contentRequest.imageContents.length > 1 &&
                 currentTopic.contentRequest.imageContents.map(
                   ({ imageUrl }) => (
                     <div
