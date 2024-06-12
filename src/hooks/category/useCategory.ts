@@ -11,7 +11,6 @@ import {
 import { CategoryItem } from '@/types/category';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import React from 'react';
 import { toast } from 'react-toastify';
 
@@ -21,7 +20,6 @@ export default function useCategory() {
   const user = session?.user.name;
 
   const queryClient = useQueryClient();
-  const router = useRouter();
 
   const { data: categoriesQuery } = useQuery({
     queryKey: ['categories', user],

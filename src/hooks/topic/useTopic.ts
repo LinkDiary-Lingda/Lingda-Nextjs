@@ -16,9 +16,9 @@ import React from 'react';
 import { toast } from 'react-toastify';
 
 export default function useTopic() {
-  const { data }: any = useSession();
-  const token = data?.accessToken;
-  const user = data?.user.name;
+  const { data: session, status }: any = useSession();
+  const token = session?.accessToken;
+  const user = session?.user.name;
 
   const router = useRouter();
 
@@ -27,18 +27,16 @@ export default function useTopic() {
   const { data: topicQuery } = useQuery({
     queryKey: ['topics', user, null],
     queryFn: () => getTopics(null, token),
+    enabled: !!token,
   });
 
   const { mutateAsync: topicDetailQuery } = useMutation({
     mutationFn: (id: number) => getTopic(id, token),
   });
 
-  const { mutateAsync: categoryTopicQuery } = useMutation({
-    mutationFn: (categoryId: number | null) => getTopics(categoryId, token),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['topics', user] });
-    },
-  });
+  const categoryTopicQuery = (categoryId: number | null) => {
+    return getTopics(categoryId, token);
+  };
 
   const { mutate: createTopicQuery } = useMutation({
     mutationFn: (

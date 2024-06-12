@@ -4,24 +4,26 @@ import useTopic from '@/hooks/topic/useTopic';
 import Content from '../../components/content';
 import Nothing from '../../components/nothing';
 import { TopicItem } from '@/types/topic';
-import { useCategoryContext } from '@/context/CategoryContext';
+import { useRecoilState } from 'recoil';
+import { currentCategoryState } from '@/atoms/categoryState';
+import { useQuery } from '@tanstack/react-query';
 
 type Props = {
   params: { id: number | null; name: string };
 };
 export default function MyId({ params: { id, name } }: Props) {
-  const [topics, setTopics] = useState<TopicItem[]>();
   const { categoryTopicQuery } = useTopic();
-  const { setCategoryState } = useCategoryContext();
+  const [currentCategory, setCurrentCategory] =
+    useRecoilState(currentCategoryState);
 
   useEffect(() => {
-    async function getTopics() {
-      const topics = await categoryTopicQuery(id);
-      setTopics(topics);
-    }
-    setCategoryState({ id, name: decodeURI(name) });
-    getTopics();
-  }, [id, name, categoryTopicQuery, setCategoryState]);
+    setCurrentCategory({ id, name: decodeURI(name) });
+  }, [id, name, setCurrentCategory]);
+
+  const { data: topics } = useQuery({
+    queryKey: ['topics', id],
+    queryFn: () => categoryTopicQuery(id),
+  });
 
   return (
     <>
