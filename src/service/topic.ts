@@ -123,9 +123,15 @@ export async function trashTopic(id: number, token: string) {
   }
 }
 
-export async function updateTopic(id: number, token: string) {
+export async function updateTopic(
+  item: Omit<
+    TopicItem,
+    'categoryName' | 'stared' | 'createdDate' | 'updatedDate'
+  >,
+  token: string
+) {
   try {
-    const updated = await PUT({ path: `topics/${id}`, token });
+    const updated = await PUT({ path: `topics/${item.id}`, token, body: item });
     return updated;
   } catch (error) {
     console.log(error);

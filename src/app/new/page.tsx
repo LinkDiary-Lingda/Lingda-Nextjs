@@ -63,7 +63,7 @@ export default function New() {
     }
   }, [watchedUrls, setValue]);
 
-  const { updateImageQuery, createTopicQuery } = useTopic();
+  const { updateImageQuery, createTopicQuery, updateTopicQuery } = useTopic();
 
   const handleUrlChange = useCallback(
     (index: number, value: string) => {
@@ -174,9 +174,30 @@ export default function New() {
         ),
       },
     };
-
     createTopicQuery(filteredData);
     setCurrentTopic(defaultTopic);
+  };
+
+  const handleEditBtn = (data: any) => {
+    const filteredData = {
+      ...data,
+      contentRequest: {
+        ...data.contentRequest,
+        textContents: data.contentRequest.textContents.filter(
+          (item: { text: string }) => item.text !== ''
+        ),
+        imageContents: data.contentRequest.imageContents.filter(
+          (item: { imageUrl: string }) => item.imageUrl !== ''
+        ),
+        urlContents: data.contentRequest.urlContents.filter(
+          (item: { url: string }) => item.url !== ''
+        ),
+      },
+      id: editTopic,
+    };
+    updateTopicQuery(filteredData);
+    setCurrentTopic(defaultTopic);
+    setEditTopic(null);
   };
 
   return (
@@ -331,7 +352,11 @@ export default function New() {
               }
             )}
             disabled={Object.keys(errors).length !== 0}
-            onClick={handleSubmit(handleSumbitBtn)}
+            onClick={
+              editTopic
+                ? handleSubmit(handleEditBtn)
+                : handleSubmit(handleSumbitBtn)
+            }
           >
             {editTopic ? '수정하기' : '작성하기'}
           </button>

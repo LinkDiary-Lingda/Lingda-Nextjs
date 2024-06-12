@@ -7,6 +7,7 @@ import {
   starTopic,
   trashTopic,
   updateImage,
+  updateTopic,
 } from '@/service/topic';
 import { TopicItem } from '@/types/topic';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -81,7 +82,12 @@ export default function useTopic() {
   });
 
   const { mutate: updateTopicQuery } = useMutation({
-    mutationFn: (id: number) => trashTopic(id, token),
+    mutationFn: (
+      item: Omit<
+        TopicItem,
+        'categoryName' | 'stared' | 'createdDate' | 'updatedDate'
+      >
+    ) => updateTopic(item, token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['topics', user] });
       toast('토픽이 수정되었습니다.');
