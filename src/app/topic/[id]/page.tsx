@@ -1,27 +1,24 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FaCircle } from 'react-icons/fa';
 import TopicHeader from '../TopicHeader';
 import Link from 'next/link';
 import Image from 'next/image';
 import useTopic from '@/hooks/topic/useTopic';
-import { TopicItem } from '@/types/topic';
+import { useQuery } from '@tanstack/react-query';
+import closeBtn from '../../../images/photo-close-btn.png';
 
 type Props = {
   params: { id: number };
 };
 export default function Page({ params: { id } }: Props) {
   const { topicDetailQuery } = useTopic();
-  const [topic, setTopic] = useState<TopicItem>();
   const [photoModalOn, setPhotoModalOn] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  useEffect(() => {
-    async function getTopic() {
-      const topic = await topicDetailQuery(id);
-      setTopic(topic);
-    }
-    getTopic();
-  }, [id, topicDetailQuery]);
+  const { data: topic } = useQuery({
+    queryKey: ['topics', id],
+    queryFn: () => topicDetailQuery(id),
+  });
 
   const handleImageClick = (imageUrl: string) => {
     setPhotoModalOn(true);
@@ -29,16 +26,16 @@ export default function Page({ params: { id } }: Props) {
   };
 
   return (
-    <>
+    <div className="relative w-full h-full">
       <TopicHeader />
       {topic && (
         <>
-          <div className="border-b-[1px] border-Gray-03 pb-12">
-            <h1 className="text-Heading-2 font-pretendardBold">{topic.name}</h1>
-            <div className="flex items-center gap-1 mt-1">
+          <div className="border-b-[1px] border-Outline-Low pb-12">
+            <h1 className="text-Heading-2 font-bold">{topic.name}</h1>
+            <div className="flex items-center gap-2 mt-1">
               <FaCircle color={topic.color} size={14} />
-              <p className="text-Gray-06 text-Body-1">
-                {topic.categoryName || '전체보기'}
+              <p className="text-On-Surface-Secondary text-Body-1">
+                {topic.categoryName}
               </p>
             </div>
           </div>
@@ -46,19 +43,19 @@ export default function Page({ params: { id } }: Props) {
             <div className="flex flex-col gap-4 mt-4">
               <div className="flex flex-col gap-1 text-Success text-Body-1 leading-Body-1">
                 {topic.contentResponses.urlContents.length > 0 &&
-                  topic.contentResponses.urlContents.map(({ url }) => (
-                    <Link href={url} key={url}>
+                  topic.contentResponses.urlContents.map(({ url }, index) => (
+                    <Link href={url} key={url + index}>
                       {url}
                     </Link>
                   ))}
               </div>
               <div>
-                <article className="text-Body-1">
+                <article className="text-Body-1 text-On-Surface-Primary leading-Body-1">
                   {topic.contentResponses.textContents &&
                     topic.contentResponses.textContents[0]?.text}
                 </article>
               </div>
-              <div className="shrink-0 gap-3 grid grid-cols-3">
+              <div className="shrink-0 gap-3 flex">
                 {topic.contentResponses.imageContents.length > 0 &&
                   topic.contentResponses.imageContents
                     .filter((image) => image.imageUrl)
@@ -80,22 +77,37 @@ export default function Page({ params: { id } }: Props) {
               </div>
               {photoModalOn && selectedImage && (
                 <div
-                  className="bg-opacity-50 bg-black z-30 w-[360px] h-[100vh] absolute top-0 -ml-8 flex flex-col justify-center"
+                  className="fixed bg-opacity-80 bg-black top-0 translate -translate-x-6 z-30 max-w-[490px] w-full h-full flex flex-col justify-center"
                   onClick={() => setPhotoModalOn(false)}
                 >
                   <div
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center relative"
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
                   >
-                    <Image
-                      src={selectedImage}
-                      width={280}
-                      height={300}
-                      alt="selected-image"
-                    />
-                    <div className="w-[330px] flex gap-3 overflow-x-scroll scrollbar-hide mt-6 ml-6">
+                    <button
+                      className="w-full flex justify-end mr-6"
+                      aria-label="close-button"
+                      onClick={() => setPhotoModalOn(false)}
+                    >
+                      <Image
+                        src={closeBtn}
+                        width={24}
+                        height={24}
+                        alt="close-btn"
+                      />
+                    </button>
+                    <div className="relative w-full h-0 pb-[100%]">
+                      <Image
+                        src={selectedImage}
+                        fill
+                        sizes="100vw"
+                        alt="selected-image"
+                        style={{ objectFit: 'contain' }}
+                      />
+                    </div>
+                    <div className="w-full flex gap-3 overflow-x-scroll scrollbar-hide mt-6 ml-6">
                       {topic.contentResponses.imageContents.length > 0 &&
                         topic.contentResponses.imageContents
                           .filter((image) => image.imageUrl)
@@ -122,6 +134,6 @@ export default function Page({ params: { id } }: Props) {
           )}
         </>
       )}
-    </>
+    </div>
   );
 }

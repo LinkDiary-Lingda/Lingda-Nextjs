@@ -103,7 +103,7 @@ export async function cancelStarTopic(id: number, token: string) {
   }
 }
 
-export async function getTopic(id: number, token: string) {
+export async function getTopic(id: number, token: string): Promise<TopicItem> {
   try {
     const topic = await GET({ path: `topics/${id}`, token });
     return topic;

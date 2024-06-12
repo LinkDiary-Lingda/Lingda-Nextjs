@@ -30,9 +30,9 @@ export default function useTopic() {
     enabled: !!token,
   });
 
-  const { mutateAsync: topicDetailQuery } = useMutation({
-    mutationFn: (id: number) => getTopic(id, token),
-  });
+  const topicDetailQuery = (id: number) => {
+    return getTopic(id, token);
+  };
 
   const categoryTopicQuery = (categoryId: number | null) => {
     return getTopics(categoryId, token);

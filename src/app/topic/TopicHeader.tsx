@@ -18,13 +18,13 @@ export default function TopicHeader() {
   };
   const router = useRouter();
   const menus = [
-    // {
-    //   title: '수정하기',
-    //   handleClick: () => {
-    //     setIsEdit(true);
-    //     setDeleteOn(false);
-    //   },
-    // },
+    {
+      title: '수정하기',
+      handleClick: () => {
+        setIsEdit(true);
+        setDeleteOn(false);
+      },
+    },
     {
       title: '삭제하기',
       warning: true,
@@ -74,7 +74,7 @@ export default function TopicHeader() {
         </ul>
       </nav>
       {deleteOn && (
-        <div className="relative h-[100vh] -ml-6 -mt-12">
+        <div className="fixed max-w-[490px] w-full h-[100vh] -ml-6 -mt-12 z-30">
           <Alert
             isOpen={deleteOn}
             title="글을 삭제하시겠습니까?"
@@ -90,7 +90,7 @@ export default function TopicHeader() {
         </div>
       )}
       {isEdit && (
-        <div className="relative h-[100vh] -ml-6 -mt-12">
+        <div className="fixed max-w-[490px] w-full h-[100vh] -ml-6 -mt-12 z-30">
           <Alert
             isOpen={isEdit}
             title="글을 수정하시겠습니까?"

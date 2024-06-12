@@ -116,7 +116,7 @@ export default function Categories() {
         'h-14 flex items-center justify-between cursor-pointer',
         isNested
           ? {
-              'border-Primary-03 border-b-[1px]':
+              'border-On-Primary-Container border-b-[1px]':
                 draggedOverId?.id === category.id + '',
               'border-none': draggedOverId?.id !== category.id + '',
               'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
@@ -124,7 +124,7 @@ export default function Categories() {
               'bg-none border-none': targetId !== category.id + '',
             }
           : {
-              'border-Primary-03 border-b-[1px]':
+              'border-On-Primary-Container border-b-[1px]':
                 draggedOverId?.id === category.id + '',
               'border-b-[1px] border-Outline-Low':
                 draggedOverId?.id !== category.id + '',
@@ -161,7 +161,7 @@ export default function Categories() {
       className={cls(
         'flex flex-col justify-between border-b-[1px] border-Outline-Low',
         {
-          'border-Primary-03 border-b-[1px]':
+          'border-On-Primary-Container border-b-[1px]':
             draggedOverId?.id === divider.id + '',
           'border-b-[1px] border-Outline-Low':
             draggedOverId?.id !== divider.id + '',

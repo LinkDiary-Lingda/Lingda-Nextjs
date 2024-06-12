@@ -95,7 +95,7 @@ export default function DividerItem({
       <div
         id={id}
         className={cls('h-14 flex items-center justify-between relative', {
-          'border-Primary-03 border-b-[1px]': isDraggedOver,
+          'border-On-Primary-Container border-b-[1px]': isDraggedOver,
           'border-none border-b-0': !isDraggedOver,
         })}
         onClick={onToggle}

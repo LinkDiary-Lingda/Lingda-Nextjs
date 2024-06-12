@@ -223,7 +223,7 @@ export default function New() {
               disabled
             />
             <button
-              className="h-6 w-24 bg-Surface-Container-Lowest border-[1px] border-Primary-02 text-Primary-02 text-Detail-1 font-bold rounded flex items-center justify-center"
+              className="h-6 w-24 bg-Surface-Container-Lowest border-[1px] border-Primary2 text-Primary2 text-Detail-1 font-bold rounded flex items-center justify-center"
               onClick={() => router.push('/new/category')}
             >
               카테고리 선택

@@ -33,13 +33,11 @@ export default function Content({ topic }: { topic: TopicItem }) {
         </div>
         <div className="flex items-center gap-1 mt-1">
           <FaCircle color={color} size={14} />
-          <p className="text-On-Surface-Third text-Body-2">
-            {categoryName || '전체 보기'}
-          </p>
+          <p className="text-On-Surface-Third text-Body-2">{categoryName}</p>
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <LinkComponent urlContents={urlContents} />
+        {urlContents.length > 0 && <LinkComponent urlContents={urlContents} />}
         <div>
           {textContents[0]?.text && (
             <article className="w-full text-On-Surface-Secondary text-Body-2 leading-Body-2 line-clamp-2">

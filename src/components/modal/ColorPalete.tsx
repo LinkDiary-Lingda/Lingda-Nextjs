@@ -11,7 +11,7 @@ export default function ColorPalete({ value, setValue }: Props) {
   const [selected, setSelected] = useState<CategoryColor>(value || '#F04242');
 
   return (
-    <div className="flex gap-1 mt-2">
+    <div className="flex gap-1 h-8">
       {[
         '#F04242',
         '#F08A42',
@@ -21,25 +21,25 @@ export default function ColorPalete({ value, setValue }: Props) {
         '#EC93C7',
         '#E0E0E0',
       ].map((color) => (
-        <button
-          type="button"
-          key={color}
-          className={cls(
-            `w-6 h-6 m-1 rounded-full cursor-pointer flex justify-center items-center`,
-            {
-              'bg-black': selected === color,
-              'bg-white': selected !== color,
-            }
-          )}
-          id={color}
-          onClick={(e) => {
-            const color = e.currentTarget.id;
-            setSelected(color);
-            setValue('color', color);
-          }}
-        >
-          <FaCircle size={18} color={color} />
-        </button>
+        <li key={color} className="w-8 h-8 flex items-center justify-center">
+          <button
+            type="button"
+            className={cls(
+              'w-[22.4px] h-[22.4px] rounded-full flex justify-center items-center',
+              {
+                ' border-[3px] border-black': selected === color,
+                ' border-none': selected !== color,
+              }
+            )}
+            style={{ backgroundColor: color }}
+            id={color}
+            onClick={(e) => {
+              const color = e.currentTarget.id;
+              setSelected(color);
+              setValue('color', color);
+            }}
+          ></button>
+        </li>
       ))}
     </div>
   );
