@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaCircle } from 'react-icons/fa';
 import TopicHeader from '../TopicHeader';
 import Link from 'next/link';
@@ -7,6 +7,8 @@ import Image from 'next/image';
 import useTopic from '@/hooks/topic/useTopic';
 import { useQuery } from '@tanstack/react-query';
 import closeBtn from '../../../images/photo-close-btn.png';
+import { useRecoilState } from 'recoil';
+import { currentTopicState } from '@/atoms/topicState';
 
 type Props = {
   params: { id: number };
@@ -15,15 +17,32 @@ export default function Page({ params: { id } }: Props) {
   const { topicDetailQuery } = useTopic();
   const [photoModalOn, setPhotoModalOn] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   const { data: topic } = useQuery({
     queryKey: ['topics', id],
     queryFn: () => topicDetailQuery(id),
   });
-
+  const [_, setCurrentTopic] = useRecoilState(currentTopicState);
   const handleImageClick = (imageUrl: string) => {
     setPhotoModalOn(true);
     setSelectedImage(imageUrl);
   };
+  useEffect(() => {
+    if (topic) {
+      const newTopic = {
+        name: topic.name,
+        categoryId: topic.categoryId,
+        categoryName: topic.categoryName,
+        contentRequest: {
+          textContents: topic.contentResponses?.textContents,
+          imageContents: topic.contentResponses?.imageContents,
+          urlContents: topic.contentResponses?.urlContents,
+        },
+      };
+
+      setCurrentTopic(newTopic);
+    }
+  }, [setCurrentTopic, topic]);
 
   return (
     <div className="relative w-full h-full">

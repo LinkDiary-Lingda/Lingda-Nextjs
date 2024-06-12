@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { DELETE, GET, POST } from './HttpClient';
+import { DELETE, GET, POST, PUT } from './HttpClient';
 import { TopicItem } from '@/types/topic';
 
 export async function getTopics(
@@ -117,6 +117,16 @@ export async function trashTopic(id: number, token: string) {
   try {
     const deleted = await DELETE({ path: `topics/${id}`, token });
     return deleted;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function updateTopic(id: number, token: string) {
+  try {
+    const updated = await PUT({ path: `topics/${id}`, token });
+    return updated;
   } catch (error) {
     console.log(error);
     throw error;

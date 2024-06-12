@@ -18,7 +18,7 @@ import { useRecoilState } from 'recoil';
 import { isValidUrl } from '@/utils/validation';
 import BackHeader from '@/components/header/BackHeader';
 import { useRouter } from 'next/navigation';
-import { currentTopicState } from '@/atoms/topicState';
+import { currentTopicState, editTopicState } from '@/atoms/topicState';
 import { defaultTopic } from '@/types/topic';
 
 export default function New() {
@@ -27,6 +27,7 @@ export default function New() {
   const fileInput = useRef<HTMLInputElement>(null);
   const [currentCategory] = useRecoilState(currentCategoryState);
   const [currentTopic, setCurrentTopic] = useRecoilState(currentTopicState);
+  const [editTopic, setEditTopic] = useRecoilState(editTopicState);
   const textarea = useRef<HTMLTextAreaElement>(null);
   const handleResizeHeight = () => {
     if (textarea.current) {
@@ -44,8 +45,8 @@ export default function New() {
   } = useForm({
     defaultValues: {
       name: currentTopic.name || '',
-      categoryId: currentCategory?.id || null,
-      categoryName: currentCategory?.name || null,
+      categoryId: currentCategory?.id || currentTopic.categoryId || null,
+      categoryName: currentCategory?.name || currentTopic.categoryName || null,
       contentRequest: {
         textContents: currentTopic.contentRequest.textContents,
         imageContents: currentTopic.contentRequest.imageContents,
@@ -289,7 +290,7 @@ export default function New() {
                   alt="add-link-btn-img"
                 />
               </button>
-              {currentTopic.contentRequest.imageContents.length > 1 &&
+              {currentTopic.contentRequest.imageContents.length > 0 &&
                 currentTopic.contentRequest.imageContents.map(
                   ({ imageUrl }) => (
                     <div
@@ -332,7 +333,7 @@ export default function New() {
             disabled={Object.keys(errors).length !== 0}
             onClick={handleSubmit(handleSumbitBtn)}
           >
-            작성하기
+            {editTopic ? '수정하기' : '작성하기'}
           </button>
         </div>
       </div>

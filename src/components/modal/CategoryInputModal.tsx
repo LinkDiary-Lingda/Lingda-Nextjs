@@ -119,7 +119,7 @@ export default function InputModal({
                   <button
                     type="submit"
                     className={cls(
-                      'h-[44px] flex-1 bg-Primary-01 text-On-Primary rounded-br-xl text-Body-2',
+                      'h-[44px] flex-1 bg-Primary-01 text-On-Primary rounded-br-xl text-Body-1',
                       {
                         'bg-Primary-Container border-t border border-Primary-Container':
                           errors.name,

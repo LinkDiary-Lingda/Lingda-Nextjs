@@ -1,4 +1,5 @@
 'use client';
+import { editTopicState } from '@/atoms/topicState';
 import Alert from '@/components/Alert';
 import MenuBox from '@/components/menu/MenuBox';
 import useTopic from '@/hooks/topic/useTopic';
@@ -6,6 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { IoMdArrowBack } from 'react-icons/io';
+import { useRecoilState } from 'recoil';
 
 export default function TopicHeader() {
   const { id } = useParams();
@@ -13,6 +15,8 @@ export default function TopicHeader() {
   const [menuOn, setMenuOn] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [deleteOn, setDeleteOn] = useState(false);
+  const [editTopic, setEditTopic] = useRecoilState(editTopicState);
+
   const handleMenuBtn = () => {
     setMenuOn(!menuOn);
   };
@@ -43,7 +47,10 @@ export default function TopicHeader() {
     }
   };
   const hadleEdit = () => {
-    router.push(`/topic/edit/${id}`);
+    if (typeof id === 'string') {
+      setEditTopic(parseInt(id));
+      router.push(`/new`);
+    }
   };
 
   return (

@@ -31,7 +31,7 @@ export default function Alert({
               </div>
               <p className="font-semibold">{informativeText}</p>
             </div>
-            <div className="flex justify-between items-center border-t border-Primary2 font-semibold text-Body-2">
+            <div className="flex justify-between items-center border-t border-Primary2 font-semibold text-Body-1">
               <button
                 className="h-[44px] flex-1 bg-Surface-Container-Lowest text-Primary2 rounded-bl-xl"
                 onClick={secondaryAction}

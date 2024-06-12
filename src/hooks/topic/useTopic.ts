@@ -80,6 +80,15 @@ export default function useTopic() {
     },
   });
 
+  const { mutate: updateTopicQuery } = useMutation({
+    mutationFn: (id: number) => trashTopic(id, token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['topics', user] });
+      toast('토픽이 수정되었습니다.');
+      router.back();
+    },
+  });
+
   return {
     topicQuery,
     categoryTopicQuery,
@@ -89,5 +98,6 @@ export default function useTopic() {
     starTopicQuery,
     cancelStarTopicQuery,
     trashTopicQuery,
+    updateTopicQuery,
   };
 }

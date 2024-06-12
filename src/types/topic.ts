@@ -28,7 +28,7 @@ export type UrlContent = {
 
 export const defaultTopic = {
   name: '',
-  categoryId: undefined,
+  categoryId: null,
   categoryName: undefined,
   contentRequest: {
     textContents: [
