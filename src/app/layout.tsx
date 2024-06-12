@@ -6,7 +6,6 @@ import OverlayProvider from '@/components/modal/OverlayProvider';
 import { NextAuthProvider } from '@/context/NextAuthProvider';
 import { Flip, ToastContainer } from 'react-toastify';
 import ReactQueryClientProvider from '@/hooks/ReactQueryClientProvider';
-import { CategoryContextProvider } from '@/context/CategoryContext';
 import RecoilWrapper from '@/context/RecoilWrapper';
 import UseLoading from '@/hooks/handlers/useLoading';
 
@@ -65,11 +64,9 @@ export default function RootLayout({
           <OverlayProvider>
             <NextAuthProvider>
               <RecoilWrapper>
-                <CategoryContextProvider>
-                  <UseLoading>
-                    <main>{children}</main>
-                  </UseLoading>
-                </CategoryContextProvider>
+                <UseLoading>
+                  <main>{children}</main>
+                </UseLoading>
               </RecoilWrapper>
             </NextAuthProvider>
           </OverlayProvider>

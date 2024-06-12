@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import useTopic from '@/hooks/topic/useTopic';
 import Content from '../../components/content';
 import Nothing from '../../components/nothing';
-import { TopicItem } from '@/types/topic';
 import { useRecoilState } from 'recoil';
 import { currentCategoryState } from '@/atoms/categoryState';
 import { useQuery } from '@tanstack/react-query';
