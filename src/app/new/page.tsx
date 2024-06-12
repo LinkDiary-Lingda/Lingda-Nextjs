@@ -18,12 +18,12 @@ import { useRecoilState } from 'recoil';
 import { isValidUrl } from '@/utils/validation';
 
 export default function New() {
-  const [urlInputs, setUrlInputs] = useState([{ url: '' }]);
   const [images, setImages] = useState<string[]>([]);
   const fileInput = useRef<HTMLInputElement>(null);
   const [currentCategory, setCurrentCategory] =
     useRecoilState(currentCategoryState);
   const textarea = useRef<HTMLTextAreaElement>(null);
+  const [inputValue, setInputValue] = useState('');
   const handleResizeHeight = () => {
     if (textarea.current) {
       textarea.current.style.height = 'auto';
@@ -164,16 +164,23 @@ export default function New() {
           </button>
         </div>
         {renderLinkInputs}
-        <div className="mt-6 w-full flex flex-row gap-2 items-center border-b-2">
+        <div className="relative mt-6 w-full flex gap-2 items-center border-b-[1px] border-Outline-Low">
+          {!inputValue && (
+            <Image src={addBtn} width={20} height={20} alt="add-link-btn-img" />
+          )}
           <textarea
             ref={textarea}
             onInput={handleResizeHeight}
-            rows={2}
+            rows={1}
             onChange={(e) => {
               setValue('contentRequest.textContents.0.text', e.target.value);
+              setInputValue(e.target.value);
             }}
             placeholder="내용 추가 하기 (선택사항)"
-            className="w-[312px] outline-none resize-y"
+            className="w-full outline-none flex items-center justify-center h-[55px] py-[15px] resize-none box-border"
+            style={{
+              minHeight: 'calc(55px - 30px)',
+            }}
           />
         </div>
         <div className="w-full mt-6">
