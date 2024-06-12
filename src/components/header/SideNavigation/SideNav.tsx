@@ -5,11 +5,11 @@ import UserStatus from './UserStatus';
 import { useRecoilState } from 'recoil';
 import { sideNavState } from '@/atoms/sideNavState';
 
-type Props = {
-  handleBgClick: () => void;
-};
-export default function SideNav({ handleBgClick }: Props) {
+export default function SideNav() {
   const [sideNavOn, setSideNavOn] = useRecoilState(sideNavState);
+  const handleBgClick = () => {
+    setSideNavOn(false);
+  };
   return (
     <section
       // 슬라이드 애니메이션 작업중이었음...

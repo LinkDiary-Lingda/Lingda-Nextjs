@@ -10,13 +10,15 @@ export const currentOpenMenuState = atom<string | null>({
   default: null,
 });
 
-export const editState = atomFamily({
+type EditStateType = {
+  id: number;
+  name: string;
+  color: string;
+} | null;
+
+export const editState = atomFamily<EditStateType, string>({
   key: 'editState',
-  default: {
-    id: 0,
-    name: '',
-    color: '',
-  },
+  default: null,
 });
 
 export const isCategoryState = atomFamily({

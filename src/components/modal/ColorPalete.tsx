@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import cls from 'classnames';
 import { FaCircle } from 'react-icons/fa';
 type Props = {
+  value?: string;
   setValue: any;
 };
-export default function ColorPalete({ setValue }: Props) {
-  const [selected, setSelected] = useState<CategoryColor>('#F04242');
+export default function ColorPalete({ value, setValue }: Props) {
+  const [selected, setSelected] = useState<CategoryColor>(value || '#F04242');
 
   return (
     <div className="flex gap-1 mt-2">

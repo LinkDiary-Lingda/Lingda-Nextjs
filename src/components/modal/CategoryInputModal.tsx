@@ -11,7 +11,7 @@ type Props = {
   modalOn: boolean;
   closeModal: () => void;
   closeMenu: () => void;
-  isEdit?: { id: number; name: string; color?: string };
+  isEdit?: { id: number; name: string; color?: string } | null;
   dividerId: number | null;
 };
 
@@ -28,7 +28,6 @@ export default function InputModal({
     handleSubmit,
     formState: { errors },
     setValue,
-    reset,
   } = useForm({
     defaultValues: {
       name: '',
@@ -38,16 +37,8 @@ export default function InputModal({
       dividerId: dividerId,
     },
   });
-  const { createCategoryQuery, editCategoryItemQuery } = useCategory();
 
-  useEffect(() => {
-    if (isEdit) {
-      reset({
-        name: isEdit.name,
-        color: isEdit.color ?? '#F04242',
-      });
-    }
-  }, [isEdit, reset]);
+  const { createCategoryQuery, editCategoryItemQuery } = useCategory();
 
   const onCreateSubmit: SubmitHandler<CategoryItem> = (item) => {
     createCategoryQuery(item);
@@ -65,12 +56,21 @@ export default function InputModal({
     closeMenu();
   };
 
+  useEffect(() => {
+    if (isEdit) {
+      setValue('name', isEdit.name);
+      if (isEdit.color) {
+        setValue('color', isEdit.color);
+      }
+    }
+  }, [isEdit, setValue]);
+
   return (
     <>
       {modalOn && (
         <>
           <section
-            className="absolute flex justify-center items-center top-0 -left-2 h-full w-[360px] bg-opacity-50 bg-black z-30"
+            className="absolute flex justify-center items-center top-0 left-0 h-full w-full bg-opacity-50 bg-black z-30"
             onClick={() => {
               closeModal();
               closeMenu();
@@ -99,7 +99,9 @@ export default function InputModal({
                     })}
                     defaultValue={isEdit?.name || ''}
                   />
-                  {isCategory && <ColorPalete setValue={setValue} />}
+                  {isCategory && (
+                    <ColorPalete setValue={setValue} value={isEdit?.color} />
+                  )}
                 </div>
                 <div className="flex justify-between items-center font-semibold text-Body-2">
                   <button

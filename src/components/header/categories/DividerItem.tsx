@@ -69,12 +69,14 @@ export default function DividerItem({
       title: '디바이더 추가하기',
       handleClick: () => {
         openModal(false);
+        setIsEdit(null);
       },
     },
     {
       title: '주제 추가하기',
       handleClick: () => {
         openModal(true);
+        setIsEdit(null);
       },
     },
     {

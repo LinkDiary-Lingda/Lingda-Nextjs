@@ -11,13 +11,11 @@ import { sideNavState } from '@/atoms/sideNavState';
 export default function MainHeader() {
   const [searchOn, setSearchOn] = useState(false);
   const [sideNavOn, setSideNavOn] = useRecoilState(sideNavState);
-  const handleBgClick = () => {
-    setSideNavOn(false);
-  };
+
   return (
     <>
       <div className="relative ">
-        <SideNav handleBgClick={handleBgClick} />
+        <SideNav />
       </div>
       <nav>
         <ul className="flex flex-row justify-between items-center h-[48px]">
