@@ -1,47 +1,51 @@
 'use client';
 import React, { DragEvent, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { useRouter } from 'next/navigation';
+import cls from 'classnames';
+import Image from 'next/image';
 import DividerItem from './DividerItem';
 import RootCategoryItem from './RootCategoryItem';
 import plusBtn from '../../../images/plus-btn.png';
 import MenuBox from '@/components/menu/MenuBox';
 import InputModal from '@/components/modal/CategoryInputModal';
-import { useRouter } from 'next/navigation';
-import useCategory from '@/hooks/category/useCategory';
-import cls from 'classnames';
-import { CategoryDividerItem } from '@/types/category';
-import { useRecoilState } from 'recoil';
 import { openedDividerState, sideNavState } from '@/atoms/sideNavState';
-import Image from 'next/image';
+import { CategoryDividerItem } from '@/types/category';
+import useCategory from '@/hooks/category/useCategory';
+import { useMenuModalState } from '@/hooks/modal/useModalState';
 
 export default function Categories() {
-  const [sideNavOn, setSideNavOn] = useRecoilState(sideNavState);
+  const [_, setSideNavOn] = useRecoilState(sideNavState);
   const [openCategories, setOpenCategories] =
     useRecoilState(openedDividerState);
-
-  const router = useRouter();
   const [targetId, setTargetId] = useState<string | null>(null);
   const [draggedOverId, setDraggedOverId] = useState<{
     id: string;
     parentId: string | null;
   } | null>(null);
-  const [createMenuOn, setCreateMenuOn] = useState(false);
-  const [modalOn, setModalOn] = useState(false);
-  const [isCategory, setIsCategory] = useState(true);
+  const {
+    menuOn,
+    closeMenu,
+    openMenu,
+    modalOn,
+    openModal,
+    closeModal,
+    isCategory,
+  } = useMenuModalState('top-level');
   const { categoriesQuery, orderCategoryItemQuery } = useCategory();
+  const router = useRouter();
 
   const menus = [
     {
       title: '디바이더 추가하기',
       handleClick: () => {
-        setModalOn(true);
-        setIsCategory(false);
+        openModal(false);
       },
     },
     {
       title: '주제 추가하기',
       handleClick: () => {
-        setModalOn(true);
-        setIsCategory(true);
+        openModal(true);
       },
     },
   ];
@@ -50,19 +54,11 @@ export default function Categories() {
     setTargetId(e.currentTarget.id);
   };
 
-  const handleCategoryDragOver = (e: DragEvent<HTMLElement>) => {
+  const handleDragOver = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
     setDraggedOverId({
       id: e.currentTarget.id,
       parentId: e.currentTarget.getAttribute('data-id'),
-    });
-  };
-
-  const handleDividerDragOver = (e: DragEvent<HTMLElement>) => {
-    e.preventDefault();
-    setDraggedOverId({
-      id: '0',
-      parentId: e.currentTarget.id,
     });
   };
 
@@ -71,7 +67,22 @@ export default function Categories() {
     setDraggedOverId(null);
   };
 
-  const handleDrop = (e: DragEvent<HTMLElement>) => {
+  const handleCategoryDrop = (e: DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    if (targetId && draggedOverId) {
+      orderCategoryItemQuery({
+        id: parseInt(targetId),
+        dividerId: draggedOverId.parentId
+          ? parseInt(draggedOverId.parentId)
+          : null,
+        prevId: parseInt(draggedOverId.id),
+      });
+    }
+    setDraggedOverId(null);
+    setTargetId(null);
+  };
+
+  const handleDividerDrop = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
     if (targetId && draggedOverId) {
       orderCategoryItemQuery({
@@ -98,55 +109,35 @@ export default function Categories() {
     });
   };
 
-  const renderCategory = (category: CategoryDividerItem) => (
+  const renderCategory = (category: CategoryDividerItem, isNested = false) => (
     <li
       key={category.id}
-      className={cls('h-14 flex items-center justify-between cursor-pointer', {
-        'border-Primary-03 border-b-[1px]':
-          draggedOverId?.id === category.id + '',
-        'border-b-[1px] border-Outline-Low':
-          draggedOverId?.id !== category.id + '',
-        'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
-          targetId === category.id + '',
-        'bg-none border-b-[1px] border-Outline-Low':
-          targetId !== category.id + '',
-      })}
+      className={cls(
+        'h-14 flex items-center justify-between cursor-pointer',
+        isNested
+          ? {
+              'border-Primary-03 border-b-[1px]':
+                draggedOverId?.id === category.id + '',
+              'border-none': draggedOverId?.id !== category.id + '',
+              'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
+                targetId === category.id + '',
+              'bg-none border-none': targetId !== category.id + '',
+            }
+          : {
+              'border-Primary-03 border-b-[1px]':
+                draggedOverId?.id === category.id + '',
+              'border-b-[1px] border-Outline-Low':
+                draggedOverId?.id !== category.id + '',
+              'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
+                targetId === category.id + '',
+              'bg-none border-b-[1px] border-Outline-Low':
+                targetId !== category.id + '',
+            }
+      )}
       draggable
       onDragStart={handleDragStart}
-      onDragOver={handleCategoryDragOver}
-      onDrop={handleDrop}
-      onDragLeave={handleDragLeave}
-      id={category.id + ''}
-      data-id={category.dividerId}
-      onClick={() => {
-        setSideNavOn(false);
-        router.push(`/my/${category.name}/${category.id}`);
-      }}
-    >
-      <RootCategoryItem
-        categoryId={category.id}
-        name={category.name}
-        color={category.color!}
-        dividerId={category.dividerId}
-      />
-    </li>
-  );
-
-  const renderNestedCategory = (category: CategoryDividerItem) => (
-    <li
-      key={category.id}
-      className={cls('h-14 flex items-center justify-between cursor-pointer', {
-        'border-Primary-03 border-b-[1px]':
-          draggedOverId?.id === category.id + '',
-        'border-none': draggedOverId?.id !== category.id + '',
-        'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
-          targetId === category.id + '',
-        'bg-none border-none': targetId !== category.id + '',
-      })}
-      draggable
-      onDragStart={handleDragStart}
-      onDragOver={handleCategoryDragOver}
-      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDrop={handleCategoryDrop}
       onDragLeave={handleDragLeave}
       id={category.id + ''}
       data-id={category.dividerId}
@@ -167,12 +158,24 @@ export default function Categories() {
   const renderDivider = (divider: CategoryDividerItem) => (
     <li
       key={divider.id}
-      className="flex flex-col justify-between border-b-[1px] border-Outline-Low"
+      className={cls(
+        'flex flex-col justify-between border-b-[1px] border-Outline-Low',
+        {
+          'border-Primary-03 border-b-[1px]':
+            draggedOverId?.id === divider.id + '',
+          'border-b-[1px] border-Outline-Low':
+            draggedOverId?.id !== divider.id + '',
+          'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
+            targetId === divider.id + '',
+          'bg-none border-b-[1px] border-Outline-Low':
+            targetId !== divider.id + '',
+        }
+      )}
       draggable
-      onDragOver={handleDividerDragOver}
-      onDrop={handleDrop}
-      onDragLeave={handleDragLeave}
       onDragStart={handleDragStart}
+      // onDragOver={handleDragOver}
+      // onDrop={handleDividerDrop}
+      onDragLeave={handleDragLeave}
       id={divider.id + ''}
       data-id={divider.dividerId}
     >
@@ -188,7 +191,7 @@ export default function Categories() {
           {divider.categories &&
             divider.categories.map((item) => {
               if (item.type === 'CATEGORY') {
-                return renderNestedCategory(item);
+                return renderCategory(item, true);
               }
               if (item.type === 'DIVIDER') {
                 return renderDivider(item);
@@ -215,7 +218,13 @@ export default function Categories() {
         <button
           className="w-9 h-9 flex items-center justify-center"
           aria-label="create-category-btn"
-          onClick={() => setCreateMenuOn(!createMenuOn)}
+          onClick={() => {
+            if (menuOn) {
+              closeMenu();
+            } else {
+              openMenu();
+            }
+          }}
         >
           <Image
             src={plusBtn}
@@ -224,14 +233,14 @@ export default function Categories() {
             alt="add-category-button"
           />
         </button>
-        {createMenuOn && <MenuBox menus={menus} position="right-0" />}
+        {menuOn && <MenuBox menus={menus} position="right-0" />}
       </div>
       {modalOn && (
         <InputModal
           isCategory={isCategory}
           modalOn={modalOn}
-          setModalOn={setModalOn}
-          setMenuOn={setCreateMenuOn}
+          closeModal={closeModal}
+          closeMenu={closeMenu}
           dividerId={null}
         />
       )}

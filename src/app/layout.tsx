@@ -8,6 +8,7 @@ import { Flip, ToastContainer } from 'react-toastify';
 import ReactQueryClientProvider from '@/hooks/ReactQueryClientProvider';
 import { CategoryContextProvider } from '@/context/CategoryContext';
 import RecoilWrapper from '@/context/RecoilWrapper';
+import UseLoading from '@/hooks/handlers/useLoading';
 
 const pretendardBoldFont = localFont({
   src: './styles/font/Pretendard-Bold.woff',
@@ -65,7 +66,9 @@ export default function RootLayout({
             <NextAuthProvider>
               <RecoilWrapper>
                 <CategoryContextProvider>
-                  <main>{children}</main>
+                  <UseLoading>
+                    <main>{children}</main>
+                  </UseLoading>
                 </CategoryContextProvider>
               </RecoilWrapper>
             </NextAuthProvider>

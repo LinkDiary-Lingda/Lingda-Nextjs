@@ -2,13 +2,14 @@
 import React, { MouseEvent, useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import cls from 'classnames';
+import Image from 'next/image';
 import MenuBox from '@/components/menu/MenuBox';
 import Alert from '@/components/Alert';
 import InputModal from '@/components/modal/CategoryInputModal';
 import useCategory from '@/hooks/category/useCategory';
 import arrowRight from '../../../images/arrow-right.png';
 import arrowDown from '../../../images/arrow-down.png';
-import Image from 'next/image';
+import { useMenuModalState } from '@/hooks/modal/useModalState';
 
 type Props = {
   name: string;
@@ -25,58 +26,65 @@ export default function DividerItem({
   toggled,
   onToggle,
 }: Props) {
-  const [menuOn, setMenuOn] = useState(false);
-  const [modalOn, setModalOn] = useState(false);
-  const [isCategory, setIsCategory] = useState(true);
-  const [isEdit, setIsEdit] = useState<
-    { id: number; name: string; color?: string } | undefined
-  >({ id: parseInt(id), name });
-  const [deleteOn, setDeleteOn] = useState(false);
-  const handleMenuBtn = (e: MouseEvent) => {
-    e.stopPropagation();
-    setMenuOn(!menuOn);
-  };
+  const {
+    menuOn,
+    openMenu,
+    closeMenu,
+    modalOn,
+    openModal,
+    closeModal,
+    deleteOn,
+    openDelete,
+    closeDelete,
+    isEdit,
+    setIsEdit,
+    isCategory,
+  } = useMenuModalState(id);
 
   const { deleteCategoryItemQuery } = useCategory();
+
+  const handleMenuBtn = (e: MouseEvent) => {
+    e.stopPropagation();
+    if (menuOn) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  };
+
+  const handleDelete = async () => {
+    await deleteCategoryItemQuery(parseInt(id));
+    closeDelete();
+  };
 
   const menus = [
     {
       title: '수정하기',
       handleClick: () => {
-        setModalOn(true);
-        setIsCategory(false);
-        setIsEdit({ id: parseInt(id), name });
+        setIsEdit({ id: parseInt(id), name, color: '' });
+        openModal(false);
       },
     },
     {
       title: '디바이더 추가하기',
       handleClick: () => {
-        setModalOn(true);
-        setIsCategory(false);
-        setIsEdit(undefined);
+        openModal(false);
       },
     },
     {
       title: '주제 추가하기',
       handleClick: () => {
-        setModalOn(true);
-        setIsCategory(true);
-        setIsEdit(undefined);
+        openModal(true);
       },
     },
     {
       title: '삭제하기',
       warning: true,
       handleClick: () => {
-        setDeleteOn(true);
-        setMenuOn(false);
+        openDelete();
       },
     },
   ];
-  const handleDelete = async () => {
-    await deleteCategoryItemQuery(parseInt(id));
-    setDeleteOn(false);
-  };
 
   return (
     <>
@@ -123,8 +131,8 @@ export default function DividerItem({
           informativeText={name}
           secondaryBtn="취소"
           secondaryAction={() => {
-            setDeleteOn(false);
-            setMenuOn(false);
+            closeDelete();
+            closeMenu();
           }}
           primaryBtn="삭제하기"
           primaryAction={handleDelete}
@@ -134,9 +142,9 @@ export default function DividerItem({
         <InputModal
           isCategory={isCategory}
           modalOn={modalOn}
-          setModalOn={setModalOn}
+          closeModal={closeModal}
           isEdit={isEdit}
-          setMenuOn={setMenuOn}
+          closeMenu={closeMenu}
           dividerId={id ? parseInt(id) : null}
         />
       )}

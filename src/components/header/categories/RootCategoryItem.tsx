@@ -1,11 +1,12 @@
 'use client';
-import Alert from '@/components/Alert';
-import MenuBox from '@/components/menu/MenuBox';
-import InputModal from '@/components/modal/CategoryInputModal';
-import useCategory from '@/hooks/category/useCategory';
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { FaCircle } from 'react-icons/fa';
+import MenuBox from '@/components/menu/MenuBox';
+import InputModal from '@/components/modal/CategoryInputModal';
+import Alert from '@/components/Alert';
+import useCategory from '@/hooks/category/useCategory';
+import { useMenuModalState } from '@/hooks/modal/useModalState';
 
 type Props = {
   categoryId: number;
@@ -20,23 +21,45 @@ export default function RootCategoryItem({
   name,
   dividerId,
 }: Props) {
-  const [menuOn, setMenuOn] = useState(false);
-  const [isEdit, setIsEdit] = useState<
-    { id: number; name: string; color?: string } | undefined
-  >({ id: categoryId, name });
-  const [modalOn, setModalOn] = useState(false);
-  const [deleteOn, setDeleteOn] = useState(false);
+  const {
+    menuOn,
+    openMenu,
+    closeMenu,
+    modalOn,
+    openModal,
+    closeModal,
+    deleteOn,
+    openDelete,
+    closeDelete,
+    isEdit,
+    setIsEdit,
+  } = useMenuModalState(categoryId.toString());
+
+  const { deleteCategoryItemQuery } = useCategory();
+
   const handleMenuBtn = (e: MouseEvent) => {
     e.stopPropagation();
-    setMenuOn(!menuOn);
+    if (menuOn) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   };
+
+  const handleDelete = (e: MouseEvent) => {
+    e.stopPropagation();
+    deleteCategoryItemQuery(categoryId);
+    closeMenu();
+    closeDelete();
+  };
+
   const menus = [
     {
       title: '수정하기',
       handleClick: (e: MouseEvent) => {
         e.stopPropagation();
-        setModalOn(true);
-        setIsEdit({ id: categoryId, name });
+        setIsEdit({ id: categoryId, name, color });
+        openModal(true);
       },
     },
     {
@@ -44,18 +67,11 @@ export default function RootCategoryItem({
       warning: true,
       handleClick: (e: MouseEvent) => {
         e.stopPropagation();
-        setDeleteOn(true);
+        openDelete();
       },
     },
   ];
 
-  const { deleteCategoryItemQuery } = useCategory();
-  const handleDelete = (e: MouseEvent) => {
-    e.stopPropagation();
-    deleteCategoryItemQuery(categoryId);
-    setMenuOn(false);
-    setDeleteOn(false);
-  };
   return (
     <>
       <div
@@ -83,8 +99,8 @@ export default function RootCategoryItem({
           informativeText={name}
           secondaryBtn="취소"
           secondaryAction={() => {
-            setDeleteOn(false);
-            setMenuOn(false);
+            closeDelete();
+            closeMenu();
           }}
           primaryBtn="삭제하기"
           primaryAction={handleDelete}
@@ -94,9 +110,9 @@ export default function RootCategoryItem({
         <InputModal
           isCategory={true}
           modalOn={modalOn}
-          setModalOn={setModalOn}
+          closeModal={closeModal}
           isEdit={isEdit}
-          setMenuOn={setMenuOn}
+          closeMenu={closeMenu}
           dividerId={dividerId}
         />
       )}
