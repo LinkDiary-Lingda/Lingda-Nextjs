@@ -2,10 +2,17 @@
 import Content from './components/content';
 import useTopic from '@/hooks/topic/useTopic';
 import Nothing from './components/nothing';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { currentCategoryState } from '@/atoms/categoryState';
 
 export default function My() {
   const { topicQuery } = useTopic();
+  const [_, setCurrentCategory] = useRecoilState(currentCategoryState);
 
+  useEffect(() => {
+    setCurrentCategory(null);
+  }, [setCurrentCategory]);
   return (
     <>
       {topicQuery && (

@@ -13,6 +13,7 @@ type Props = {
   color: string;
   name: string;
   dividerId: number | null;
+  forUIOnly?: boolean;
 };
 
 export default function RootCategoryItem({
@@ -20,6 +21,7 @@ export default function RootCategoryItem({
   color,
   name,
   dividerId,
+  forUIOnly,
 }: Props) {
   const {
     menuOn,
@@ -82,14 +84,16 @@ export default function RootCategoryItem({
           <FaCircle size={20} color={color} />
           <p className="text-On-Surface-Primary text-Body-1">{name}</p>
         </div>
-        <button
-          type="button"
-          aria-label="edit-button"
-          className="outline-none p-2"
-          onClick={handleMenuBtn}
-        >
-          <BsThreeDotsVertical color="#9E9E9E" />
-        </button>
+        {!forUIOnly && (
+          <button
+            type="button"
+            aria-label="edit-button"
+            className="outline-none p-2"
+            onClick={handleMenuBtn}
+          >
+            <BsThreeDotsVertical color="#9E9E9E" />
+          </button>
+        )}
         {menuOn && <MenuBox menus={menus} position="right-0 top-6" />}
       </div>
       {deleteOn && (

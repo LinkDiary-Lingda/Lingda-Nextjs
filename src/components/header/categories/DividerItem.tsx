@@ -14,9 +14,10 @@ import { useMenuModalState } from '@/hooks/modal/useModalState';
 type Props = {
   name: string;
   id: string;
-  isDraggedOver: boolean;
+  isDraggedOver?: boolean;
   toggled: boolean;
-  onToggle: () => void;
+  onToggle?: () => void;
+  forUIOnly?: boolean;
 };
 
 export default function DividerItem({
@@ -25,6 +26,7 @@ export default function DividerItem({
   isDraggedOver,
   toggled,
   onToggle,
+  forUIOnly,
 }: Props) {
   const {
     menuOn,
@@ -116,14 +118,16 @@ export default function DividerItem({
           )}
           <p className="text-On-Surface-Primary text-Body-1">{name}</p>
         </div>
-        <button
-          type="button"
-          aria-label="edit-button"
-          className="outline-none p-2"
-          onClick={handleMenuBtn}
-        >
-          <BsThreeDotsVertical color="#9E9E9E" />
-        </button>
+        {!forUIOnly && (
+          <button
+            type="button"
+            aria-label="edit-button"
+            className="outline-none p-2"
+            onClick={handleMenuBtn}
+          >
+            <BsThreeDotsVertical color="#9E9E9E" />
+          </button>
+        )}
         {menuOn && <MenuBox menus={menus} position="right-0 top-10" />}
       </div>
       {deleteOn && (

@@ -11,10 +11,5 @@ export default function MyPageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <BackHeader title="글 작성하기" />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }
