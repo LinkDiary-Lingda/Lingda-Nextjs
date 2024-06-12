@@ -10,6 +10,8 @@ import useCategory from '@/hooks/category/useCategory';
 import arrowRight from '../../../images/arrow-right.png';
 import arrowDown from '../../../images/arrow-down.png';
 import { useMenuModalState } from '@/hooks/modal/useModalState';
+import { useRecoilValue } from 'recoil';
+import { currentOpenMenuState } from '@/atoms/modalState';
 
 type Props = {
   name: string;
@@ -29,7 +31,6 @@ export default function DividerItem({
   forUIOnly,
 }: Props) {
   const {
-    menuOn,
     openMenu,
     closeMenu,
     modalOn,
@@ -42,12 +43,12 @@ export default function DividerItem({
     setIsEdit,
     isCategory,
   } = useMenuModalState(id);
-
+  const currentOpenMenu = useRecoilValue(currentOpenMenuState);
   const { deleteCategoryItemQuery } = useCategory();
 
   const handleMenuBtn = (e: MouseEvent) => {
     e.stopPropagation();
-    if (menuOn) {
+    if (currentOpenMenu === `menu-${id}`) {
       closeMenu();
     } else {
       openMenu();
@@ -128,7 +129,9 @@ export default function DividerItem({
             <BsThreeDotsVertical color="#9E9E9E" />
           </button>
         )}
-        {menuOn && <MenuBox menus={menus} position="right-0 top-10" />}
+        {currentOpenMenu === `menu-${id}` && (
+          <MenuBox menus={menus} position="right-0 top-10" />
+        )}
       </div>
       {deleteOn && (
         <Alert

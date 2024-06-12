@@ -2,13 +2,15 @@
 import React from 'react';
 import Categories from '../categories/Categories';
 import UserStatus from './UserStatus';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { sideNavState } from '@/atoms/sideNavState';
 import { useMenuModalState } from '@/hooks/modal/useModalState';
+import { currentOpenMenuState } from '@/atoms/modalState';
 
 export default function SideNav() {
   const [sideNavOn, setSideNavOn] = useRecoilState(sideNavState);
   const { closeMenu } = useMenuModalState('sideNav');
+  const currentOpenMenu = useRecoilValue(currentOpenMenuState);
   const handleBgClick = () => {
     setSideNavOn(false);
     closeMenu();
@@ -19,8 +21,18 @@ export default function SideNav() {
       className={`w-screen max-w-[490px] absolute z-10 transition-all ease-in duration-300 -left-6 flex flex-row ${
         sideNavOn ? ' visible' : 'hidden'
       }`}
+      onClick={(e) => {
+        e.stopPropagation();
+        closeMenu();
+      }}
     >
-      <div className="w-10/12 h-[100vh] bg-white z-20 flex flex-col px-6">
+      <div
+        className="w-10/12 h-[100vh] bg-white z-20 flex flex-col px-6"
+        onClick={(e) => {
+          if (currentOpenMenu) return;
+          else e.stopPropagation();
+        }}
+      >
         <UserStatus />
         <Categories />
         <div className="mt-6">

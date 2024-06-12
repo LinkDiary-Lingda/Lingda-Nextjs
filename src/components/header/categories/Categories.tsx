@@ -1,6 +1,6 @@
 'use client';
 import React, { DragEvent, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useRouter } from 'next/navigation';
 import cls from 'classnames';
 import Image from 'next/image';
@@ -13,6 +13,7 @@ import { openedDividerState, sideNavState } from '@/atoms/sideNavState';
 import { CategoryDividerItem } from '@/types/category';
 import useCategory from '@/hooks/category/useCategory';
 import { useMenuModalState } from '@/hooks/modal/useModalState';
+import { currentOpenMenuState } from '@/atoms/modalState';
 
 export default function Categories() {
   const [_, setSideNavOn] = useRecoilState(sideNavState);
@@ -23,15 +24,9 @@ export default function Categories() {
     id: string;
     parentId: string | null;
   } | null>(null);
-  const {
-    menuOn,
-    closeMenu,
-    openMenu,
-    modalOn,
-    openModal,
-    closeModal,
-    isCategory,
-  } = useMenuModalState('top-level');
+  const { closeMenu, openMenu, modalOn, openModal, closeModal, isCategory } =
+    useMenuModalState('top-level');
+  const currentOpenMenu = useRecoilValue(currentOpenMenuState);
   const { categoriesQuery, orderCategoryItemQuery } = useCategory();
   const router = useRouter();
 
@@ -219,7 +214,7 @@ export default function Categories() {
           className="w-9 h-9 flex items-center justify-center"
           aria-label="create-category-btn"
           onClick={() => {
-            if (menuOn) {
+            if (currentOpenMenu === 'menu-top-level') {
               closeMenu();
             } else {
               openMenu();
@@ -233,7 +228,9 @@ export default function Categories() {
             alt="add-category-button"
           />
         </button>
-        {menuOn && <MenuBox menus={menus} position="right-0" />}
+        {currentOpenMenu === 'menu-top-level' && (
+          <MenuBox menus={menus} position="right-0" />
+        )}
       </div>
       {modalOn && (
         <InputModal
@@ -246,6 +243,7 @@ export default function Categories() {
       )}
       <ul>
         {categoriesQuery &&
+          categoriesQuery?.length > 0 &&
           categoriesQuery.map((item) => {
             if (item.type === 'CATEGORY') {
               return renderCategory(item);

@@ -7,6 +7,8 @@ import InputModal from '@/components/modal/CategoryInputModal';
 import Alert from '@/components/Alert';
 import useCategory from '@/hooks/category/useCategory';
 import { useMenuModalState } from '@/hooks/modal/useModalState';
+import { useRecoilValue } from 'recoil';
+import { currentOpenMenuState } from '@/atoms/modalState';
 
 type Props = {
   categoryId: number;
@@ -24,7 +26,6 @@ export default function RootCategoryItem({
   forUIOnly,
 }: Props) {
   const {
-    menuOn,
     openMenu,
     closeMenu,
     modalOn,
@@ -36,12 +37,13 @@ export default function RootCategoryItem({
     isEdit,
     setIsEdit,
   } = useMenuModalState(categoryId.toString());
+  const currentOpenMenu = useRecoilValue(currentOpenMenuState);
 
   const { deleteCategoryItemQuery } = useCategory();
 
   const handleMenuBtn = (e: MouseEvent) => {
     e.stopPropagation();
-    if (menuOn) {
+    if (currentOpenMenu === `menu-${categoryId.toString()}`) {
       closeMenu();
     } else {
       openMenu();
@@ -94,7 +96,9 @@ export default function RootCategoryItem({
             <BsThreeDotsVertical color="#9E9E9E" />
           </button>
         )}
-        {menuOn && <MenuBox menus={menus} position="right-0 top-6" />}
+        {currentOpenMenu === `menu-${categoryId.toString()}` && (
+          <MenuBox menus={menus} position="right-0 top-6" />
+        )}
       </div>
       {deleteOn && (
         <Alert
