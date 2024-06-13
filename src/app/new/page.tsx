@@ -19,11 +19,10 @@ import { isValidUrl } from '@/utils/validation';
 import BackHeader from '@/components/header/BackHeader';
 import { useRouter } from 'next/navigation';
 import { currentTopicState, editTopicState } from '@/atoms/topicState';
-import { defaultTopic } from '@/types/topic';
+import { ImageContent, defaultTopic } from '@/types/topic';
 
 export default function New() {
   const router = useRouter();
-  const [images, setImages] = useState<string[]>([]);
   const fileInput = useRef<HTMLInputElement>(null);
   const [currentCategory] = useRecoilState(currentCategoryState);
   const [currentTopic, setCurrentTopic] = useRecoilState(currentTopicState);
@@ -120,9 +119,8 @@ export default function New() {
         imageBody,
         name: imageBody.name,
       });
-      setImages((prev) => [...prev, profileImageUrl]);
       setValue(
-        `contentRequest.imageContents.${images.length}.imageUrl`,
+        `contentRequest.imageContents.${currentTopic.contentRequest.imageContents.length}.imageUrl`,
         profileImageUrl
       );
       setCurrentTopic((prevTopic) => {
@@ -141,21 +139,22 @@ export default function New() {
   };
 
   const handleDeleteImage = (imageUrl: string) => {
-    const newImages = images.filter((image) => image !== imageUrl);
-    setImages(newImages);
-    setValue(
-      'contentRequest.imageContents',
-      newImages.map((url) => ({ imageUrl: url }))
-    );
-    setCurrentTopic((prevTopic) => {
-      return {
-        ...prevTopic,
-        contentRequest: {
-          ...prevTopic.contentRequest,
-          imageContents: newImages.map((url) => ({ imageUrl: url })),
-        },
-      };
-    });
+    const updateImages = (images: ImageContent[]) =>
+      images
+        .filter((image) => image.imageUrl !== imageUrl)
+        .map(({ imageUrl }) => ({ imageUrl }));
+
+    const newImages = updateImages(currentTopic.contentRequest.imageContents);
+
+    setValue('contentRequest.imageContents', newImages);
+
+    setCurrentTopic((prevTopic) => ({
+      ...prevTopic,
+      contentRequest: {
+        ...prevTopic.contentRequest,
+        imageContents: newImages,
+      },
+    }));
   };
 
   const handleSumbitBtn = (data: any) => {
