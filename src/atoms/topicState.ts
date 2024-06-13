@@ -29,3 +29,17 @@ export const editTopicState = atom<number | null>({
   key: 'editTopicState',
   default: null,
 });
+
+type Filter = {
+  [key: string]: boolean;
+};
+
+export const filtersTopic = atom<Filter>({
+  key: 'filtersAtom',
+  default: {
+    starred: false,
+    link: false,
+    text: false,
+    image: false,
+  },
+});

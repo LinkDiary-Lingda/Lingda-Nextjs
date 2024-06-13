@@ -59,6 +59,7 @@ export async function refreshAccessToken(token: {
         method: 'POST',
       }
     );
+    console.log(response, '재발급통신에러 응답 상태!!!!!!');
 
     if (!response.ok) {
       throw Error('[Network Error] RefreshToken 재발급 통신 에러');

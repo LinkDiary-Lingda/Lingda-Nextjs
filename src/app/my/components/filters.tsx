@@ -1,26 +1,19 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import cls from 'classnames';
-
-type Category = {
-  [str: string]: boolean;
-};
+import { useRecoilState } from 'recoil';
+import { filtersTopic } from '@/atoms/topicState';
 
 export default function Filters() {
-  const [selectedFilters, setSelectedFilters] = useState<Category>({
-    starred: false,
-    link: false,
-    text: false,
-    image: false,
-  });
+  const [selectedFilters, setSelectedFilters] = useRecoilState(filtersTopic);
+
   const handleOnClick = (name: string) => {
     setSelectedFilters({
       ...selectedFilters,
       [name]: !selectedFilters[name],
     });
-    switch (name) {
-    }
   };
+
   return (
     <ul className="flex flex-row gap-[10px] overflow-auto scrollbar-hide my-6">
       {Object.keys(selectedFilters).map((filter) => {
