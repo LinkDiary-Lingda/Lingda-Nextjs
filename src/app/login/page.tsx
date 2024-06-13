@@ -16,7 +16,7 @@ export default async function Login() {
           <h1 className="text-Primary-03 text-[26px] leading-9 font-gmarketBold">
             Lingda
           </h1>
-          <p className="text-Heading-3 font-pretendardBold mt-1 text-On-Surface-Primary">
+          <p className="text-Heading-3 font-bold mt-1 text-On-Surface-Primary">
             내 손안의 링크다이어리
           </p>
         </div>
@@ -41,7 +41,7 @@ export default async function Login() {
         <span className="text-On-Surface-Secondary">아이디가 없나요?</span>
         <Link
           href="/join"
-          className="text-On-Primary-Container font-pretendardBold underline underline-offset-4"
+          className="text-On-Primary-Container font-bold underline underline-offset-4"
         >
           가입하기
         </Link>

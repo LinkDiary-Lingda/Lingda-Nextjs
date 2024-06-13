@@ -35,6 +35,7 @@ export const metadata: Metadata = {
     template: '%s | Lingda',
     default: '링크 다이어리 | Lingda',
   },
+  applicationName: '링다',
   description: '간편하게 링크와 메모, 북마크를 관리해보세요!',
   authors: [{ name: 'Lingda Team' }],
   icons: { icon: './icon.ico' },
