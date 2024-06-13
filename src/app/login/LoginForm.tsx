@@ -5,6 +5,7 @@ import { LoginInputs } from '../../types/member';
 import InputGroup from '../../components/InputGroup';
 import NextButton from '@/components/NextButton';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
   const {
@@ -14,22 +15,25 @@ export default function LoginForm() {
     setError,
     formState: { errors },
   } = useForm<LoginInputs>();
+  const router = useRouter();
 
   const handleLoginBtn = async ({ username, password }: LoginInputs) => {
     const result = await signIn('credentials', {
       username,
       password,
-      redirect: true,
-      callbackUrl: '/my',
+      redirect: false,
     });
-
-    if (result && !result?.ok) {
-      setError('username', {
-        message: '아이디 또는 비밀번호가 일치하지 않습니다.',
-      });
-      setError('password', {
-        message: '아이디 또는 비밀번호가 일치하지 않습니다.',
-      });
+    if (result) {
+      if (result.ok) {
+        router.push('/my');
+      } else {
+        setError('username', {
+          message: '아이디 또는 비밀번호가 일치하지 않습니다.',
+        });
+        setError('password', {
+          message: '아이디 또는 비밀번호가 일치하지 않습니다.',
+        });
+      }
     }
   };
   return (
