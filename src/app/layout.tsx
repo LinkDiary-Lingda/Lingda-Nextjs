@@ -8,6 +8,7 @@ import { Flip, ToastContainer } from 'react-toastify';
 import ReactQueryClientProvider from '@/hooks/ReactQueryClientProvider';
 import RecoilWrapper from '@/context/RecoilWrapper';
 import UseLoading from '@/hooks/handlers/useLoading';
+import Head from 'next/head';
 
 const pretendardBoldFont = localFont({
   src: './styles/font/Pretendard-Bold.woff',
@@ -60,7 +61,6 @@ export default function RootLayout({
       lang="ko"
       className={`${pretendardBoldFont.variable} ${pretendardRegularFont.variable} ${gmarketBoldFont.variable} ${gmarketMediumFont.variable}`}
     >
-      <head></head>
       <body>
         <ReactQueryClientProvider>
           <OverlayProvider>
