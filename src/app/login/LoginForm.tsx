@@ -22,7 +22,8 @@ export default function LoginForm() {
       redirect: true,
       callbackUrl: '/my',
     });
-    if (!result?.ok) {
+
+    if (result && !result?.ok) {
       setError('username', {
         message: '아이디 또는 비밀번호가 일치하지 않습니다.',
       });
