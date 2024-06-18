@@ -10,22 +10,22 @@ import RecoilWrapper from '@/context/RecoilWrapper';
 import UseLoading from '@/hooks/handlers/useLoading';
 
 const pretendardBoldFont = localFont({
-  src: './styles/font/Pretendard-Bold.woff',
+  src: '../../public/font/Pretendard-Bold.woff2',
   variable: '--font-pretendard-bold',
   display: 'swap',
 });
 const pretendardRegularFont = localFont({
-  src: './styles/font/Pretendard-Regular.woff',
+  src: '../../public/font/Pretendard-Regular.woff2',
   variable: '--font-pretendard-regular',
   display: 'swap',
 });
 const gmarketBoldFont = localFont({
-  src: './styles/font/GmarketSansTTFBold.ttf',
+  src: '../../public/font/GmarketSansTTFBold.woff2',
   variable: '--font-gmarket-bold',
   display: 'swap',
 });
 const gmarketMediumFont = localFont({
-  src: './styles/font/GmarketSansTTFMedium.ttf',
+  src: '../../public/font/GmarketSansTTFMedium.woff2',
   variable: '--font-gmarket-medium',
   display: 'swap',
 });
