@@ -8,7 +8,6 @@ import { Flip, ToastContainer } from 'react-toastify';
 import ReactQueryClientProvider from '@/hooks/ReactQueryClientProvider';
 import RecoilWrapper from '@/context/RecoilWrapper';
 import UseLoading from '@/hooks/handlers/useLoading';
-import Head from 'next/head';
 
 const pretendardBoldFont = localFont({
   src: './styles/font/Pretendard-Bold.woff',
@@ -40,7 +39,7 @@ export const metadata: Metadata = {
   description: '간편하게 링크와 메모, 북마크를 관리해보세요!',
   authors: [{ name: 'Lingda Team' }],
   icons: { icon: './icon.ico' },
-  appleWebApp: true,
+  appleWebApp: { capable: true, statusBarStyle: 'default' },
   openGraph: {
     type: 'website',
     url: 'https://lingda.app',
@@ -61,11 +60,6 @@ export default function RootLayout({
       lang="ko"
       className={`${pretendardBoldFont.variable} ${pretendardRegularFont.variable} ${gmarketBoldFont.variable} ${gmarketMediumFont.variable}`}
     >
-      <Head>
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
       <body>
         <ReactQueryClientProvider>
           <OverlayProvider>
