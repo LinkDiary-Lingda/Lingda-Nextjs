@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   description: '간편하게 링크와 메모, 북마크를 관리해보세요!',
   authors: [{ name: 'Lingda Team' }],
   icons: { icon: './icon.ico' },
-  appleWebApp: { capable: true, statusBarStyle: 'black' },
+  appleWebApp: { capable: false },
   openGraph: {
     type: 'website',
     url: 'https://lingda.app',
