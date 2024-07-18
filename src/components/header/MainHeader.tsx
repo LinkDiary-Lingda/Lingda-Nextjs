@@ -13,7 +13,7 @@ export default function MainHeader() {
   const [sideNavOn, setSideNavOn] = useRecoilState(sideNavState);
 
   return (
-    <>
+    <header>
       <div className="relative ">
         <SideNav />
       </div>
@@ -79,6 +79,6 @@ export default function MainHeader() {
           </form>
         </div>
       )}
-    </>
+    </header>
   );
 }

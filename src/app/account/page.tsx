@@ -24,7 +24,7 @@ export default function Account() {
           <li className="flex-1 border-b-2 text-center">비밀번호 찾기</li>
         </ul>
       </div>
-      <div className="py-4 text-Heading-3 font-pretendardBold">
+      <div className="py-4 text-Heading-3 font-bold">
         <h1>회원정보에 등록한</h1>
         <h1>휴대폰 번호를 입력해주세요.</h1>
       </div>
