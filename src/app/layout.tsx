@@ -42,12 +42,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     title: '링다',
-    startupImage: [
-      './icon.ico',
-      {
-        url: '/icon.ico',
-      },
-    ],
+    startupImage: ['./icon.ico'],
   },
   openGraph: {
     type: 'website',
