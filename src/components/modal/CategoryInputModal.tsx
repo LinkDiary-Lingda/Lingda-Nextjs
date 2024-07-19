@@ -1,5 +1,5 @@
 'use client';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import ColorPalete from './ColorPalete';
 import { CategoryItem } from '@/types/category';
