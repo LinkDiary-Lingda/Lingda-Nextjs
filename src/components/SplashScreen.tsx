@@ -21,7 +21,7 @@ export default function SplashScreen({ finishLoading }: Props) {
     });
   });
   return (
-    <div className="absolute w-full h-full bg-Primary2 flex justify-center items-center">
+    <div className="absolute w-full max-w-[490px] h-full bg-Primary2 flex justify-center items-center">
       <Image
         src={splashImage}
         width={148}
