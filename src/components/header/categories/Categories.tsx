@@ -46,11 +46,13 @@ export default function Categories() {
   ];
 
   const handleDragStart = (e: DragEvent<HTMLElement>) => {
+    e.stopPropagation();
     setTargetId(e.currentTarget.id);
   };
 
   const handleDragOver = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     setDraggedOverId({
       id: e.currentTarget.id,
       parentId: e.currentTarget.getAttribute('data-id'),
@@ -59,6 +61,7 @@ export default function Categories() {
 
   const handleDragLeave = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     setDraggedOverId(null);
     if (!draggedOverId) {
       setTargetId(null);
@@ -67,6 +70,7 @@ export default function Categories() {
 
   const handleCategoryDrop = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     if (targetId && draggedOverId) {
       orderCategoryItemQuery({
         id: parseInt(targetId),
@@ -82,6 +86,7 @@ export default function Categories() {
 
   const handleDividerDrop = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
+    e.stopPropagation();
     if (targetId && draggedOverId) {
       orderCategoryItemQuery({
         id: parseInt(targetId),
@@ -158,23 +163,18 @@ export default function Categories() {
   const renderDivider = (divider: CategoryDividerItem) => (
     <li
       key={divider.id}
-      className={cls(
-        'flex flex-col justify-between border-b-[1px] border-Outline-Low',
-        {
-          'border-On-Primary-Container border-b-[1px]':
-            draggedOverId?.id === divider.id + '',
-          'border-b-[1px] border-Outline-Low':
-            draggedOverId?.id !== divider.id + '',
-          'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
-            targetId === divider.id + '',
-          'bg-none border-b-[1px] border-Outline-Low':
-            targetId !== divider.id + '',
-        }
-      )}
+      className={cls('flex flex-col justify-between', {
+        'border-On-Primary-Container border-b-[1px]':
+          draggedOverId?.id === divider.id + '' && targetId !== divider.id + '',
+        'border-b-[1px] border-Outline-Low':
+          draggedOverId?.id !== divider.id + '' && targetId !== divider.id + '',
+        'bg-Primary-Container-Low border-On-Primary-Container border-[1px] ':
+          targetId === divider.id + '',
+      })}
       draggable
       onDragStart={handleDragStart}
-      // onDragOver={handleDragOver}
-      // onDrop={handleDividerDrop}
+      onDragOver={handleDragOver}
+      onDrop={handleDividerDrop}
       onDragLeave={handleDragLeave}
       id={divider.id + ''}
       data-id={divider.dividerId}
