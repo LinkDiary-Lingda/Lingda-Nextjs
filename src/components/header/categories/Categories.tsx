@@ -182,7 +182,10 @@ export default function Categories() {
       <DividerItem
         name={divider.name}
         id={divider.id + ''}
-        isDraggedOver={draggedOverId?.id === divider.id + ''}
+        handleDragStart={handleDragStart}
+        handleDragOver={handleDragOver}
+        handleDividerDrop={handleDividerDrop}
+        handleDragLeave={handleDragLeave}
         toggled={openCategories.has(divider.id)}
         onToggle={() => toggleCategory(divider.id)}
       />
