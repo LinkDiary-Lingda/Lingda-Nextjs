@@ -1,5 +1,5 @@
 'use client';
-import React, { MouseEvent, useState } from 'react';
+import React, { DragEvent, MouseEvent, useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import cls from 'classnames';
 import Image from 'next/image';
@@ -16,7 +16,10 @@ import { currentOpenMenuState } from '@/atoms/modalState';
 type Props = {
   name: string;
   id: string;
-  isDraggedOver?: boolean;
+  handleDragOver: (e: DragEvent<HTMLElement>) => void;
+  handleDividerDrop: (e: DragEvent<HTMLElement>) => void;
+  handleDragLeave: (e: DragEvent<HTMLElement>) => void;
+  handleDragStart: (e: DragEvent<HTMLElement>) => void;
   toggled: boolean;
   onToggle?: () => void;
   forUIOnly?: boolean;
@@ -25,7 +28,10 @@ type Props = {
 export default function DividerItem({
   name,
   id,
-  isDraggedOver,
+  handleDragOver,
+  handleDividerDrop,
+  handleDragLeave,
+  handleDragStart,
   toggled,
   onToggle,
   forUIOnly,
@@ -117,7 +123,17 @@ export default function DividerItem({
               alt="closed-category-arrow-img"
             />
           )}
-          <p className="text-On-Surface-Primary text-Body-1">{name}</p>
+          <p
+            className="text-On-Surface-Primary text-Body-1"
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDrop={handleDividerDrop}
+            onDragLeave={handleDragLeave}
+            id="null"
+            data-id={id}
+          >
+            {name}
+          </p>
         </div>
         {!forUIOnly && (
           <button
