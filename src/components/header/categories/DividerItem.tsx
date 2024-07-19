@@ -16,10 +16,10 @@ import { currentOpenMenuState } from '@/atoms/modalState';
 type Props = {
   name: string;
   id: string;
-  handleDragOver: (e: DragEvent<HTMLElement>) => void;
-  handleDividerDrop: (e: DragEvent<HTMLElement>) => void;
-  handleDragLeave: (e: DragEvent<HTMLElement>) => void;
-  handleDragStart: (e: DragEvent<HTMLElement>) => void;
+  handleDragOver?: (e: DragEvent<HTMLElement>) => void;
+  handleDividerDrop?: (e: DragEvent<HTMLElement>) => void;
+  handleDragLeave?: (e: DragEvent<HTMLElement>) => void;
+  handleDragStart?: (e: DragEvent<HTMLElement>) => void;
   toggled: boolean;
   onToggle?: () => void;
   forUIOnly?: boolean;
