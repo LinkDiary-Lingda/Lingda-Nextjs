@@ -60,6 +60,9 @@ export default function Categories() {
   const handleDragLeave = (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
     setDraggedOverId(null);
+    if (!draggedOverId) {
+      setTargetId(null);
+    }
   };
 
   const handleCategoryDrop = (e: DragEvent<HTMLElement>) => {
@@ -112,21 +115,23 @@ export default function Categories() {
         isNested
           ? {
               'border-On-Primary-Container border-b-[1px]':
-                draggedOverId?.id === category.id + '',
-              'border-none': draggedOverId?.id !== category.id + '',
+                draggedOverId?.id === category.id + '' &&
+                targetId !== category.id + '',
+              'border-none':
+                draggedOverId?.id !== category.id + '' &&
+                targetId !== category.id + '',
               'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
                 targetId === category.id + '',
-              'bg-none border-none': targetId !== category.id + '',
             }
           : {
               'border-On-Primary-Container border-b-[1px]':
-                draggedOverId?.id === category.id + '',
+                draggedOverId?.id === category.id + '' &&
+                targetId !== category.id + '',
               'border-b-[1px] border-Outline-Low':
-                draggedOverId?.id !== category.id + '',
+                draggedOverId?.id !== category.id + '' &&
+                targetId !== category.id + '',
               'bg-Primary-Container-Low border-On-Primary-Container border-[1px]':
                 targetId === category.id + '',
-              'bg-none border-b-[1px] border-Outline-Low':
-                targetId !== category.id + '',
             }
       )}
       draggable
